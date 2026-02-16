@@ -1,0 +1,72 @@
+/*-- scss:defaults --*/
+$body-bg: #0f172a; // Azul noche profundo
+$body-color: #f8fafc; // Blanco casi puro para lectura
+$link-color: #38bdf8; // Cian brillante para enlaces
+$selection-bg: #be123c; // Color de selección
+$code-color: #f472b6; // Rosa para código inline
+
+/* Tipografía */
+$font-family-sans-serif: "Inter", "Segoe UI", sans-serif;
+$presentation-heading-font: "Montserrat", sans-serif;
+$presentation-heading-color: #e2e8f0;
+
+/*-- scss:rules --*/
+
+/* Títulos con subrayado elegante */
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.reveal h2 {
+    border-bottom: 3px solid $link-color;
+    padding-bottom: 20px;
+    margin-bottom: 40px;
+}
+
+/* Estilo para las siglas con tooltip (abbr) */
+span[title] {
+    border-bottom: 1px dotted $link-color;
+    cursor: help;
+    color: #a5f3fc;
+    font-weight: 600;
+}
+
+/* Callouts personalizados */
+.callout {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Tablas modernas */
+.reveal table {
+    font-size: 0.8em;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+
+    th {
+        border-bottom: 2px solid $link-color;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+
+    td {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 15px;
+    }
+
+    tr:hover td {
+        background-color: rgba(56, 189, 248, 0.1);
+    }
+}
+
+/* Imágenes con sombra */
+.reveal section img {
+    border: none;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+}

@@ -1,0 +1,54 @@
+/*-- scss:defaults --*/
+$body-bg: #0f172a;
+/* Slate 900 - Fondo oscuro profesional */
+$body-color: #f8fafc;
+/* Slate 50 - Texto claro */
+$link-color: #38bdf8;
+/* Sky 400 - Enlaces y acentos */
+$presentation-heading-color: #e2e8f0;
+$presentation-heading-font-weight: 700;
+$presentation-font-size-root: 40px;
+
+/*-- scss:rules --*/
+
+/* Estilo para las siglas con tooltip */
+abbr {
+    text-decoration: none;
+    border-bottom: 1px dotted $link-color;
+    cursor: help;
+    color: #a5f3fc;
+    /* Cyan 200 */
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+    &:hover {
+        color: #ffffff;
+        background-color: rgba(56, 189, 248, 0.2);
+        border-radius: 4px;
+        padding: 0 4px;
+    }
+}
+
+/* Ajustes de tablas */
+.reveal table {
+    font-size: 0.7em;
+    border-collapse: collapse;
+
+    th {
+        border-bottom: 2px solid $link-color;
+        color: $link-color;
+    }
+
+    td {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Callouts personalizados para diapositivas */
+.callout-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 5px solid $link-color;
+    padding: 20px;
+    border-radius: 0 10px 10px 0;
+    margin-top: 20px;
+}

@@ -1,0 +1,394 @@
+---
+title: "Arquitectura y Ontología de los Datos"
+subtitle: "En el Ecosistema de la Salud Digital"
+author:
+  - name: "Antonio Otal Palacín"
+    affiliations:
+      - "Hospital Universitari Arnau de Vilanova"
+      - "Universitat de Lleida"
+date: last-modified
+date-format: "D MMMM, YYYY"
+format:
+  revealjs:
+    # Geometría y Escala (1080p)
+    width: 1920
+    height: 1080
+    margin: 0.05
+    min-scale: 0.2
+    max-scale: 2.0
+    
+    # Navegación y UX
+    controls: true
+    progress: true
+    hash: true
+    center: false
+    navigation-mode: linear
+    
+    # Estética y Código
+    theme: [default, Data_Ontology_Architecture_Health_Ecosystem.scss]
+    slide-number: c/t
+    code-line-numbers: true
+    code-copy: true
+    lightbox: true
+    embed-resources: false
+    
+    # Referencias
+    bibliography: references.bib
+    csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
+    lang: es
+---
+
+## Introducción: El Dato como Activo Estratégico
+
+::: {.columns}
+::: {.column width="60%"}
+La medicina contemporánea ha trascendido el acto clínico físico para convertirse en una disciplina impulsada por la información.
+
+* **Explosión Informativa**: Crecimiento estimado del **47% anual** [@2024].
+* **Drivers**:
+    * Dispositivos médicos conectados (IoMT).
+    * Registros Electrónicos de Salud (<abbr title="Electronic Health Records">EHR</abbr>).
+    * Imagenología de alta resolución.
+:::
+
+::: {.column width="40%"}
+::: {.callout-card .fragment}
+### El Desafío
+Gestionar una tipología heterogénea que abarca desde registros numéricos discretos hasta complejas señales bioeléctricas y narrativas clínicas ambiguas.
+:::
+:::
+:::
+
+::: {.notes}
+La práctica de la medicina moderna ya no es solo un acto físico; es una disciplina de la información. El dato biomédico es un activo estratégico cuya gestión define la eficacia del sistema.
+Estamos ante una explosión masiva: la información crece casi un 50% cada año. Esto no es solo "más datos", es una complejidad exponencial impulsada por dispositivos conectados, EHRs y nuevas tecnologías de imagen.
+El verdadero desafío no es solo el volumen, sino la heterogeneidad: tenemos que armonizar desde un valor simple de glucosa hasta una señal de EEG de 32kHz y una nota clínica escrita en lenguaje natural ambiguo.
+:::
+
+# Tipologías de Datos Médicos
+
+## La Dicotomía Fundamental
+
+La clasificación fundamental de los datos en salud se divide entre **estructurados** y **no estructurados**.
+
+::: {.columns}
+::: {.column width="45%"}
+### Datos Estructurados
+* Se ajustan a un modelo predefinido.
+* Almacenamiento en bases de datos relacionales (<abbr title="Structured Query Language">SQL</abbr>).
+* **Ejemplos**:
+    * Resultados de laboratorio (mg/dL).
+    * Constantes vitales (PA, Temp).
+    * Códigos <abbr title="International Classification of Diseases, 10th Revision">ICD-10</abbr> [@Sante2024].
+:::
+
+::: {.column width="5%"}
+:::
+
+::: {.column width="50%"}
+### Datos No Estructurados
+* Residen en texto libre, imágenes o señales.
+* Difíciles de procesar automáticamente.
+* Contienen la **narrativa clínica** y el contexto (determinantes sociales, gravedad subjetiva) [@Unstructured2026a].
+:::
+:::
+
+::: {.notes}
+Esta es la división clásica pero crítica.
+Los **Datos Estructurados** son los que "nos gustan" a los informáticos: caben en una tabla de Excel o SQL. Son fáciles de consultar, agregar y analizar estadísticamente (ej. promedio de glucosa).
+Los **Datos No Estructurados** son "la realidad". Son el texto libre, las imágenes, los vídeos. Son difíciles de computar porque no tienen un modelo predefinido, pero contienen la "historia" del paciente: por qué se siente mal, cuál es su contexto social, matices que un código ICD-10 no captura.
+:::
+
+## La Regla del 80/20 {transition="zoom"}
+
+::: {style="height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center;"}
+
+::: {style="font-size: 10em; font-weight: 800; line-height: 1; color: #38bdf8;"}
+80%
+:::
+
+::: {style="font-size: 1.5em; text-align: center; margin-top: 20px;"}
+De la información clínica se genera en formato **no estructurado** [@carter2019managing].
+:::
+
+::: {.fragment .fade-up style="margin-top: 60px; color: #94a3b8; font-size: 0.8em; border-top: 1px solid #334155; padding-top: 20px;"}
+Notas de evolución • Resúmenes de alta • Informes de radiología • Anatomía patológica
+:::
+
+:::
+
+::: {.notes}
+Esta es la métrica más importante que deben recordar: el 80% del valor clínico reside donde es más difícil extraerlo.
+Si solo analizamos bases de datos SQL estructuradas, estamos viendo solo el 20% de la película.
+El "oro" está en las notas de evolución, los informes de patología y radiología. Ahí es donde se explican las causas y los contextos. Ignorar esto es ignorar la mayor parte de la realidad clínica.
+:::
+
+## Comparativa Técnica
+
+| Característica | Datos Estructurados | Datos No Estructurados |
+| :--- | :--- | :--- |
+| **Formato** | Campos predefinidos, tablas relacionales | Texto libre, imágenes, señales, video |
+| **Almacenamiento** | Bases de datos <abbr title="Structured Query Language">SQL</abbr> | Almacenes de objetos, sistemas de archivos |
+| **Análisis** | Estadístico directo, <abbr title="Structured Query Language">SQL</abbr> | <abbr title="Natural Language Processing">NLP</abbr>, Visión por computador, Deep Learning |
+| **Volumen** | Relativamente bajo, crecimiento lineal | **Masivo (80%)**, crecimiento exponencial [@2024] |
+| **Valor Clínico** | Cuantitativo, tendencias claras | Contexto narrativo, razonamiento médico |
+
+::: {.notes}
+Resumiendo la comparativa:
+Lo estructurado escala linealmente y se analiza con estadística clásica.
+Lo no estructurado escala exponencialmente y requiere Inteligencia Artificial (NLP, Visión) para ser explotable.
+El valor clínico también es distinto: lo estructurado te da el "qué" (tiene fiebre), lo no estructurado te da el "por qué" (posible infección tras viaje reciente...).
+:::
+
+# Desafíos en Datos No Estructurados
+
+## El Reto del Lenguaje Natural (<abbr title="Natural Language Processing">NLP</abbr>)
+
+La transformación de texto libre en datos accionables requiere superar la ambigüedad lingüística.
+
+::: {.columns}
+::: {.column width="50%"}
+### Problemas Comunes
+* **Jerga local y abreviaturas**: Variaciones entre especialistas [@Unstructured2026a].
+* **Falta de estandarización**: Descripciones divergentes para el mismo fenómeno neurológico [@Sedlakova2022].
+:::
+
+::: {.column width="50%"}
+### Soluciones de Ingeniería
+Pipelines modernos de <abbr title="Natural Language Processing">NLP</abbr> deben realizar:
+
+  1.  **<abbr title="Named Entity Recognition">NER</abbr>**: Reconocimiento de Entidades Nombradas.
+2.  **Análisis de Contexto**: Determinar si un síntoma está *presente*, *ausente* (negación) o es una *sospecha*.
+:::
+:::
+
+::: {.fragment .callout-card}
+**Caso de Éxito**: Sistemas como *Leo* alcanzan una precisión >0.90 en la extracción de clasificación TNM (Tumor, Nódulo, Metástasis) de informes de patología [@mille2021automated].
+:::
+
+::: {.notes}
+El NLP clínico es mucho más difícil que el NLP general.
+No basta con buscar palabras clave. "No fiebre" contiene "fiebre", pero significa lo contrario.
+La ambigüedad es enorme: las abreviaturas cambian de un hospital a otro, incluso entre departamentos.
+Las soluciones modernas usan pipelines complejos que no solo encuentran entidades (NER), sino que entienden la negación y la especulación ("se sospecha X").
+El caso de éxito de *Leo* demuestra que podemos automatizar tareas complejas como estadificar un cáncer (TNM) con altísima precisión, liberando a los humanos de tareas repetitivas.
+:::
+
+# El Estándar <abbr title="Digital Imaging and Communications in Medicine">DICOM</abbr>
+## Arquitectura del Dato Semiestructurado
+
+<abbr title="Digital Imaging and Communications in Medicine">DICOM</abbr> es más que un formato; es un protocolo que garantiza que la imagen nunca se separe de la información del paciente [@Quesque2024].
+
+::: {.columns}
+::: {.column width="60%"}
+### Estructura de Archivo
+1.  **File Preamble**: 128 bytes (Compatibilidad).
+2.  **DICOM Prefix**: Cadena "DICM".
+3.  **File Meta Information**: Sintaxis de transferencia, Endianness.
+4.  **Data Set**: Secuencia de elementos (Tags) + Píxeles.
+
+::: {.fragment}
+Cada elemento usa un Tag (ej. `0010,0010`) y una **<abbr title="Value Representation">VR</abbr>** (Representación de Valor) que puede ser explícita o implícita [@Basic2026].
+:::
+:::
+
+::: {.column width="40%"}
+![Esquema conceptual de un archivo DICOM](images/architecture_dicom.png){width=100%}
+:::
+:::
+
+::: {.notes}
+Pasamos a la imagenología. DICOM es el estándar universal.
+Es un dato "semiestructurado": tiene una estructura muy rígida de metadatos (quién es el paciente, qué máquina se usó, cuándo) pegada inseparablemente a los datos binarios de la imagen (píxeles).
+Esto es vital para la seguridad clínica: no puedes tener la radiografía de Juan con la etiqueta de María.
+La estructura es binaria y compleja, con precargas, prefijos y "Tags" específicos para cada dato (ej. 0010,0010 es siempre el nombre del paciente).
+:::
+
+## Jerarquía de Información <abbr title="Digital Imaging and Communications in Medicine">DICOM</abbr>
+
+Organización lógica en los sistemas <abbr title="Picture Archiving and Communication System">PACS</abbr> [@Dicom2026a]:
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+### 1. Nivel Paciente (<abbr title="Unique Identifier">UID</abbr>)
+La entidad biológica que recibe la atención.
+:::
+::: {.fragment .fade-in-then-out}
+### 2. Nivel Estudio (Study Instance <abbr title="Unique Identifier">UID</abbr>)
+Un procedimiento específico (ej. TAC Abdomen) en una fecha dada.
+:::
+::: {.fragment .fade-in-then-out}
+### 3. Nivel Serie (Series Instance <abbr title="Unique Identifier">UID</abbr>)
+Subconjunto del estudio (ej. fase arterial vs. venosa).
+:::
+::: {.fragment .fade-in}
+### 4. Nivel Instancia (<abbr title="Service-Object Pair">SOP</abbr> Instance <abbr title="Unique Identifier">UID</abbr>)
+La imagen individual o "slice" del volumen.
+:::
+:::
+
+::: {.fragment .callout-card style="margin-top: 50px;"}
+**Riesgo de Privacidad (<abbr title="Protected Health Information">PHI</abbr>)**: La riqueza de metadatos facilita fugas de privacidad. Se requieren procesos de de-identificación según DICOM PS 3 Anexo E [@Imaging2026].
+:::
+
+::: {.notes}
+Esta jerarquía es fundamental para entender cómo se organizan las imágenes en un PACS.
+1.  **Paciente**: La persona.
+2.  **Estudio**: "El TAC que me hice ayer". Un evento temporal.
+3.  **Serie**: "El corte transversal con contraste". Una configuración técnica dentro del estudio.
+4.  **Instancia**: La foto individual.
+**Advertencia**: Como hay tantos metadatos incrustados en CADA archivo, es facilísimo filtrar datos privados (PHI) al compartir imágenes para investigación. Limpiar DICOMs es mucho más que borrar el nombre del archivo; hay que editar las etiquetas internas binary-level.
+:::
+
+# Señales Bioeléctricas
+## Datos de Series Temporales
+
+Fenómenos dinámicos (ECG, EEG, EMG) que requieren alta frecuencia de muestreo.
+
+::: {.columns}
+::: {.column width="50%"}
+### Desafíos de Ingeniería
+* **Teorema de Nyquist-Shannon**: La frecuencia de muestreo debe ser al menos el doble de la frecuencia máxima de la señal.
+* **Volumen Masivo**: Un registro clínico de una semana (32 kHz, 18 bits) puede pesar **23 Terabytes** [@Brinkmann2009].
+* **Infraestructura**: Requiere redes de alta velocidad (40 MB/s).
+:::
+
+::: {.column width="50%"}
+### Estándares de Formato
+
+| Formato | Bits | Uso Principal |
+| :--- | :--- | :--- |
+| **<abbr title="European Data Format">EDF</abbr>** | 16 | Sueño, EEG clínico (Estándar de oro) |
+| **<abbr title="BioSemi Data Format">BDF</abbr>** | 24 | Investigación, alto rango dinámico |
+| **MFER** | Var. | Ondas médicas generales |
+
+::: {.fragment}
+*Nota: <abbr title="BioSemi Data Format">BDF</abbr> reduce la necesidad de amplificación analógica excesiva [@httpsdoiorg1048550arxiv240500300].*
+:::
+:::
+:::
+
+::: {.notes}
+Las señales (electrocardiogramas, electroencefalogramas) son series temporales de altísima frecuencia.
+El desafío aquí es puramente "Big Data" físico. Un registro de alta fidelidad de una semana para UN paciente puede pesar 23 Terabytes. Esto rompe la mayoría de las infraestructuras hospitalarias estándar.
+Usamos formatos especializados como EDF (el estándar clásico) y BDF (24 bits, para investigación) porque necesitamos esa precisión temporal y rango dinámico que otros formatos no dan.
+:::
+
+# Interoperabilidad: <abbr title="Health Level Seven">HL7</abbr> y <abbr title="Fast Healthcare Interoperability Resources">FHIR</abbr>
+
+## Evolución: Del Mensaje al Recurso {auto-animate=true}
+
+::: {.columns}
+::: {.column width="45%"}
+### <abbr title="Health Level Seven">HL7</abbr> v2
+* Basado en **Mensajes**.
+* Segmentos delimitados (PID, OBR).
+* Rígido y propenso a inconsistencias ("Segmentos Z") [@Fhir2026].
+* Comunicación punto a punto.
+:::
+
+::: {.column width="10%"}
+:::
+
+::: {.column width="45%"}
+### <abbr title="Fast Healthcare Interoperability Resources">FHIR</abbr>
+* Basado en **Recursos**.
+* Arquitectura web moderna (<abbr title="Application Programming Interface">API</abbr> RESTful).
+* Modular e interconectado [@Kumagai2025].
+* Regla del 80/20: Núcleo ligero + Perfilado (Profiling).
+:::
+:::
+
+::: {.notes}
+La interoperabilidad es cómo los sistemas hablan entre sí.
+**HL7 v2** es el "abuelo": funciona enviando mensajes de texto delimitados por barras. Es robusto pero muy rígido y punto a punto.
+**FHIR** (pronunciado "Fire") es el presente y futuro. Funciona como la web moderna: Recursos y URLs. Si quieres los datos del paciente 123, vas a `/Patient/123`.
+FHIR también aplica la regla del 80/20: el estándar define el núcleo que usa todo el mundo (80%), y permite "Perfiles" para las necesidades específicas de cada sitio (el 20% restante), evitando la complejidad monolítica de intentos anteriores como HL7 v3.
+:::
+
+## Operaciones <abbr title="Fast Healthcare Interoperability Resources">FHIR</abbr> y REST {auto-animate=true}
+
+La interoperabilidad semántica se logra vinculando elementos a terminologías como <abbr title="Systematized Nomenclature of Medicine -- Clinical Terms">SNOMED CT</abbr> o <abbr title="Logical Observation Identifiers Names and Codes">LOINC</abbr>.
+
+| Operación | Verbo HTTP | URI Ejemplo | Acción |
+| :--- | :--- | :--- | :--- |
+| **Leer** | `GET` | `/Patient/123` | Recuperar recurso |
+| **Buscar** | `GET` | `/Observation?patient=123` | Listar observaciones |
+| **Crear** | `POST` | `/Observation` | Nueva observación |
+| **Actualizar** | `PUT` | `/Procedure/456` | Modificar recurso |
+
+::: {.notes}
+FHIR utiliza los verbos estándar de la web (GET, POST, PUT). Esto facilita enormemente la vida a los desarrolladores de software, que ya saben usar APIs REST.
+Pero la sintaxis no lo es todo; necesitamos semántica. Por eso FHIR se enlaza con vocabularios controlados como SNOMED o LOINC, para que cuando digamos "Presión Arterial", todos los sistemas entiendan exactamente de qué concepto clínico estamos hablando.
+:::
+
+# Granularidad y Genómica
+
+## Niveles de Granularidad de la Información
+
+La elección de la unidad de análisis define la validez de la investigación [@Patient2026].
+
+1.  **Nivel Instancia**: Dato atómico (una medición, una imagen).
+2.  **Nivel Encuentro (Encounter)**: Interacción específica (visita a urgencias). Datos transitorios.
+3.  **Nivel Paciente (Patient)**: Registro longitudinal. Trayectoria de enfermedades crónicas.
+
+::: {.callout-card}
+**Importante**: Confundir "pacientes" con "encuentros" introduce sesgos graves en análisis de utilización de recursos hospitalarios [@bentley2012difference].
+:::
+
+::: {.notes}
+Un error metodológico clásico en ciencia de datos de salud es confundir la unidad de análisis.
+¿Estás analizando visitas (Encuentros) o personas (Pacientes)?
+Un paciente puede tener 50 encuentros en un año. Si analizas a nivel de encuentro, ese paciente pesa 50 veces más que uno sano.
+Esto introduce sesgos graves. Para enfermedades crónicas, necesitamos la visión longitudinal a nivel de **Paciente**. Para gestión de urgencias (tiempos de espera), el nivel **Encuentro**.
+:::
+
+## Integración Genómica en <abbr title="Fast Healthcare Interoperability Resources">FHIR</abbr>
+
+La genómica añade una capa de complejidad longitudinal y masiva. <abbr title="Fast Healthcare Interoperability Resources">FHIR</abbr> reutiliza recursos existentes para facilitar la adopción [@Stellmach2023].
+
+* **`DiagnosticReport`**: Contenedor del informe genético.
+* **`Observation`**: Variantes específicas o interpretación clínica.
+* **`MolecularSequence`**: Secuencia cruda de nucleótidos.
+* **`Specimen`**: Fuente biológica (tejido, sangre).
+
+::: {.notes}
+La genómica es la última frontera de complejidad.
+FHIR maneja esto muy inteligentemente: no inventa todo de nuevo.
+Usa `DiagnosticReport` para el informe general.
+Usa `Observation` para las variantes específicas encontradas (igual que usaría Observation para una glucosa, pero con otra estructura).
+Esto permite que los sistemas actuales empiecen a integrar datos genómicos sin tener que reescribirse desde cero.
+:::
+
+---
+
+## Conclusión
+
+El futuro de la salud digital depende de la transición de silos aislados a ecosistemas semánticamente coherentes.
+
+::: {.columns}
+::: {.column width="50%"}
+### Pilares Clave
+1.  Gestión eficaz de datos **no estructurados** (80%).
+2.  Implementación rigurosa de estándares (<abbr title="Digital Imaging and Communications in Medicine">DICOM</abbr>, <abbr title="Fast Healthcare Interoperability Resources">FHIR</abbr>).
+3.  Comprensión profunda de la granularidad.
+:::
+
+::: {.column width="50%"}
+### Meta Final
+Asegurar que la **IA** y los sistemas de soporte a la decisión operen sobre una base de información íntegra, privada y representativa de la complejidad humana.
+:::
+:::
+
+::: {.notes}
+Para terminar, la visión es clara:
+Tenemos que dominar el 80% de datos no estructurados.
+Tenemos que abrazar los estándares modernos (FHIR) y entender los clásicos (DICOM).
+Y, sobre todo, tenemos que entender que detrás de cada dato hay una jerarquía y un contexto.
+Solo así podremos construir una IA que no solo compute datos, sino que entienda pacientes.
+:::
+
+## Referencias {visibility="hidden"}
+
+::: {#refs}
+:::

@@ -1,0 +1,404 @@
+---
+title: "Ingeniería de Características y Preprocesamiento en Salud"
+subtitle: "El Arte de la Refinación del Dato Clínico"
+author:
+  - name: "Antonio Otal Palacín"
+    affiliations:
+      - "Hospital Universitari Arnau de Vilanova"
+      - "Universitat de Lleida"
+date: last-modified
+date-format: "D MMMM, YYYY"
+format:
+  revealjs:
+    # Geometría y Escala (1080p Nativo)
+    width: 1920
+    height: 1080
+    margin: 0.08
+    min-scale: 0.2
+    max-scale: 2.0
+    
+    # Navegación y UX
+    controls: true
+    progress: true
+    hash: true
+    center: false
+    navigation-mode: linear
+    
+    # Estética y Código
+    theme: [default, Feature_Engineering_Preprocessing_Health.scss]
+    slide-number: c/t
+    code-line-numbers: true
+    code-copy: true
+    lightbox: true
+    embed-resources: false
+    
+    # Referencias
+    bibliography: references.bib
+    csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl # Opcional si tienes un estilo específico
+    lang: es
+---
+
+## Introducción: El Dato como Combustible
+
+::: {.columns}
+::: {.column width="60%"}
+> "Si el dato crudo es el petróleo de la <abbr title="Inteligencia Artificial">IA</abbr> moderna, la ingeniería de características es la refinería."
+
+* En salud, este proceso es **técnico, clínico y ético**.
+* Un modelo predictivo es tan bueno como la representación de los datos que lo alimentan [@Data2026].
+* El conocimiento del dominio médico es insustituible.
+:::
+
+::: {.column width="40%"}
+::: {.clinical-box}
+**Objetivos del Capítulo**
+1. Limpieza de datos y <abbr title="Electronic Health Records / Historia Clínica Electrónica">EHR</abbr>.
+2. Manejo de Outliers.
+3. Imputación de datos faltantes.
+4. Sesgo y Equidad (Fairness).
+:::
+:::
+:::
+
+::: {.notes}
+Existe la idea errónea de que el Deep Learning hace magia con cualquier dato. Falso.
+Si el dato es el "petróleo", la ingeniería de características es la "refinería". No puedes poner petróleo crudo en un Ferrari (tu modelo Transformer). Necesitas gasolina refinada.
+En salud, refinar es peligroso. Si limpias demasiado, borras a los pacientes más graves. Si no limpias, el modelo aprende ruido.
+El objetivo de hoy es aprender a refinar datos clínicos sin destruir la información vital.
+:::
+
+# Limpieza de Datos y Outliers
+
+::: {.callout-note .column-margin title="Outliers: ¿Artefacto o Clínica?"}
+Un outlier en salud puede ser un error de sensor o una emergencia médica. La decisión de eliminarlo debe basarse en el conocimiento fisiológico y no solo en criterios estadísticos rígidos.
+:::
+
+::: {.notes}
+La primera regla del preprocesamiento clínico: Un outlier no siempre es un error.
+Un ritmo cardíaco de 180 puede ser ruido del sensor... o puede ser una taquicardia ventricular.
+Si nuestro algoritmo de limpieza elimina automáticamente todo lo que se sale de la norma, estaremos creando un modelo que **ignora a los pacientes que se están muriendo**.
+La limpieza debe basarse en la fisiología, no solo en la estadística.
+:::
+
+## Tipología de Errores Clínicos
+
+Distinguir entre error de artefacto y patología extrema es vital [@Data2026].
+
+::: {.columns}
+::: {.column width="33%"}
+### 1. Errores de Unidad
+* **Problema:** Inconsistencia en escalas (cm vs m).
+* **Impacto:** Un modelo podría interpretar a un paciente como un gigante.
+* **Solución:** Normalización rigurosa [@Pak2024].
+:::
+
+::: {.column width="33%"}
+### 2. Artefactos Fisiológicos
+* **Ejemplo:** Ruido muscular en un <abbr title="Electrocardiograma">ECG</abbr>.
+* **Riesgo:** Simula arritmia ventricular.
+* **Técnica:** Filtrado de paso banda y <abbr title="Empirical Mode Decomposition">EMD</abbr> [@Malik2022].
+:::
+
+::: {.column width="33%"}
+### 3. Datos Imposibles
+* **Ejemplo:** Temp 300°C o Presión Sistólica -20 mmHg.
+* **Validación:** Reglas de rango fisiológico (ej. Temp: 35°C - 43°C) [@Data2026].
+:::
+:::
+
+::: {.notes}
+Tenemos tres enemigos principales:
+1.  **Unidades**: El clásico error. Un sistema mide en metros (1.75) y otro en cm (175). Para el modelo, el segundo paciente es un gigante de 175 metros.
+2.  **Artefactos**: Ruido real. Si te mueves mientras te hacen un ECG, tus músculos generan electricidad que parece un infarto. Necesitamos filtros de señal avanzados para limpiar esto.
+3.  **Datos Imposibles**: Temperatura de 300°C. Esto es fácil: sabemos que es fisiológicamente imposible estar vivo a esa temperatura, así que se puede borrar con seguridad.
+:::
+
+## Estrategias de Detección de Anomalías
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+
+::: {.column-body-outset}
+![Métodos estadísticos (Z-Score e IQR) para la identificación de anomalías y artefactos en datos clínicos.](images/outlier_detection.png){#fig-outlier-detection}
+:::
+:::
+
+::: {.fragment .fade-in-then-out}
+### Método Z-Score
+* Identifica valores > 3 desviaciones estándar.
+* **Uso:** Distribuciones gaussianas (ej. altura).
+* **Peligro:** Fallo en distribuciones de "cola larga" (costos, dímero-D en <abbr title="Coronavirus Disease 2019">COVID-19</abbr>) [@Baykal2024].
+:::
+
+::: {.fragment .fade-in-then-out}
+### Rango Intercuartílico (<abbr title="Interquartile Range">IQR</abbr>)
+* **Robusto:** Define outliers fuera de $Q1 - 1.5*IQR$ y $Q3 + 1.5*IQR$.
+* Menos sensible a valores extremos que la media [@Baykal2024].
+:::
+
+::: {.fragment .fade-in}
+### Isolation Forests
+* Aprendizaje no supervisado para alta dimensión.
+* Detecta perfiles de laboratorio "raros" que no encajan en patologías estándar [@MaryShyni2023].
+:::
+:::
+
+::: {.fragment .warning-box style="margin-top: 50px;"}
+**Precaución:** Un outlier puede ser una emergencia médica. La eliminación debe basarse en fisiología, no solo estadística.
+:::
+
+::: {.notes}
+¿Cómo detectamos lo raro?
+*   **Z-Score**: Asume que todo es una campana de Gauss. Sirve para la altura. NO sirve para el costo hospitalario (donde unos pocos pacientes gastan millones).
+*   **IQR**: Más robusto. Usa cuartiles, así que un valor extremo no rompe la métrica.
+*   **Isolation Forests**: IA para detectar anomalías. Es capaz de ver que "Glucosa alta + Insulina baja" es raro si no encaja con el patrón habitual, incluso si los valores individuales no son extremos.
+:::
+
+# El Problema de los Datos Faltantes
+
+::: {.callout-caution title="La Ausencia de Registro no es Normalidad"}
+Ignorar el motivo de la falta de un dato (mecanismo MNAR) puede llevar a modelos que asumen que la falta de pruebas equivale a buena salud, introduciendo sesgos graves en la predicción de riesgos.
+
+Entender el mecanismo de la pérdida es crucial para elegir la estrategia de imputación correcta.
+:::
+
+::: {.notes}
+En Big Data general, si falta un dato, lo borras o pones la media.
+En Medicina, **el dato que falta es información**.
+Si no hay registro de glucosa, significa que el médico no consideró necesario pedirlo. Eso ya nos dice que el paciente probablemente está sano.
+Pero cuidado... si falta un test de depresión, ¿es porque está feliz o porque está tan deprimido que no pudo rellenar el formulario?
+:::
+
+## La Ausencia de Registro $\neq$ Normalidad
+
+::: {.columns}
+::: {.column width="50%"}
+En un <abbr title="Electronic Health Records / Historia Clínica Electrónica">EHR</abbr>, que no haya un registro de glucosa no significa que sea normal; significa que no se midió [@Feng2019].
+
+### Mecanismos de Ausencia
+1.  **<abbr title="Missing Completely At Random">MCAR</abbr>:** Aleatorio puro (ej. muestra derramada) [@Wells2013].
+2.  **<abbr title="Missing At Random">MAR</abbr>:** Depende de otros datos (ej. menos registros de presión en jóvenes sanos).
+3.  **<abbr title="Missing Not At Random">MNAR</abbr>:** Depende del valor faltante (ej. paciente depresivo no responde cuestionario).
+:::
+
+::: {.column width="50%"}
+::: {.warning-box}
+**Riesgo Crítico**
+Ignorar el mecanismo <abbr title="Missing Not At Random">MNAR</abbr> introduce sesgos graves en la predicción de riesgos [@Wells2013].
+:::
+```{mermaid}
+%%| fig-align: center
+graph TD
+    A["Dato Faltante"] --> B{"¿Mecanismo?"}
+    B -->|MCAR\nAleatorio Puro| C["Seguro:\nImputar"]
+    B -->|MAR\nDependiente| D["Recuperable:\nCorrelacionar"]
+    B -->|MNAR\nNo Aleatorio| E["PELIGRO:\nSesgo Oculto"]
+    style E fill:#f96,stroke:#333,stroke-width:2px
+```
+:::
+:::
+
+::: {.notes}
+Clasificamos la ausencia en 3 tipos:
+1.  **MCAR (Random)**: Se rompió el tubo de ensayo. Mala suerte. Se puede imputar sin miedo.
+2.  **MAR (Dependiente)**: No tomamos la tensión porque el paciente es joven. Podemos deducirlo.
+3.  **MNAR (No Random - Peligroso)**: El dato falta *por culpa* del propio dato. Ejemplo: un paciente con obesidad mórbida que se niega a pesarse. Si imputamos el "peso medio", estamos ocultando la obesidad y sesgando el modelo. Este es el asesino silencioso de los modelos médicos.
+:::
+
+## Estrategias de Imputación {.smaller}
+
+| Método | Descripción | Ventajas/Desventajas | Caso de Uso |
+|:---|:---|:---|:---|
+| **Media/Mediana** | Reemplazo por promedio. | ❌ Reduce varianza, distorsiona correlaciones [@Feng2019]. | Solo variables auxiliares <abbr title="Missing Completely At Random">MCAR</abbr>. |
+| **<abbr title="Last Observation Carried Forward">LOCF</abbr>** | Último valor conocido. | ✅ Refleja inercia fisiológica.<br>❌ Asume estabilidad en agudos [@Amin2017]. | Signos vitales en <abbr title="Unidad de Cuidados Intensivos">UCI</abbr> estable. |
+| **<abbr title="Multiple Imputation by Chained Equations">MICE</abbr>** | Múltiples datasets vía regresión. | ✅ Captura incertidumbre.<br>❌ Costoso computacionalmente [@DhilsathFathima2021]. | Epidemiología compleja. |
+| **<abbr title="K-Nearest Neighbors">KNN</abbr>** | Promedio de pacientes similares. | ✅ No asume distribución lineal.<br>❌ Lento en Big Data [@Chan2025]. | Datos de laboratorio. |
+| **<abbr title="Generative Adversarial Imputation Nets">GAIN</abbr>** | Imputación vía <abbr title="Generative Adversarial Networks">GANs</abbr>. | ✅ Estado del arte, preserva distribución [@Erman2025]. | Datasets masivos Deep Learning. |
+
+```{mermaid}
+%%| fig-align: center
+flowchart LR
+    Start["Inicio"] --> Check{"¿Tipo de Ausencia?"}
+    Check -->|MCAR/MAR| Series{"¿Serie Temporal?"}
+    Check -->|MNAR| Expert["Consultar Experto\nModelado Específico"]
+    
+    Series -->|Si| LOCF["LOCF / Interpolación"]
+    Series -->|No| Multi{"¿Complejidad?"}
+    
+    Multi -->|Baja| Simple["Media/Mediana\n(Riesgo Varianza)"]
+    Multi -->|Media| MICE["MICE\n(Regresión Encadenada)"]
+    Multi -->|Alta| GAIN["Deep Learning\n(GAIN/Autoencoders)"]
+```
+
+
+::: {.notes}
+¿Cómo rellenamos los huecos?
+*   **Media**: Casi siempre mala idea. Reduce la variabilidad natural.
+*   **LOCF**: "Usar el último valor conocido". Muy bueno en UCI. Si tenías 38 de fiebre hace una hora, probablemente sigas teniendo 38.
+*   **MICE**: El estándar científico. Rellena el dato varias veces basándose en correlaciones con otras variables y promedia los resultados.
+*   **GAIN**: Usar IAs generativas para "imaginar" el dato faltante basándose en todo el contexto. Es el estado del arte.
+:::
+
+# Ingeniería de Características Específica
+
+::: {.notes}
+Una vez limpio, hay que transformar el dato para que el modelo lo entienda.
+:::
+
+## Datos Tabulares y Series Temporales
+
+::: {.columns}
+::: {.column width="48%"}
+### Datos Tabulares (<abbr title="Electronic Health Records">EHR</abbr>)
+* **Índice de Charlson:** Reducción de dimensionalidad ponderando gravedad de comorbilidades [@Soos2025].
+* **Variables de Tiempo:** "Tiempo desde última admisión" predice reingresos mejor que el diagnóstico [@Sohrabi2019].
+:::
+
+::: {.column width="4%"}
+:::
+
+::: {.column width="48%"}
+### Series Temporales
+* **Dominio Frecuencia:** <abbr title="Fast Fourier Transform">FFT</abbr> para analizar Variabilidad de Frecuencia Cardíaca (<abbr title="Heart Rate Variability">HRV</abbr>) como biomarcador de estrés [@Gallardo2022].
+* **Entropía de Muestra:** Mide la complejidad de la señal. Regularidad excesiva = patología [@Amarantidis2019].
+:::
+:::
+
+::: {.notes}
+*   **Tablas**: No metemos las enfermedades tal cual. Creamos índices de riesgo como Charlson. Y muy importante: variables temporales. "Hace cuánto vino" suele ser más predictivo que "por qué vino".
+*   **Señales**: El corazón no es un metrónomo. Un corazón sano es caótico (adaptable); un corazón enfermo es rígido. Usamos matemáticas (Entropía, Fourier) para medir ese caos y predecir fallos cardíacos antes de que ocurran.
+:::
+
+## Radiómica: Imágenes Médicas
+
+Transformando imágenes en datos cuantitativos invisibles al ojo humano [@Gillies2016].
+
+::: {.columns}
+::: {.column width="33%"}
+::: {.clinical-box}
+**1er Orden**
+Histograma de intensidades.
+*(Media, asimetría, curtosis del tumor)*
+:::
+:::
+
+::: {.column width="33%"}
+::: {.clinical-box}
+**Textura (2º Orden)**
+<abbr title="Gray-Level Co-occurrence Matrix">GLCM</abbr>.
+*Mide homogeneidad. Diferencia tumores benignos de malignos* [@Vujasinovic2015].
+:::
+:::
+
+::: {.column width="33%"}
+::: {.clinical-box}
+**Forma**
+Compacidad, esfericidad y volumen fractal.
+:::
+:::
+:::
+
+![Proceso de extracción radiómica: transformando imágenes en características cuantitativas de textura y forma.](images/radiomics_extraction.png){#fig-radiomics-extraction .r-stretch}
+
+::: {.notes}
+La Radiómica es fascinante: convierte imágenes en Excel.
+El ojo humano ve una mancha. La radiómica ve "Curtosis", "Entropía", "Textura GLCM".
+Podemos diferenciar un tumor benigno de uno maligno simplemente porque la textura del maligno es matemáticamente más heterogénea, algo que a veces escapa al ojo humano pero no al algoritmo.
+:::
+
+# Sesgo Algorítmico y Equidad
+
+::: {.callout-warning title="Automatización de la Discriminación Histórica"}
+Si un dataset refleja discriminación histórica (ej. menor gasto en minorías), el modelo aprenderá a infravalorar la necesidad médica de esos grupos si el costo se usa como proxy de salud [@obermeyer2019dissecting].
+:::
+
+::: {.notes}
+Este es el punto más ético.
+Si entrenamos con datos racistas, tendremos una IA racista.
+No porque la IA quiera, sino porque aprende patrones.
+Si históricamente gastamos menos dinero en curar a minorías, y le decimos a la IA que prediga "Gasto futuro", la IA aprenderá que esas minorías "no necesitan tratamiento".
+:::
+
+## Automatización de la Discriminación
+
+> El preprocesamiento es donde se introducen o amplifican los sesgos sociales [@Algorithmic2026].
+
+::: {.columns}
+::: {.column width="50%"}
+### Fuentes de Sesgo
+1.  **Sesgo de Representación:** Datasets dominados por piel clara fallan en diagnósticos de melanoma en piel oscura [@Skin2026].
+2.  **Sesgo de Etiqueta:** Usar "costo" como proxy de "salud".
+:::
+
+::: {.column width="50%"}
+::: {.warning-box}
+**El Caso Obermeyer (Science, 2019)**
+Un algoritmo infravaloraba a pacientes negros porque, a igual gravedad, gastaban menos dinero debido a barreras de acceso.
+**Solución:** Cambiar etiqueta objetivo de "costo" a "biomarcadores" [@obermeyer2019dissecting].
+:::
+:::
+:::
+
+::: {.notes}
+El caso Obermeyer (2019) es el ejemplo canónico.
+Un algoritmo usado en millones de pacientes discriminaba sistemáticamente a pacientes negros.
+¿El error? Se usó "Costo Sanitario" como variable proxy de "Gravedad".
+Como el sistema de salud de EEUU tenía barreras de acceso para la población negra, estos gastaban menos incluso estando más enfermos.
+El algoritmo aprendió: "Gasta poco = Está sano".
+Solución: Cambiar la etiqueta objetivo. Predecir "Biomarcadores biológicos", no dinero.
+:::
+
+## Mitigación y Datos Sintéticos
+
+::: {.columns}
+::: {.column width="50%"}
+### Técnicas de Mitigación
+* **Re-weighting:** Asignar mayor peso a minorías [@Mitigation2026].
+* **Adversarial De-biasing:** Entrenar una red para que sea "ciega" al atributo protegido (raza/género) [@Kiani2025].
+* **Fairness through Awareness:** Ajuste explícito de predicciones [@Gmez2025].
+:::
+
+::: {.column width="50%"}
+### Datos Sintéticos y Privacidad
+* Uso de <abbr title="Generative Adversarial Networks">GANs</abbr> y Modelos de Difusión [@Sharma2025].
+* **<abbr title="Synthetic Twin Electronic HR Generation">SynTEG</abbr>:** Crea cohortes virtuales que mantienen propiedades estadísticas sin corresponder a individuos reales.
+* Permite cumplimiento estricto del <abbr title="Reglamento General de Protección de Datos">RGPD</abbr> [@AbdelKhalek2025].
+:::
+:::
+
+::: {.notes}
+Podemos arreglar esto.
+1.  **Re-weighting**: Decirle al modelo "Presta el doble de atención a los errores en pacientes minoritarios".
+2.  **Datos Sintéticos**: Si no tenemos suficientes datos de minorías o son privados, usemos IAs generativas para crear "Clones Estadísticos". Pacientes que no existen (privacidad 100%) pero que matemáticamente se comportan igual que los reales. Esto democratiza la investigación.
+:::
+
+## Conclusión
+
+::: {.r-fit-text}
+INGENIERÍA DE CARACTERÍSTICAS = TRADUCCIÓN
+:::
+
+::: {.columns}
+::: {.column width="70%"}
+* Traduce la complejidad biológica a lenguaje matemático.
+* Asumir $Null = 0$ o $Costo = Salud$ son decisiones éticas, no solo técnicas.
+* La **supervisión clínica** es insustituible.
+:::
+
+::: {.column width="30%"}
+![](images/fig-automation-bias.png){width=80% style="border-radius: 50%;"}
+:::
+:::
+
+::: {.notes}
+Llévense esto:
+La ingeniería de datos no es "preparar el Excel".
+Es **traducir biología a matemáticas**.
+Cada decisión (imputar un cero, borrar un outlier, elegir una variable proxy) es una decisión médica y ética.
+La IA no nos reemplaza; nos exige ser mejores traductores.
+:::
+
+## Referencias {visibility="hidden"}
+
+::: {#refs}
+:::

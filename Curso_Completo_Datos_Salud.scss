@@ -1,0 +1,60 @@
+/*-- scss:defaults --*/
+$body-bg: #0f172a; // Slate 900 (Base oscura unificada)
+$body-color: #f1f5f9; // Slate 100
+$link-color: #38bdf8; // Sky 400
+$heading-color: #ffffff;
+$presentation-font-size-root: 40px;
+$font-family-sans-serif: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+$code-block-bg: #1e293b; // Slate 800
+
+/*-- scss:rules --*/
+
+// Títulos
+.reveal .slides h2 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    border-bottom: 3px solid $link-color;
+    padding-bottom: 20px;
+    margin-bottom: 40px;
+    text-transform: none;
+}
+
+// Callouts Nativos (Unificación de estilos)
+.callout {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border-radius: .25rem;
+}
+
+// Tablas
+.reveal table {
+    font-size: 0.8em;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.reveal table th {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: $link-color;
+}
+
+.reveal table td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+// Citas
+.reveal .citation {
+    font-size: 0.6em;
+    color: #94a3b8;
+}
+
+// Ajustes específicos para Mermaid en fondo oscuro
+.mermaid {
+    background-color: transparent !important;
+}
+
+// Clases de utilidad para los módulos
+.module-header {
+    text-align: center;
+    margin-top: 20%;
+}

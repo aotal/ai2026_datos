@@ -1,0 +1,72 @@
+/*-- scss:defaults --*/
+$body-bg: #0f172a;
+/* Fondo azul noche profundo */
+$body-color: #e2e8f0;
+/* Texto claro */
+$link-color: #38bdf8;
+/* Azul cian para enlaces */
+$heading-color: #f8fafc;
+$presentation-font-size-root: 36px;
+$code-block-bg: #1e293b;
+
+/*-- scss:rules --*/
+
+/* Títulos con subrayado elegante */
+.reveal .slide h2 {
+    border-bottom: 1px solid $link-color;
+    padding-bottom: 0.2em;
+    margin-bottom: 0.5em;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Estilo para las tooltips de siglas */
+span[title] {
+    border-bottom: 1px dotted $link-color;
+    cursor: help;
+    color: #a5f3fc;
+}
+
+/* Cajas para comparaciones */
+.compare-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    height: 100%;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        border-color: $link-color;
+    }
+
+    h3 {
+        color: $link-color;
+        font-size: 1.2em;
+    }
+}
+
+/* Callouts personalizados */
+.callout-custom {
+    border-left: 5px solid $link-color;
+    background: rgba(56, 189, 248, 0.1);
+    padding: 1em;
+    margin-top: 1em;
+    font-style: italic;
+}
+
+/* Ajuste de tablas */
+.reveal table {
+    font-size: 0.7em;
+    border-collapse: collapse;
+
+    th {
+        border-bottom: 2px solid $link-color !important;
+    }
+
+    td {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+}

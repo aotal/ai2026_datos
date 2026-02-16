@@ -1,0 +1,74 @@
+/*-- scss:defaults --*/
+$body-bg: #0f172a; // Azul muy oscuro (Slate 900)
+$body-color: #f8fafc; // Blanco casi puro (Slate 50)
+$link-color: #38bdf8; // Azul cielo (Sky 400)
+$heading-color: #e2e8f0; // Slate 200
+$presentation-font-size-root: 40px;
+$code-color: #86efac; // Verde suave para código
+
+/*-- scss:rules --*/
+
+// Estilo para Títulos
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    text-transform: none; // Evitar mayúsculas forzadas para mejor legibilidad médica
+}
+
+.reveal h2 {
+    border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+    padding-bottom: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+// Estilo para Siglas con Tooltip (Abbr)
+abbr {
+    text-decoration: underline dotted $link-color;
+    cursor: help;
+    color: $link-color;
+    font-weight: bold;
+
+    &:hover {
+        color: #fff;
+        text-shadow: 0 0 10px $link-color;
+    }
+}
+
+// Cajas de énfasis (Callouts personalizados)
+.clinical-box {
+    background: rgba(56, 189, 248, 0.1);
+    border-left: 5px solid $link-color;
+    padding: 20px;
+    border-radius: 0 10px 10px 0;
+    margin-bottom: 20px;
+}
+
+.warning-box {
+    background: rgba(239, 68, 68, 0.1); // Rojo
+    border-left: 5px solid #ef4444;
+    padding: 20px;
+    border-radius: 0 10px 10px 0;
+}
+
+// Ajuste para tablas
+.reveal table {
+    font-size: 0.7em;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+
+    th {
+        border-bottom: 2px solid $link-color;
+    }
+
+    td {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+}
+
+// Referencias al pie (ajuste de Quarto)
+.reveal .references {
+    font-size: 0.5em;
+    line-height: 1.2;
+}

@@ -1,0 +1,407 @@
+---
+title: "Arquitectura de la Información en Salud"
+subtitle: "Análisis Comparativo: SQL, NoSQL y Vectorial"
+author:
+  - name: "Antonio Otal Palacín"
+    affiliations:
+      - "Hospital Universitari Arnau de Vilanova"
+      - "Universitat de Lleida"
+date: last-modified
+date-format: "D MMMM, YYYY"
+format:
+  revealjs:
+    width: 1920
+    height: 1080
+    margin: 0.05
+    min-scale: 0.2
+    max-scale: 2.0
+    controls: true
+    progress: true
+    history: true
+    hash: true
+    center: false
+    theme: [default, Health_Information_Architecture_SQL_NoSQL_Vectorial.scss]
+    code-line-numbers: true
+    code-copy: true
+    lightbox: true
+    embed-resources: false
+    slide-number: c/t
+    transition: fade
+    auto-animate: true
+    bibliography: references.bib
+    csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
+    lang: es
+---
+
+# Introducción {background-image="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop" background-opacity="0.3"}
+
+## El Nuevo Núcleo Estratégico
+
+::: {.columns}
+::: {.column width="60%"}
+La arquitectura de la información ha evolucionado de ser soporte a ser el **núcleo estratégico** de la medicina de precisión y la [IA]{title="Inteligencia Artificial"}.
+
+* **Persistencia Políglota**: Necesidad de manejar datos heterogéneos (clínicos, genómicos, sensores).
+* **Estándares**: Evaluación frente a [HL7 FHIR]{title="Health Level Seven Fast Healthcare Interoperability Resources"} y [DICOM]{title="Digital Imaging and Communications in Medicine"}.
+* **Objetivo**: Comparar arquitecturas [SQL]{title="Structured Query Language"}, [NoSQL]{title="Not Only SQL"} y Vectoriales.
+:::
+
+::: {.column width="40%"}
+![Tipología de bases de datos según estructura](images/db_typology.png){.r-stretch}
+:::
+:::
+
+::: {.notes}
+Ya no basta con "guardar datos". Hoy diseñamos cerebros digitales.
+La medicina moderna es **políglota**: habla el lenguaje estricto de la facturación (SQL), el lenguaje caótico de los sensores (NoSQL), el lenguaje de las redes biológicas (Grafos) y el lenguaje semántico de la IA (Vectores).
+Intentar forzar todo esto en una sola base de datos es el error número uno.
+:::
+
+# El Fundamento Relacional: [SQL]{title="Structured Query Language"}
+
+::: {.notes}
+Empecemos por el cimiento inamovible: SQL.
+:::
+
+## La Integridad Clínica y [ACID]{title="Atomicity, Consistency, Isolation, Durability"}
+
+Las bases de datos relacionales siguen siendo el estándar para [HIS]{title="Hospital Information Systems"} y [EHR]{title="Electronic Health Records"}.
+
+::: {.columns}
+::: {.column width="50%"}
+### Propiedades [ACID]{title="Atomicity, Consistency, Isolation, Durability"}
+
+* **Atomicidad**: Transacciones "todo o nada" (ej. prescripción + stock + cargo) [@Villaverde2022].
+* **Consistencia**: Reglas de integridad referencial estrictas [@Nosql2026].
+* **Aislamiento**: Gestión de concurrencia mediante [MVCC]{title="Multi-Version Concurrency Control"} [@Makris2020].
+* **Durabilidad**: Persistencia garantizada (WAL) ante fallos de energía.
+:::
+
+::: {.column width="50%"}
+::: {.callout-important title="⚠️ Impacto en Seguridad del Paciente"}
+La rigidez del esquema es una salvaguarda. Si una relación paciente-observación se rompe, el médico podría visualizar datos incorrectos. [ACID]{title="Atomicity, Consistency, Isolation, Durability"} impide estados ambiguos.
+:::
+:::
+:::
+
+::: {.notes}
+¿Por qué seguimos usando tecnología de los 70 (SQL) en 2025?
+Por una palabra: **ACID**.
+Imaginen prescribir morfina. El sistema debe restar stock, añadir la orden a enfermería y cobrar al seguro. Si se va la luz a mitad, no puede pasar que "se cobre pero no se medique".
+O pasa todo, o no pasa nada (Atomicidad).
+La rigidez del SQL no es un defecto; es un cinturón de seguridad.
+:::
+
+## Implementación de [FHIR]{title="Fast Healthcare Interoperability Resources"} sobre [SQL]{title="Structured Query Language"}
+
+Aunque [FHIR]{title="Fast Healthcare Interoperability Resources"} usa JSON/XML, su lógica es relacional.
+
+* Los servidores empresariales (HAPI, Microsoft, IBM) usan motores [SQL]{title="Structured Query Language"} internos.
+* **PostgreSQL**: Motor de elección por su soporte avanzado de `JSONB`.
+    * Permite indexar recursos [FHIR]{title="Fast Healthcare Interoperability Resources"}.
+    * Mantiene la integridad para pistas de auditoría ([HIPAA]{title="Health Insurance Portability and Accountability Act"}).
+
+| Característica | Implementación [SQL]{title="Structured Query Language"} |
+| :--- | :--- |
+| **Modelo** | Tablas y Tuplas rígidas [@Villaverde2022] |
+| **Garantía** | Cumplimiento estricto de [ACID]{title="Atomicity, Consistency, Isolation, Durability"} [@Soumma2025] |
+| **Uso Clínico** | Facturación, [MPI]{title="Master Patient Index"}, Admisión |
+
+::: {.notes}
+FHIR parece moderno y flexible (JSON), pero en el fondo es relacional. Un paciente "tiene" observaciones.
+Por eso, la industria usa PostgreSQL con JSONB.
+Combinamos la flexibilidad del documento JSON con la robustez transaccional del SQL. Es el híbrido perfecto para el core clínico.
+:::
+
+# El Mundo [NoSQL]{title="Not Only SQL"}
+
+::: {.notes}
+Pero el SQL no escala bien cuando le tiras millones de datos por segundo.
+:::
+
+## Desafío de Variedad y Velocidad
+
+El "Big Data Clínico" (Genómica, Telemetría) desafía los esquemas rígidos.
+
+::: {.columns}
+::: {.column width="50%"}
+### Limitaciones [SQL]{title="Structured Query Language"}
+* Escalado vertical costoso.
+* Dificultad con datos semiestructurados.
+
+### Ventaja [NoSQL]{title="Not Only SQL"}
+* Escalabilidad horizontal.
+* Flexibilidad de esquema.
+:::
+
+::: {.column width="50%"}
+::: {.callout-warning title="⚠️ Precaución: Consistencia Eventual"}
+Muchos sistemas [NoSQL]{title="Not Only SQL"} priorizan disponibilidad sobre consistencia inmediata. Aceptable para logs de temperatura, **no** para administración de dosis críticas [@Asiminidis2018].
+:::
+:::
+:::
+
+::: {.notes}
+Aquí entran los datos de sensores, IoT, genómica.
+NoSQL escala horizontalmente (añades servidores baratos y listo).
+Pero cuidado: **Consistencia Eventual**.
+Si anotas una temperatura en un nodo, puede tardar milisegundos en replicarse a los otros.
+Para ver una tendencia de fiebre, da igual. Para decidir una dosis de adrenalina en la UCI, esos milisegundos pueden ser fatales. No usar NoSQL para decisiones críticas de vida o muerte inmediata.
+:::
+
+## Tipologías [NoSQL]{title="Not Only SQL"} en Salud
+
+::: {.panel-tabset}
+
+### Documental
+**Tecnología**: MongoDB.
+**Uso**: Notas clínicas, historiales semiestructurados.
+**Ventaja**: Ingesta de datos heterogéneos sin alterar el esquema global. Ideal para integrar diversos fabricantes de dispositivos [@Villaverde2022].
+
+### Clave-Valor
+**Tecnología**: Redis.
+**Uso**: Caché de alta velocidad, sesiones de usuario, alertas críticas.
+**Ventaja**: Latencia de milisegundos donde la velocidad prima sobre la relación [@Nosql2026].
+
+### Columnar
+**Tecnología**: Cassandra / HBase.
+**Uso**: Telemetría (IoT médico), logs de auditoría a largo plazo.
+**Ventaja**: Rendimiento superior (40-69%) en consultas analíticas sobre terabytes de datos históricos [@Soumma2025].
+
+:::
+
+::: {.notes}
+Tres sabores de NoSQL:
+1.  **Documental (MongoDB)**: Para guardar formularios médicos que cambian cada dos meses. Flexibilidad total.
+2.  **Clave-Valor (Redis)**: Velocidad pura. Para alertas en tiempo real ("¡Paciente en paro!").
+3.  **Columnar (Cassandra)**: Para guardar 5 años de datos de monitorización de 1000 camas. Escribes millones de datos por segundo sin despeinarte.
+:::
+
+# Grafos de Conocimiento
+
+::: {.callout-important title="Grafos y Descubrimiento Biomédico"}
+Los grafos son herramientas fundamentales en la farmacogenómica, permitiendo descubrir interacciones imprevistas entre fármacos al mapear extensas redes de proteínas y patologías [@Ahmed2020].
+:::
+
+::: {.notes}
+La biología no son tablas; son redes.
+Genes interactúan con proteínas, que afectan a enfermedades, que se tratan con fármacos.
+Modelar esto en SQL es una pesadilla de JOINs.
+En un Grafo (Neo4j), "A conecta con B" es la unidad básica de información.
+:::
+
+## Navegando la Complejidad
+
+En un Grafo, las relaciones son "ciudadanos de primera clase".
+
+::: {.columns}
+::: {.column width="60%"}
+* **Modelado**: Un síntoma no es texto, es un nodo conectado a diagnósticos, genes y fármacos.
+* **Caso COVID-19**: Neo4j permitió rastreo de contactos mediante consultas de "múltiples saltos", identificando cadenas de transmisión invisibles para [SQL]{title="Structured Query Language"} [@Ahmed2020].
+* **Medicina de Precisión**:
+    * **PrimeKG**: Integra 20 datasets (129k nodos, 4M relaciones).
+    * **Reposicionamiento de fármacos**: Basado en proximidad topológica [@Han2025].
+:::
+
+::: {.column width="40%"}
+> "Los grafos permiten descubrir interacciones imprevistas entre fármacos al mapear redes de proteínas." [@Ahmed2020]
+:::
+:::
+
+::: {.notes}
+El poder de los grafos:
+En COVID, permitieron rastrear contactos de "amigo del amigo del amigo" en milisegundos.
+En Farmacología, permiten ver que un fármaco para la artritis (nodo A) está "cerca" de una proteína (nodo B) implicada en el Alzheimer (nodo C). ¡Eureka! Reposicionamiento de fármacos por topología.
+:::
+
+# Bases de Datos Vectoriales e [IA]{title="Inteligencia Artificial"}
+
+::: {.column-body-outset}
+![Proceso de búsqueda semántica en un espacio vectorial para la recuperación de casos clínicos similares.](images/vector_search.png){#fig-vector-search}
+:::
+
+::: {.notes}
+La nueva frontera.
+Los ordenadores tradicionales entienden palabras clave.
+Las Bases Vectoriales entienden **significados**.
+Convierten "Dolor de pecho" en un vector numérico [0.1, 0.9, ...].
+"Infarto" se convierte en [0.1, 0.8, ...].
+¡Están matemáticamente cerca!
+Esto permite buscar por conceptos, no por palabras exactas.
+:::
+
+## Búsqueda Semántica y Embeddings
+
+Soporte para [LLM]{title="Large Language Models"} y [RAG]{title="Retrieval-Augmented Generation"}.
+
+::: {.columns}
+::: {.column width="50%"}
+### El Problema
+Búsqueda por palabras clave falla ante la variabilidad léxica:
+* *"Disnea de esfuerzo"* vs *"Falta de aire"*.
+
+### La Solución Vectorial
+Los **Embeddings** (vectores numéricos) capturan la esencia semántica. El sistema identifica que ambos conceptos están matemáticamente "cerca" [@Best2025].
+
+::: {.callout-warning title="El Reto de la Precisión Vectorial"}
+A diferencia de SQL, la búsqueda vectorial es aproximada. En un contexto clínico, es vital ajustar los umbrales de similitud para evitar "alucinaciones" del modelo de IA [@Best2025].
+:::
+:::
+
+::: {.column width="50%"}
+![Concepto RAG](images/fig-rag-concept.png)
+:::
+:::
+
+::: {.notes}
+Si un médico escribe "Cefalea" y otor "Dolor de cabeza", SQL cree que son cosas distintas.
+La base vectorial sabe que son sinónimos.
+Pero cuidado: la búsqueda es probabilística ("se parece al 95%").
+En medicina, a veces ese 5% de diferencia es entre "Tuberculosis" y "Tumor". Hay que ajustar muy bien los umbrales.
+:::
+
+## [RAG]{title="Retrieval-Augmented Generation"}: Mitigando Alucinaciones
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+**1. Consulta del Médico**
+El profesional realiza una pregunta clínica compleja en lenguaje natural.
+:::
+
+::: {.fragment .fade-in-then-out}
+**2. Recuperación Semántica**
+La DB Vectorial recupera guías clínicas y protocolos internos relevantes (contexto).
+:::
+
+::: {.fragment .fade-in}
+**3. Generación Aumentada**
+El [LLM]{title="Large Language Model"} genera la respuesta basándose **solo** en la evidencia recuperada, reduciendo alucinaciones y citando fuentes internas [@Xu2025].
+:::
+:::
+
+::: {.notes}
+Este es el uso estrella hoy: RAG.
+Conectamos una "Biblioteca de Confianza" (Guías clínicas en Vector DB) con un "Poeta" (ChatGPT).
+Cuando preguntas, el sistema primero busca los libros correctos en la biblioteca, y luego le dice al poeta: "Usa SOLO esta información para responder".
+Así eliminamos las alucinaciones.
+:::
+
+## Comparativa de Motores Vectoriales
+
+| Motor | Tipo | Fortalezas | Limitaciones |
+| :--- | :--- | :--- | :--- |
+| **Pinecone** | SaaS | Puesta en marcha rápida, latencia <50ms. | Datos en la nube (Soberanía), Lock-in. |
+| **Milvus** | Open Source | Escala masiva (trillones de vectores), Distribuido. | Alta complejidad operativa. |
+| **Weaviate** | Open Source | **Búsqueda Híbrida** (Vectores + Filtros metadatos). | Rendimiento extremo inferior a Milvus. |
+
+: {tbl-colwidths="[15,15,35,35]"}
+
+::: {.notes}
+¿Cuál elegir?
+*   **Pinecone**: Fácil, rápido, nube. Pero tus datos salen del hospital.
+*   **Milvus**: La bestia. Para millones de millones de vectores. Difícil de mantener.
+*   **Weaviate**: El equilibrado. Permite búsqueda híbrida ("Busca documentos sobre cáncer que sean del año 2024"). Muy útil.
+:::
+
+# Integración y Frameworks Avanzados
+
+## Pipelines [DICOM]{title="Digital Imaging and Communications in Medicine"} a [FHIR]{title="Fast Healthcare Interoperability Resources"}
+
+Rompiendo los silos entre [PACS]{title="Picture Archiving and Communication System"} y [EHR]{title="Electronic Health Records"}.
+
+1.  **Ingesta**: RSNA MIRC CTP recibe estudios [DICOM]{title="Digital Imaging and Communications in Medicine"}.
+2.  **Transformación**: Mapeo de tags [DICOM]{title="Digital Imaging and Communications in Medicine"} a terminologías estándar ([SNOMED-CT]{title="Systematized Nomenclature of Medicine -- Clinical Terms"}, [LOINC]{title="Logical Observation Identifiers Names and Codes"}).
+3.  **Transporte**: **Apache Kafka** gestiona el flujo masivo asíncrono.
+4.  **Persistencia**: Creación de recursos `ImagingStudy` en [FHIR]{title="Fast Healthcare Interoperability Resources"} [@zeng2020large].
+
+> Permite investigación clínica mediante APIs REST sin acceder al binario del PACS.
+
+::: {.notes}
+Uniendo mundos: Extraemos metadatos de las imágenes (DICOM) y los convertimos en recursos clínicos (FHIR).
+Así un investigador puede buscar "¿Cuántas resonancias de rodilla hicimos?" sin tener que bajarse los Terabytes de imágenes reales.
+:::
+
+## MEGA-[RAG]{title="Retrieval-Augmented Generation"}
+
+Framework de 4 etapas para la veracidad en IA Biomédica [@Xu2025]:
+
+```{mermaid}
+%%| fig-align: center
+graph TD
+    Q[Consulta Médica] --> A[Recuperación Multifuente]
+    A -->|PubMed + OMS + KG| B[Re-ranking]
+    B -->|Cross-Encoders| C[Evaluación SEAE]
+    C -->|BERTScore| D{"¿Consistente?"}
+    D -->|Si| E[Respuesta Verificada]
+    D -->|No| F[Auto-Clarificación]
+    F -->|Búsqueda Secundaria| A
+    
+    style D fill:#f96,stroke:#333,stroke-width:2px
+```
+
+::: {.notes}
+MEGA-RAG es el siguiente nivel. No se fía de la primera búsqueda.
+1. Busca en todos lados (PubMed, Grafos).
+2. Re-ordena lo que encuentra.
+3. Verifica si la respuesta que va a dar se basa realmente en la evidencia.
+4. Si duda, se "auto-corrige" buscando más.
+Es IA con pensamiento crítico.
+:::
+
+# Seguridad y Gobernanza
+
+## Comparativa de Controles
+
+La gestión de identidad ([IAM]{title="Identity and Access Management"}) y [GDPR]{title="General Data Protection Regulation"} es transversal.
+
+| Control | [SQL]{title="Structured Query Language"} | [NoSQL]{title="Not Only SQL"} | Vectorial |
+| :--- | :--- | :--- | :--- |
+| **Cifrado** | Nativo / Maduro (TDE) | Soportado (Motores líderes) | Dependiente de Infraestructura |
+| **Auditoría** | Granular (Sentencia SQL) | Nivel Documento/Colección | Trazabilidad API / Índices |
+| **Aislamiento**| Row-Level Security | Sharding físico | Namespaces lógicos |
+
+::: {.fragment}
+> **Nota sobre Grafos**: Facilitan auditorías [GDPR]{title="General Data Protection Regulation"} al visualizar gráficamente el flujo del dato personal entre sistemas [@Gdpr2026].
+:::
+
+::: {.notes}
+La seguridad no es negociable.
+SQL sigue siendo el rey de la seguridad granular (puedo decir "este usuario no ve esta columna").
+Vectorial y NoSQL dependen más de la infraestructura.
+Curiosamente, los Grafos son geniales para el GDPR: sirven para rastrear "dónde han ido mis datos".
+:::
+
+# Conclusión
+
+## Arquitectura de Persistencia Políglota
+
+No existe una "talla única". La solución robusta es híbrida.
+
+::: {.columns}
+::: {.column width="50%"}
+* **[SQL]{title="Structured Query Language"}**: Core transaccional y "Verdad Clínica".
+* **[NoSQL]{title="Not Only SQL"}**: Ingesta masiva de sensores y notas.
+* **Grafos**: Razonamiento biológico y redes.
+* **Vectorial**: Inteligencia Artificial y [RAG]{title="Retrieval-Augmented Generation"}.
+:::
+
+::: {.column width="50%"}
+![Arquitectura Políglota](images/polyglot_arch.png)
+:::
+:::
+
+> "El reto es la orquestación, transformando el océano de datos en conocimiento accionable." [@Villaverde2022]
+
+::: {.notes}
+Conclusión: Persistencia Políglota.
+Usen SQL para lo crítico.
+NoSQL para lo masivo.
+Grafos para lo complejo.
+Vectores para la IA.
+La magia está en la orquestación de estas cuatro fuerzas.
+:::
+
+## Referencias {visibility="hidden"}
+
+::: {#refs}
+:::

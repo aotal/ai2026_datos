@@ -1,0 +1,390 @@
+---
+title: "El Ecosistema de Datos en Salud"
+subtitle: "Arquitectura, Transformación y la Era del Zettabyte"
+author:
+  - name: "Antonio Otal Palacín"
+    affiliations:
+      - "Hospital Universitari Arnau de Vilanova"
+      - "Universitat de Lleida"
+date: last-modified
+date-format: "D MMMM, YYYY"
+format:
+  revealjs:
+    # --- Geometría y Escala ---
+    width: 1920
+    height: 1080
+    margin: 0.05
+    min-scale: 0.2
+    max-scale: 2.0
+    
+    # --- Estética y Código ---
+    theme: [default, Health_Data_Ecosystem_Architecture_Transformation.scss]
+    highlight-style: dracula
+    slide-number: c/t
+    code-line-numbers: true
+    code-copy: true
+    lightbox: true
+    embed-resources: false
+    
+    # --- Navegación y UX ---
+    controls: true
+    progress: true
+    center: false
+    navigation-mode: linear
+    
+    # --- Referencias ---
+    bibliography: references.bib
+    csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
+    link-citations: true # Permite click/hover en citas
+    lang: es
+---
+
+# Introducción {.center}
+
+::: {.r-fit-text}
+METAMORFOSIS DIGITAL
+:::
+
+::: {.columns}
+::: {.column width="60%"}
+La industria de la salud está experimentando una transformación sin precedentes, impulsada por una explosión en la generación de datos que redefine la práctica médica, la investigación y la gestión sanitaria.
+
+> Entender este ecosistema no es solo cuestión de tecnología, sino de comprender cómo la información fluye, se almacena y se transforma en valor clínico.
+:::
+
+::: {.column width="40%"}
+```{mermaid}
+%%| fig-align: center
+graph TD
+    A[Medicina<br/>Artesanal] -->|Digitalización| B(EHR<br/>Silos de Datos)
+    B -->|Transformación| C(Ecosistema<br/>Inteligente)
+    style C fill:#b3e5fc,stroke:#0288d1,stroke-width:2px
+```
+:::
+:::
+
+::: {.notes}
+Estamos viviendo una metamorfosis.
+La salud ha pasado de ser una industria artesanal basada en la intuición a una industria industrial basada en datos.
+No se trata solo de tener ordenadores; se trata de una redefinición fundamental de lo que significa "diagnosticar" y "tratar".
+Hoy, el fonendoscopio más potente es un algoritmo analizando Terabytes de datos.
+:::
+
+## Evolución del Volumen de Datos
+
+::: {.columns}
+::: {.column width="50%"}
+
+### Crecimiento Exponencial
+
+* **Ritmo Acelerado:** El volumen global de datos aumenta a una [CAGR]{title="Compound Annual Growth Rate - Tasa de Crecimiento Anual Compuesto"} del **36%**, superando al sector financiero [@Exponential2026].
+* **Proyección 2025:** Se alcanzarán los **10 Zettabytes**.
+    * 1 Zettabyte = 1 billón de Gigabytes.
+
+::: {.callout-note title="Escala Masiva"}
+Estamos pasando de la era del Gigabyte a la era del Zettabyte.
+:::
+:::
+
+::: {.column width="50%"}
+![Proyección del crecimiento de datos hacia la era Zettabyte](images/data_scale.png)
+:::
+:::
+
+::: {.notes}
+Para que se hagan una idea de la magnitud:
+La salud genera datos más rápido que Wall Street o la industria manufacturera. Crecemos al 36% anual.
+En 2025 alcanzaremos los 10 Zettabytes.
+Un Zettabyte es un 1 seguido de 21 ceros. Es una cifra astronómica que nuestra infraestructura actual apenas puede gestionar.
+:::
+
+## La Obsolescencia del Conocimiento
+
+La velocidad de generación de datos crea un desafío cognitivo imposible para el ser humano.
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+### 1950
+El conocimiento médico se duplicaba cada **50 años**.
+:::
+
+::: {.fragment .fade-in-then-out}
+### 2010
+El tiempo de duplicación se redujo a **3.5 años**.
+:::
+
+::: {.fragment .fade-in}
+### 2020
+El conocimiento se duplica cada **73 días** [@Harness2026].
+:::
+:::
+
+::: {.fragment}
+> Un estudiante que inicia hoy se enfrentará a un corpus de conocimiento multiplicado varias veces antes de graduarse. El apoyo de la [IA]{title="Inteligencia Artificial"} es indispensable [@Harness2026].
+:::
+
+::: {.notes}
+Esta es la diapositiva más aterradora para cualquier médico.
+En 1950, lo que aprendías en la facultad te servía para toda tu carrera.
+Hoy, el conocimiento médico se duplica cada 73 días.
+Es humanamente imposible mantenerse al día.
+La IA no es un "lujo" tecnológico; es la única herramienta que nos permite sobrevivir a esta avalancha cognitiva. Sin IA, la medicina basada en evidencia es una utopía inalcanzable.
+:::
+
+## Motores de la Explosión de Información
+
+Tres factores principales impulsan este crecimiento masivo:
+
+::: {.columns}
+::: {.column width="33%"}
+### 1. Genómica
+La secuenciación de un solo genoma genera hasta **200 GB** de datos crudos. Las iniciativas poblacionales convierten a la genómica en una de las fuentes más voluminosas [@Lukhele2025].
+:::
+
+::: {.column width="33%"}
+### 2. Imagenología
+Transición de radiografías 2D a:
+* [CT]{title="Computed Tomography - Tomografía Computarizada"} volumétricas.
+* [MRI]{title="Magnetic Resonance Imaging - Imagen por Resonancia Magnética"} funcionales.
+* Patología digital (GBs por imagen) [@Hamlomo2025].
+:::
+
+::: {.column width="33%"}
+### 3. [IoMT]{title="Internet of Medical Things - Internet de las Cosas Médicas"}
+Wearables y sensores implantables generan flujos continuos de telemetría (frecuencia cardíaca, glucosa) que requieren ingestión en tiempo real [@Majeed2023].
+:::
+:::
+
+::: {.notes}
+¿De dónde salen todos estos datos?
+1.  **Genómica**: Secuenciar a una persona son 200GB. Multiplica eso por millones en estudios poblacionales.
+2.  **Imagen**: Ya no hacemos "fotos"; hacemos volúmenes 3D y vídeos 4D. Una biopsia digitalizada tiene gigapíxeles de resolución.
+3.  **IoMT**: Tu reloj inteligente, tu marcapasos, tu monitor de glucosa. Envían datos cada segundo, 24/7/365. Es un tsunami de datos en tiempo real.
+:::
+
+## El Problema del "Dirty Data"
+
+A pesar de la abundancia, sufrimos el síndrome **[DRIP]{title="Data Rich, Information Poor - Rico en Datos, Pobre en Información"}**.
+
+::: {.columns}
+::: {.column width="60%"}
+### El Costo del Caos
+Los "datos sucios" (incompletos, inexactos o duplicados) cuestan a la industria de EE. UU. más de **$300 mil millones/año** [@Ghiassi2019].
+
+* Nombres mal escritos.
+* Historiales fragmentados.
+* Riesgos de seguridad del paciente.
+
+::: {.callout-caution title="El Síndrome DRIP"}
+Las organizaciones están inundadas de datos, pero carecen de capacidad para extraer insights significativos debido a la mala calidad y la falta de estandarización [@Strategies2026].
+:::
+:::
+
+::: {.column width="40%"}
+![El embudo de la interoperabilidad: transformando datos caóticos en información clínica accionable.](images/interoperability_funnel.png){#fig-interoperability-funnel}
+:::
+:::
+
+::: {.notes}
+Paradoja: Nos ahogamos en datos, pero nos morimos de sed de información. (DRIP Syndrome).
+Tener 100 PDFs escaneados no sirve de nada a un algoritmo.
+El costo de los "Datos Sucios" es real: 300.000 millones de dólares al año solo en EEUU.
+Y peor aún: pacientes que reciben el medicamento equivocado porque su alergia estaba en otro sistema con el nombre mal escrito.
+:::
+
+## Interoperabilidad: El Lenguaje Común
+
+La solución a los "silos" reside en estándares globales de comunicación.
+
+::: {.panel-tabset}
+
+### [HL7]{title="Health Level Seven"} / [FHIR]{title="Fast Healthcare Interoperability Resources"}
+Utiliza tecnologías web modernas ([API]{title="Application Programming Interface"} [RESTful]{title="Representational State Transfer"}, [JSON]{title="JavaScript Object Notation"}) para permitir que sistemas dispares hablen el mismo idioma [@Bodenreider2018].
+* *Ejemplo:* Una app de diabetes envía glucosa al registro del hospital [@Ohlsen2024].
+
+### [DICOM]{title="Digital Imaging and Communications in Medicine"}
+Estándar universal para manejo, almacenamiento e impresión de imágenes médicas [@Dicom2026].
+* Garantiza que una resonancia de un equipo Siemens se vea en una estación GE.
+
+### Vocabularios
+Estandarizan el significado clínico:
+* **[LOINC]{title="Logical Observation Identifiers Names and Codes"}:** Códigos de laboratorio (ej. Hemoglobina).
+* **[SNOMED CT]{title="Systematized Nomenclature of Medicine -- Clinical Terms"}:** Diagnósticos y hallazgos clínicos con estructura ontológica [@Bodenreider2018].
+
+:::
+
+::: {.notes}
+Para arreglar el caos, necesitamos un esperanto médico.
+**FHIR** es la estrella. Usa la tecnología de Internet (JSON, REST) para conectar hospitales.
+**DICOM** es el veterano que logró que todas las máquinas de rayos X se entiendan.
+**SNOMED y LOINC** son los diccionarios. Se aseguran de que cuando yo digo "Fiebre", tu ordenador entienda exactamente qué significa, sin ambigüedades de lenguaje natural.
+:::
+
+## Lecciones de la IA: Caso IBM Watson
+
+Una advertencia histórica sobre expectativas vs. realidad.
+
+::: {.columns}
+::: {.column width="50%"}
+### La Promesa Fallida
+[IBM]{title="International Business Machines"} Watson for Oncology invirtió **$62 millones** pero no logró integrarse rutinariamente en la clínica [@Billion2026].
+
+::: {.callout-warning title="Caja Negra"}
+Los médicos desconfiaban de recomendaciones donde la [IA]{title="Inteligencia Artificial"} no podía explicar su razonamiento [@Watson2026].
+:::
+:::
+
+::: {.column width="50%"}
+### Lecciones Críticas
+1.  **Datos No Curados:** Watson falló al procesar notas clínicas no estructuradas y jerga médica real.
+2.  **Contexto Local:** Las guías de EE. UU. no aplicaban en países como Dinamarca (diferentes fármacos/protocolos) [@Billion2026].
+3.  **Enfoque Actual:** Cambio hacia **Data-Centric AI** (mejorar datos antes que algoritmos) [@httpsdoiorg1048550arxiv250110555].
+:::
+:::
+
+::: {.notes}
+IBM Watson fue el Ícaro de la IA médica. Voló demasiado cerca del sol demasiado pronto.
+Fracasó por arrogancia tecnológica: pensaron que podían tirar notas médicas "sucias" a la IA y obtener diagnósticos mágicos.
+Aprendimos a la fuerza que:
+1. La IA no hace milagros con datos basura.
+2. La medicina es local (lo que vale en Texas no vale en Copenhague).
+3. Los médicos no confían en "Cajas Negras".
+Hoy hacemos **Data-Centric AI**: primero limpiamos y curamos los datos, luego entrenamos.
+:::
+
+
+## Paradigma Tradicional: Data Warehouse
+
+La "Biblioteca" de Datos: Ordenada, Catalogada y Rígida.
+
+::: {.columns}
+::: {.column width="50%"}
+### Características
+*   **Fuente Única de Verdad:** Datos estructurados y limpios.
+*   **Proceso ETL:** Extract, Transform, Load (Costoso).
+*   **Uso:** Reportes financieros y administrativos.
+
+::: {.callout-important title="Limitación"}
+No soporta datos no estructurados (imágenes, texto libre) vitales para la IA moderna.
+:::
+:::
+
+::: {.column width="50%"}
+```{mermaid}
+%%| fig-align: center
+graph TD
+    A[Fuentes<br/>Operacionales] -->|ETL| B[(Data<br/>Warehouse)]
+    B --> C[Reportes<br/>BI]
+    style B fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+```
+:::
+:::
+
+::: {.notes}
+El Data Warehouse es como una **Biblioteca**.
+Para que un libro entre, tiene que estar perfectamente catalogado, tener su ISBN y estar en la estantería correcta.
+*   **Ventaja:** Si buscas algo, sabes exactamente dónde está y es fiable.
+*   **Desventaja:** Es muy caro mantener el orden y no puedes meter "cualquier cosa" (como un video o una nota en una servilleta).
+Es el paradigma clásico de los años 90/2000.
+:::
+
+## La Era del Big Data: Data Lake
+
+El "Desguace" de Datos: Flexible, Masivo y Caótico.
+
+::: {.columns}
+::: {.column width="50%"}
+### Características
+*   **Schema-on-Read:** Guarda ahora, estructura después.
+*   **Volumen y Variedad:** Acepta todo (Imágenes, IoT, Texto).
+*   **Bajo Costo:** Almacenamiento en la nube (S3, Blob).
+
+::: {.callout-warning title="Riesgo: Data Swamp"}
+Sin gobernanza, se convierte en un pantano de datos inútiles e inencontrables.
+:::
+:::
+
+::: {.column width="50%"}
+```{mermaid}
+%%| fig-align: center
+graph TD
+    A[Logs] --> D((Data<br/>Lake))
+    B[Imágenes] --> D
+    C[IoT] --> D
+    D -.-> E[Ciencia<br/>de Datos]
+    style D fill:#e1f5fe,stroke:#01579b,stroke-dasharray: 5 5
+```
+:::
+:::
+
+::: {.notes}
+Con el Big Data llegó el **Data Lake**, que es como un **Desguace**.
+Aquí entra todo: coches rotos, lavadoras, piezas sueltas...
+*   **Ventaja:** Es baratísimo y no tiras nada. "Por si acaso".
+*   **Desventaja:** Cuando necesitas una pieza específica, buena suerte encontrándola entre la chatarra.
+Es ideal para Data Scientists que saben bucear en el caos, pero inútil para el gerente que quiere un reporte mensual.
+:::
+
+## Arquitectura Moderna: Data Lakehouse
+
+Superando las limitaciones del Data Warehouse y el Data Lake tradicionales.
+
+::: {.columns}
+::: {.column width="40%"}
+El **Lakehouse** combina lo mejor de dos mundos:
+
+1.  Bajo costo y flexibilidad del Data Lake (imágenes, texto) [@Lakehouse2026].
+2.  Gestión transaccional [ACID]{title="Atomicidad, Consistencia, Aislamiento, Durabilidad"} y calidad del Data Warehouse.
+:::
+
+::: {.column width="60%"}
+![Arquitectura unificada Data Lakehouse](images/lakehouse_structure.png)
+:::
+:::
+
+
+
+::: {.notes}
+La solución arquitectónica actual es el **Data Lakehouse**.
+El Lakehouse nos da la fiabilidad ACID de la biblioteca con la flexibilidad del desguace.
+:::
+
+---
+
+## Data Lakehouse: Análisis Comparativo
+
+| Característica | Data Warehouse | Data Lake | **Data Lakehouse** |
+| :--- | :--- | :--- | :--- |
+| **Tipo de Datos** | Estructurados ([SQL]{title="Structured Query Language"}) | Todos (Estructurados + No estruc.) | **Todos** |
+| **Costo Almacenamiento** | Alto | Bajo | **Bajo** |
+| **Calidad de Datos** | Alta (Curada) | Baja (Cruda) | **Alta (Curada y validada)** |
+| **Usuarios** | Analistas de Negocio | Científicos de Datos | **Ambos** |
+| **Soporte IA/ML** | Limitado | Nativo | **Nativo y Optimizado** |
+
+::: {.notes}
+Antes teníamos que elegir:
+*   **Warehouse**: Ordenado, limpio, fiable (SQL), pero caro y rígido. (Como una biblioteca).
+*   **Lake**: Barato, flexible, aceptaba todo, pero caótico. (Como un desguace).
+Permite entrenar IA sobre datos crudos Y hacer reportes financieros sobre datos curados, todo en la misma plataforma sin duplicar información.
+:::
+
+# Conclusión {.center}
+
+::: {.r-fit-text}
+VISIÓN 360°
+:::
+
+La arquitectura **Data Lakehouse** es el cimiento de los futuros sistemas de salud cognitiva.
+
+Permite integrar clínica, genómica y determinantes sociales en una visión unificada, eliminando duplicidades y habilitando la predicción avanzada.
+
+::: {.notes}
+El objetivo final no es tecnológico, es clínico: la Visión 360°.
+Solo con una arquitectura unificada (Lakehouse) e interoperable (FHIR) podemos ver al paciente completo: sus genes, sus radiografías, sus enfermedades y su entorno social.
+Esa es la base de la medicina del futuro.
+:::
+
+## Referencias {visibility="hidden"}
+
+::: {#refs}
+:::

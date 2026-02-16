@@ -1,0 +1,371 @@
+---
+title: "Ética, Ley y Registros de Salud"
+subtitle: "Del Papiro a la Nube y el Espacio Europeo de Datos"
+author:
+  - name: "Antonio Otal Palacín"
+    affiliations:
+      - "Hospital Universitari Arnau de Vilanova"
+      - "Universitat de Lleida"
+date: last-modified
+date-format: "D MMMM, YYYY"
+format:
+  revealjs:
+    # Geometría y Escala (1080p Nativo)
+    width: 1920
+    height: 1080
+    margin: 0.08
+    min-scale: 0.2
+    max-scale: 2.0
+    
+    # Navegación y UX
+    controls: true
+    progress: true
+    hash: true
+    center: false
+    navigation-mode: linear
+    
+    # Estética y Código
+    theme: [default, Ethics_Law_Health_Records.scss]
+    slide-number: c/t
+    code-line-numbers: true
+    code-copy: true
+    lightbox: true
+    embed-resources: false
+    
+    # Referencias
+    bibliography: references.bib
+    csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
+    link-citations: true
+    lang: es
+---
+
+## Transformación del Dato Sanitario {transition="zoom"}
+
+::: {.columns}
+::: {.column width="60%"}
+La evolución del [EHR]{title="Electronic Health Record (Registro Electrónico de Salud)"} no es solo administrativa, es un cambio de paradigma.
+
+* **Origen:** Notas manuscritas desorganizadas.
+* **Actualidad:** Ecosistema de alta complejidad.
+    * Investigación genómica.
+    * Salud pública.
+    * [IA]{title="Inteligencia Artificial"} Biomédica.
+:::
+
+::: {.column width="40%"}
+::: {.callout-note}
+## Punto Crítico
+La intersección entre ética, marco legal y arquitectura técnica es vital. Ya no es documentación, es una actividad regulada (RGPD) e interoperable ([FHIR]{title="Fast Healthcare Interoperability Resources"}). [@adeniji2024twenty]
+:::
+:::
+:::
+
+::: {.notes}
+1.  **Cambio de Paradigma:** El EHR ya no es solo un repositorio administrativo de facturación. Es un ecosistema vivo.
+2.  **Complejidad:** Ha pasado de notas simples a integrar genómica y datos de wearables.
+3.  **Regulación:** No es solo técnica, es legal. Todo dato de salud es "categoría especial" bajo el RGPD.
+4.  **Interoperabilidad:** El dato debe fluir, pero bajo estándares estrictos como FHIR.
+:::
+
+---
+
+::: {.r-stack}
+::: {.fragment .fade-in-then-out}
+### Antigüedad - Siglo XIX
+* **3.000 años atrás:** Papiros y tablas de arcilla.
+* **Finales s. XIX:** Registros en papel en carpetas físicas.
+* **Limitación:** Acceso único, ilegibilidad, espacio físico. [@adeniji2024twenty]
+:::
+
+::: {.fragment .fade-in-then-out}
+### 1960s - 1990s: Los Inicios Digitales
+* **1968:** Dr. Larry Weed introduce el [POMR]{title="Problem-Oriented Medical Record"}.
+* **Formato SOAP:** (Subjetivo, Objetivo, Evaluación, Plan). Estándar actual.
+* **1972:** Primer [EMR]{title="Electronic Medical Record"} (Instituto Regenstrief).
+* **1996:** [HIPAA]{title="Health Insurance Portability and Accountability Act"} en EE.UU. [@History2026]
+:::
+
+::: {.fragment .fade-in}
+### 2000 - Presente: La Era Conectada
+* **Reducción de Costes:** El hardware se vuelve viable.
+* **HITECH Act (2009):** Uso significativo de EHR.
+* **Actualidad:** Nube nativa, [IA]{title="Inteligencia Artificial"}, imagen médica digital y genómica. [@MOHAMMEDFARHAN2021]
+:::
+:::
+
+::: {.notes}
+**Evolución en 3 Actos:**
+
+1.  **Antigüedad:** La limitación física. Si el archivo se quema, la historia desaparece. Solo un médico puede verlo a la vez.
+2.  **Inicios Digitales (60s-90s):** Larry Weed y el POMR (SOAP). Se estructura el pensamiento médico. Nacen los primeros EMR (Regenstrief), pero el hardware es carísimo.
+3.  **Era Conectada (2000+):** Ley HITECH (USA) impulsa la adopción. Ahora estamos en la nube, integrando IA y Big Data. El reto ya no es almacenar, es *entender* y *proteger*.
+:::
+
+---
+
+## Marco Legal: El RGPD en Salud
+
+El [RGPD]{title="Reglamento General de Protección de Datos"} clasifica los datos de salud como **categoría especial**.
+
+::: {.columns}
+::: {.column width="50%"}
+### Artículo 9: Prohibición General
+El tratamiento está **prohibido por defecto**, salvo excepciones:
+* Diagnóstico médico.
+* Gestión de sistemas de salud.
+* Interés público en salud transfronteriza. [@Gdpr2026]
+:::
+
+::: {.column width="50%"}
+### Artículo 89: Investigación
+Permite el uso secundario bajo garantías:
+* Minimización de datos.
+* [Seudonimización]{title="Sustitución de identificadores por códigos reversibles"}.
+* Respeto a derechos y libertades.
+:::
+:::
+
+```{mermaid}
+%%| fig-align: center
+flowchart TD
+    A("Dato de Salud") -->|"Art. 9 RGPD"| B{"¿Prohibido?"}
+    B -->|"Sí, por defecto"| C("STOP")
+    B -->|"Excepción"| D{"Finalidad"}
+    D -->|"Clínica/Gestión"| E("Tratamiento Lícito")
+    D -->|"Investigación"| F("licitud por Art. 89")
+    F --> G("Garantías Obligatorias:<br/>Seudonimización + Seguridad")
+    style A fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style C fill:#ffcdd2,stroke:#b71c1c,color:#b71c1c
+    style E fill:#c8e6c9,stroke:#2e7d32
+    style G fill:#fff9c4,stroke:#fbc02d
+```
+
+> "La privacidad no debe obstaculizar el progreso científico, pero el progreso no puede sacrificar la privacidad."
+
+::: {.notes}
+*   **Art. 9:** Prohibición por defecto. Solo se toca el dato si hay excepción (diagnóstico, salud pública, investigación).
+*   **Art. 89:** La puerta abierta a la investigación. Exige garantías: minimizar datos y seudonimizar.
+*   **Mensaje Clave:** El RGPD no prohíbe la ciencia, la regula. Busca el equilibrio entre el derecho individual y el beneficio colectivo.
+:::
+
+---
+
+## Diferencia Crítica: Seudonimización vs. Anonimización
+
+| Característica | Seudonimización | Anonimización |
+| :--- | :--- | :--- |
+| **Técnica** | Sustitución de IDs por códigos. | Eliminación irreversible de vínculo. |
+| **Reversibilidad** | **Sí**, con clave separada. | **Imposible** (teóricamente). |
+| **Estatus Legal** | **Dato Personal** (RGPD). | **Dato NO Personal** (Fuera RGPD). |
+| **Uso Principal** | Estudios longitudinales. | Publicación de datasets abiertos. |
+| **Riesgo** | Re-identificación si se roba la clave. | Pérdida de utilidad analítica. |
+
+> "La anonimización reduce el riesgo, pero también reduce el valor del dato." [@Differences2026]
+
+::: {.notes}
+Esta es la distinción más importante de la charla:
+*   **Seudonimización:** Cambiar nombre por código (A123). Hay una tabla de equivalencias ("La Llave"). Si tienes la llave, re-identificas. Legalmente **SIGUE SIENDO DATO PERSONAL**.
+*   **Anonimización:** Romper el vínculo para siempre. No hay llave. Legalmente **NO ES DATO PERSONAL** (el RGPD no aplica).
+*   **El Trade-off:** Datos anónimos son seguros pero menos útiles (pierdes la historia longitudinal del paciente).
+:::
+
+---
+
+
+
+## Interoperabilidad: Rompiendo Silos con FHIR
+
+Los sistemas antiguos funcionaban como "silos" cerrados. [HL7 FHIR]{title="Fast Healthcare Interoperability Resources"} es la solución.
+
+::: {.columns}
+::: {.column width="60%"}
+**Características de FHIR:**
+1.  **Recursos:** Bloques de datos granulares (Pacientes, Observaciones).
+2.  **Tecnología Web:** API RESTful, JSON, OAuth2.
+3.  **SMART on FHIR:** Apps de terceros integradas en el flujo clínico. [@Fhir2026]
+:::
+
+::: {.column width="40%"}
+
+```{mermaid}
+%%| fig-align: center
+%%| scale: 0.8
+sequenceDiagram
+    participant App as App Paciente
+    participant Auth as OAuth2 Server
+    participant FHIR as API FHIR
+    participant EHR as Base de Datos
+
+    App->>Auth: 1. Solicita Token
+    Auth-->>App: 2. Access Token
+    App->>FHIR: 3. GET /Obs?code=123 (con Token)
+    FHIR->>EHR: 4. SQL Query
+    EHR-->>FHIR: 5. Result
+    FHIR-->>App: 6. FHIR JSON Resource
+```
+:::
+:::
+
+::: {.notes}
+*   **Problema:** Los "Silos". El dato nace y muere en el hospital. Si te cambias de ciudad, tu historial no viaja contigo.
+*   **Solución FHIR:** Es el "HTML" de la salud. Estándar web moderno (API REST, JSON).
+*   **Granularidad:** No envías un PDF de 100 páginas, envías el recurso "Glucosa" exacto.
+*   **SMART on FHIR:** Permite apps ("App Store") sobre la historia clínica. Innovación externa segura.
+:::
+
+---
+
+## Panorama de Proveedores de EHR
+
+Comparativa de filosofías de implementación [@Cerner2026]:
+
+| Proveedor | Filosofía | Fortalezas | Desafíos |
+| :--- | :--- | :--- | :--- |
+| **Epic Systems** | *Walled Garden* | Rendimiento, integración académica. | Coste, rigidez. |
+| **Cerner (Oracle)** | *Open Interop* | Flexibilidad, CommonWell. | Consistencia modular. |
+| **SAP Health** | *ERP Integration* | Servicios nube, gestión administrativa. | Menor flujo clínico directo. |
+
+::: {.notes}
+No todos los EHR son iguales:
+*   **Epic:** El "Jardín Vallado". Funciona increíble si todo tu hospital es Epic. Difícil de conectar con fuera. Rendimiento brutal.
+*   **Cerner:** Más abierto, filosofía de interoperabilidad. Bueno para entornos mixtos.
+*   **SAP:** Fuerte en la parte administrativa/financiera y backend de datos, menos en la interfaz clínica del médico.
+:::
+
+---
+
+## Seguridad: Control de Acceso y Consentimiento
+
+En la era de las APIs, el perímetro físico ha muerto. Necesitamos seguridad a nivel de recurso.
+
+### 1. Recurso FHIR `Consent`
+* Define: **Quién** (investigador), **Qué** (datos genómicos), **Para qué** (oncología), **Cuándo** (periodo).
+* Permite cumplir derechos de revocación del RGPD. [@Fhir2026c]
+
+### 2. Etiquetas de Seguridad (Security Labels)
+Uso del HL7 [HCS]{title="Healthcare Classification System"}:
+* **Tags:** `HIV`, `SUD` (Abuso de sustancias), `PSY` (Psiquiatría).
+* **Confidencialidad:** Normal, Restringido, Muy Restringido.
+* **Inline Labeling:** Ocultar solo el diagnóstico sensible, no todo el registro. [@Caven2024]
+
+::: {.notes}
+La seguridad perimetral (firewall) ya no sirve porque usamos APIs abiertas.
+*   **Resource Consent:** El paciente dice "SÍ" a investigación oncológica, pero "NO" a psiquiatría. Granularidad fina.
+*   **Security Labels:** Etiquetas como avisos de "Peligro".
+    *   `PSY` (Psiquiatría), `HIV`.
+    *   **Inline Labeling:** El administrativo ve tu nombre y dirección, pero el campo "Diagnóstico: VIH" le sale oculto. El médico lo ve todo.
+:::
+
+---
+
+## El Mito de la Desidentificación {transition="slide-in fade-out"}
+
+::: {.r-fit-text}
+Quitar el nombre NO es suficiente.
+:::
+
+### Ataques de Vinculación (Linkage Attacks)
+Cruzar datos "anónimos" con bases de datos públicas permite re-identificar. [@Dolev2020]
+
+::: {.columns}
+::: {.column width="50%"}
+**Caso Gobernador William Weld (1997)**
+* Datos: Hospitalizaciones "anónimas" (GIC).
+* Ataque: Compra del censo electoral ($20).
+* Cruce: Fecha Nacimiento + Sexo + Código Postal (ZIP).
+* **Resultado:** Latanya Sweeney identificó sus diagnósticos. [@Identification2026]
+:::
+
+::: {.column width="50%"}
+**Caso Medicare Australia (2016)**
+* Datos: 10% de facturación médica abierta.
+* Ataque: Cruce con fechas de lesiones de deportistas famosos en prensa.
+* **Resultado:** Identificación de parlamentarios y atletas. [@Retracted2026]
+:::
+:::
+
+::: {.notes}
+**El Mito:** "Quito el nombre y el DNI y ya es seguro". **FALSO.**
+*   **Linkage Attack:** Cruzar tu base de datos "anónima" con una pública (censo, noticias).
+*   **Caso Weld:** Latanya Sweeney compró el censo por $20. Cruzó Fecha Nacimiento + Sexo + Código Postal. Solo había un hombre en ese código postal con esa fecha: El Gobernador.
+*   **Lección:** Somos extremadamente únicos. 3 datos simples nos delatan.
+:::
+
+---
+
+## Futuro: Espacio Europeo de Datos de Salud (EHDS)
+
+Un mercado único de datos para la UE. [@European2026]
+
+```{mermaid}
+%%| fig-align: center
+flowchart LR
+    ES("España<br/>NCPeH") <-->|"MyHealth@EU"| DE("Alemania<br/>NCPeH")
+    DE <-->|"MyHealth@EU"| FR("Francia<br/>NCPeH")
+    FR <-->|"MyHealth@EU"| ES
+    
+    subgraph "Infraestructura Transfronteriza"
+    ES
+    DE
+    FR
+    end
+    
+    style ES fill:#ce93d8,stroke:#4a148c
+    style DE fill:#81d4fa,stroke:#01579b
+    style FR fill:#a5d6a7,stroke:#1b5e20
+```
+
+::: {.panel-tabset}
+### EHDS 1 (Uso Primario)
+* **Objetivo:** Continuidad asistencial transfronteriza.
+* **Ejemplo:** Un español en urgencias de Alemania.
+* **Infraestructura:** MyHealth@EU (Patient Summary, Receta e-).
+
+### EHDS 2 (Uso Secundario)
+* **Objetivo:** Investigación, innovación y políticas.
+* **Seguridad:** Entornos de Procesamiento Seguro ([SPE]{title="Secure Processing Environment"}).
+* **Restricción:** Los datos no se descargan, se analizan en remoto.
+
+### Implementación España
+* **HCDSNS:** Historia Clínica Digital del SNS.
+* **IMPaCT-Data:** Infraestructura para medicina de precisión y genómica federada. [@Impact2026]
+:::
+
+::: {.notes}
+Europa está creando un mercado único de datos (como el mercado único de mercancías).
+*   **EHDS 1 (Primario):** Si me pongo enfermo en Berlín, el médico alemán ve mi historial español (Resumen).
+*   **EHDS 2 (Secundario):** Investigadores pueden pedir datos a escala europea.
+    *   **Seguridad:** No se descargan los datos. El investigador envía el algoritmo a un "Búnker" (Secure Processing Environment) y solo recibe el resultado estadístico.
+:::
+
+---
+
+## Conclusiones
+
+::: {.columns}
+::: {.column width="70%"}
+1.  **Evolución:** Del papel a la nube federada es irreversible.
+2.  **Responsabilidad:** La tecnología (FHIR) rompe silos, pero aumenta el riesgo de exposición.
+3.  **Privacidad:** La anonimización absoluta es difícil; la gestión debe basarse en el **riesgo**.
+4.  **Futuro:** El [EHDS]{title="Espacio Europeo de Datos de Salud"} equilibrará la utilidad clínica y la soberanía del paciente.
+:::
+
+::: {.column width="30%"}
+::: {.callout-custom}
+"La informática biomédica debe proteger el secreto médico con la misma eficacia con la que explota el Big Data para salvar vidas."
+:::
+:::
+:::
+
+::: {.notes}
+En resumen:
+1.  Es un viaje sin retorno hacia la nube federada.
+2.  FHIR es la herramienta técnica, pero la ética es la barrera de seguridad.
+3.  La privacidad perfecta no existe (siempre hay riesgo de re-identificación), hay que gestionar ese riesgo.
+4.  El futuro es el empoderamiento del paciente sobre sus propios datos (EHDS).
+:::
+
+## Referencias {visibility="hidden"}
+
+::: {#refs}
+:::

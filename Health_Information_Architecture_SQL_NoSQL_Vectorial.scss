@@ -1,0 +1,81 @@
+/*-- scss:defaults --*/
+$body-bg: #0f172a;
+/* Fondo azul oscuro profundo */
+$body-color: #e2e8f0;
+/* Texto claro */
+$link-color: #38bdf8;
+/* Azul cyan para enlaces */
+$heading-color: #f8fafc;
+/* Blancos para títulos */
+$code-block-bg: #1e293b;
+
+/* Fuentes */
+$font-family-sans-serif: 'Inter', system-ui, sans-serif;
+$presentation-heading-font: 'Outfit', sans-serif;
+$presentation-font-size-root: 40px;
+
+/*-- scss:rules --*/
+
+/* Estilo para los Títulos */
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.reveal h2 {
+    border-bottom: 3px solid $link-color;
+    padding-bottom: 20px;
+    margin-bottom: 40px;
+}
+
+/* Estilo para las siglas con tooltip */
+span[title] {
+    text-decoration: underline dotted $link-color;
+    cursor: help;
+    color: #fff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+    &:hover {
+        color: $link-color;
+        background-color: rgba(56, 189, 248, 0.1);
+        border-radius: 4px;
+        padding: 0 4px;
+    }
+}
+
+/* Callouts personalizados para Reveal */
+.callout {
+    border-left: 5px solid $link-color;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 1em;
+    border-radius: 8px;
+    margin: 1em 0;
+    font-size: 0.9em;
+}
+
+.callout-title {
+    font-weight: bold;
+    text-transform: uppercase;
+    color: $link-color;
+    margin-bottom: 0.5em;
+    display: block;
+}
+
+/* Ajustes de tablas */
+.reveal table {
+    font-size: 0.7em;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.reveal th {
+    background-color: rgba(56, 189, 248, 0.2);
+    color: white;
+}
+
+.reveal td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
