@@ -1,0 +1,3295 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<script src="Curso_Completo_Datos_Salud_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Curso_Completo_Datos_Salud_files/libs/quarto-html/tabby.min.js"></script>
+<script src="Curso_Completo_Datos_Salud_files/libs/quarto-html/popper.min.js"></script>
+<script src="Curso_Completo_Datos_Salud_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="Curso_Completo_Datos_Salud_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Curso_Completo_Datos_Salud_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="Curso_Completo_Datos_Salud_files/libs/quarto-html/quarto-syntax-highlighting-dark-b651517ce65839d647a86e2780455cfb.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.24">
+
+  <meta name="author" content="Antonio Otal Palacín">
+  <title>Datos y Arquitectura en Salud</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="Curso_Completo_Datos_Salud_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="Curso_Completo_Datos_Salud_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="Curso_Completo_Datos_Salud_files/libs/revealjs/dist/theme/quarto-2aebfab4da4aaaaa0d12770b52f41954.css">
+  <link href="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="Curso_Completo_Datos_Salud_files/libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="Curso_Completo_Datos_Salud_files/libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="Curso_Completo_Datos_Salud_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
+</head>
+<body class="quarto-dark">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Datos y Arquitectura en Salud</h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Antonio Otal Palacín 
+</div>
+        <p class="quarto-title-affiliation">
+            Hospital Universitari Arnau de Vilanova
+          </p>
+        <p class="quarto-title-affiliation">
+            Universitat de Lleida
+          </p>
+    </div>
+</div>
+
+  <p class="date">16 febrero, 2026</p>
+</section>
+<section id="módulo-1-el-ecosistema-de-datos-en-salud" class="title-slide slide level1 center" data-background-color="#0f172a">
+<h1>Módulo 1: El Ecosistema de Datos en Salud</h1>
+
+</section>
+
+<section>
+<section id="introducción" class="title-slide slide level1 center">
+<h1>Introducción</h1>
+<div class="r-fit-text">
+<p>METAMORFOSIS DIGITAL</p>
+</div>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>La industria de la salud está experimentando una transformación sin precedentes, impulsada por una explosión en la generación de datos que redefine la práctica médica, la investigación y la gestión sanitaria.</p>
+<blockquote>
+<p>Entender este ecosistema no es solo cuestión de tecnología, sino de comprender cómo la información fluye, se almacena y se transforma en valor clínico.</p>
+</blockquote>
+</div><div class="column" style="width:40%;">
+<div class="cell" data-reveal="true" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    A[Medicina&lt;br/&gt;Artesanal] --&gt;|Digitalización| B(EHR&lt;br/&gt;Silos de Datos)
+    B --&gt;|Transformación| C(Ecosistema&lt;br/&gt;Inteligente)
+    style C fill:#b3e5fc,stroke:#0288d1,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Estamos viviendo una metamorfosis. La salud ha pasado de ser una industria artesanal basada en la intuición a una industria industrial basada en datos. No se trata solo de tener ordenadores; se trata de una redefinición fundamental de lo que significa “diagnosticar” y “tratar”. Hoy, el fonendoscopio más potente es un algoritmo analizando Terabytes de datos.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="evolución-del-volumen-de-datos" class="slide level2">
+<h2>Evolución del Volumen de Datos</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="crecimiento-exponencial">Crecimiento Exponencial</h3>
+<ul>
+<li><strong>Ritmo Acelerado:</strong> El volumen global de datos aumenta a una <span title="Compound Annual Growth Rate - Tasa de Crecimiento Anual Compuesto">CAGR</span> del <strong>36%</strong>, superando al sector financiero <span class="citation" data-cites="Exponential2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>The exponential growth of data | 6092b3f1c8418040ac191cf3889010ef, fecha de acceso</em>, 2026</a>)</span>.</li>
+<li><strong>Proyección 2025:</strong> Se alcanzarán los <strong>10 Zettabytes</strong>.
+<ul>
+<li>1 Zettabyte = 1 billón de Gigabytes.</li>
+</ul></li>
+</ul>
+<div title="Escala Masiva">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Escala Masiva</strong></p>
+</div>
+<div class="callout-content">
+<p>Estamos pasando de la era del Gigabyte a la era del Zettabyte.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/data_scale.png"></p>
+<figcaption>Proyección del crecimiento de datos hacia la era Zettabyte</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Para que se hagan una idea de la magnitud: La salud genera datos más rápido que Wall Street o la industria manufacturera. Crecemos al 36% anual. En 2025 alcanzaremos los 10 Zettabytes. Un Zettabyte es un 1 seguido de 21 ceros. Es una cifra astronómica que nuestra infraestructura actual apenas puede gestionar.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="la-obsolescencia-del-conocimiento" class="slide level2">
+<h2>La Obsolescencia del Conocimiento</h2>
+<p>La velocidad de generación de datos crea un desafío cognitivo imposible para el ser humano.</p>
+<div class="r-stack">
+<div class="fragment fade-in-then-out">
+<h3 id="section">1950</h3>
+<p>El conocimiento médico se duplicaba cada <strong>50 años</strong>.</p>
+</div>
+<div class="fragment fade-in-then-out">
+<h3 id="section-1">2010</h3>
+<p>El tiempo de duplicación se redujo a <strong>3.5 años</strong>.</p>
+</div>
+<div class="fragment fade-in">
+<h3 id="section-2">2020</h3>
+<p>El conocimiento se duplica cada <strong>73 días</strong> <span class="citation" data-cites="Harness2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>How to harness health data to improve patient outcomes, fecha de acceso</em>, 2026</a>)</span>.</p>
+</div>
+</div>
+<div class="fragment">
+<blockquote>
+<p>Un estudiante que inicia hoy se enfrentará a un corpus de conocimiento multiplicado varias veces antes de graduarse. El apoyo de la <span title="Inteligencia Artificial">IA</span> es indispensable <span class="citation" data-cites="Harness2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>How to harness health data to improve patient outcomes, fecha de acceso</em>, 2026</a>)</span>.</p>
+</blockquote>
+</div>
+<aside class="notes">
+<p>Esta es la diapositiva más aterradora para cualquier médico. En 1950, lo que aprendías en la facultad te servía para toda tu carrera. Hoy, el conocimiento médico se duplica cada 73 días. Es humanamente imposible mantenerse al día. La IA no es un “lujo” tecnológico; es la única herramienta que nos permite sobrevivir a esta avalancha cognitiva. Sin IA, la medicina basada en evidencia es una utopía inalcanzable.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="motores-de-la-explosión-de-información" class="slide level2">
+<h2>Motores de la Explosión de Información</h2>
+<p>Tres factores principales impulsan este crecimiento masivo:</p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<h3 id="genómica">1. Genómica</h3>
+<p>La secuenciación de un solo genoma genera hasta <strong>200 GB</strong> de datos crudos. Las iniciativas poblacionales convierten a la genómica en una de las fuentes más voluminosas <span class="citation" data-cites="Lukhele2025">(<a href="" role="doc-biblioref" onclick="return false;">Lukhele, 2025</a>)</span>.</p>
+</div><div class="column" style="width:33%;">
+<h3 id="imagenología">2. Imagenología</h3>
+<p>Transición de radiografías 2D a: * <span title="Computed Tomography - Tomografía Computarizada">CT</span> volumétricas. * <span title="Magnetic Resonance Imaging - Imagen por Resonancia Magnética">MRI</span> funcionales. * Patología digital (GBs por imagen) <span class="citation" data-cites="Hamlomo2025">(<a href="" role="doc-biblioref" onclick="return false;">Hamlomo, 2025</a>)</span>.</p>
+</div><div class="column" style="width:33%;">
+<h3 id="iomt">3. <span title="Internet of Medical Things - Internet de las Cosas Médicas">IoMT</span></h3>
+<p>Wearables y sensores implantables generan flujos continuos de telemetría (frecuencia cardíaca, glucosa) que requieren ingestión en tiempo real <span class="citation" data-cites="Majeed2023">(<a href="" role="doc-biblioref" onclick="return false;">Majeed, 2023</a>)</span>.</p>
+</div></div>
+<aside class="notes">
+<p>¿De dónde salen todos estos datos? 1. <strong>Genómica</strong>: Secuenciar a una persona son 200GB. Multiplica eso por millones en estudios poblacionales. 2. <strong>Imagen</strong>: Ya no hacemos “fotos”; hacemos volúmenes 3D y vídeos 4D. Una biopsia digitalizada tiene gigapíxeles de resolución. 3. <strong>IoMT</strong>: Tu reloj inteligente, tu marcapasos, tu monitor de glucosa. Envían datos cada segundo, 24/7/365. Es un tsunami de datos en tiempo real.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="el-problema-del-dirty-data" class="slide level2">
+<h2>El Problema del “Dirty Data”</h2>
+<p>A pesar de la abundancia, sufrimos el síndrome <strong><span title="Data Rich, Information Poor - Rico en Datos, Pobre en Información">DRIP</span></strong>.</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<h3 id="el-costo-del-caos">El Costo del Caos</h3>
+<p>Los “datos sucios” (incompletos, inexactos o duplicados) cuestan a la industria de EE. UU. más de <strong>$300 mil millones/año</strong> <span class="citation" data-cites="Ghiassi2019">(<a href="" role="doc-biblioref" onclick="return false;">Ghiassi, 2019</a>)</span>.</p>
+<ul>
+<li>Nombres mal escritos.</li>
+<li>Historiales fragmentados.</li>
+<li>Riesgos de seguridad del paciente.</li>
+</ul>
+<div title="El Síndrome DRIP">
+<div class="callout callout-caution callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>El Síndrome DRIP</strong></p>
+</div>
+<div class="callout-content">
+<p>Las organizaciones están inundadas de datos, pero carecen de capacidad para extraer insights significativos debido a la mala calidad y la falta de estandarización <span class="citation" data-cites="Strategies2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>Strategies to Overcome Data Rich, Information Poor (DRIP) Syndrome in Neonatology</em>, 2026</a>)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div id="fig-interoperability-funnel" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-interoperability-funnel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="images/interoperability_funnel.png">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-interoperability-funnel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: El embudo de la interoperabilidad: transformando datos caóticos en información clínica accionable.
+</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Paradoja: Nos ahogamos en datos, pero nos morimos de sed de información. (DRIP Syndrome). Tener 100 PDFs escaneados no sirve de nada a un algoritmo. El costo de los “Datos Sucios” es real: 300.000 millones de dólares al año solo en EEUU. Y peor aún: pacientes que reciben el medicamento equivocado porque su alergia estaba en otro sistema con el nombre mal escrito.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interoperabilidad-el-lenguaje-común" class="slide level2">
+<h2>Interoperabilidad: El Lenguaje Común</h2>
+<p>La solución a los “silos” reside en estándares globales de comunicación.</p>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><span title="Health Level Seven">HL7</span> / <span title="Fast Healthcare Interoperability Resources">FHIR</span></a></li><li><a href="#tabset-1-2"><span title="Digital Imaging and Communications in Medicine">DICOM</span></a></li><li><a href="#tabset-1-3">Vocabularios</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<p>Utiliza tecnologías web modernas (<span title="Application Programming Interface">API</span> <span title="Representational State Transfer">RESTful</span>, <span title="JavaScript Object Notation">JSON</span>) para permitir que sistemas dispares hablen el mismo idioma <span class="citation" data-cites="Bodenreider2018">(<a href="" role="doc-biblioref" onclick="return false;">Bodenreider, 2018</a>)</span>. * <em>Ejemplo:</em> Una app de diabetes envía glucosa al registro del hospital <span class="citation" data-cites="Ohlsen2024">(<a href="" role="doc-biblioref" onclick="return false;">Ohlsen, 2024</a>)</span>.</p>
+</div>
+<div id="tabset-1-2">
+<p>Estándar universal para manejo, almacenamiento e impresión de imágenes médicas <span class="citation" data-cites="Dicom2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>DICOM Standard, fecha de acceso</em>, 2026</a>)</span>. * Garantiza que una resonancia de un equipo Siemens se vea en una estación GE.</p>
+</div>
+<div id="tabset-1-3">
+<p>Estandarizan el significado clínico: * <strong><span title="Logical Observation Identifiers Names and Codes">LOINC</span>:</strong> Códigos de laboratorio (ej. Hemoglobina). * <strong><span title="Systematized Nomenclature of Medicine -- Clinical Terms">SNOMED CT</span>:</strong> Diagnósticos y hallazgos clínicos con estructura ontológica <span class="citation" data-cites="Bodenreider2018">(<a href="" role="doc-biblioref" onclick="return false;">Bodenreider, 2018</a>)</span>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Para arreglar el caos, necesitamos un esperanto médico. <strong>FHIR</strong> es la estrella. Usa la tecnología de Internet (JSON, REST) para conectar hospitales. <strong>DICOM</strong> es el veterano que logró que todas las máquinas de rayos X se entiendan. <strong>SNOMED y LOINC</strong> son los diccionarios. Se aseguran de que cuando yo digo “Fiebre”, tu ordenador entienda exactamente qué significa, sin ambigüedades de lenguaje natural.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lecciones-de-la-ia-caso-ibm-watson" class="slide level2">
+<h2>Lecciones de la IA: Caso IBM Watson</h2>
+<p>Una advertencia histórica sobre expectativas vs.&nbsp;realidad.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="la-promesa-fallida">La Promesa Fallida</h3>
+<p><span title="International Business Machines">IBM</span> Watson for Oncology invirtió <strong>$62 millones</strong> pero no logró integrarse rutinariamente en la clínica <span class="citation" data-cites="Billion2026">(<a href="" role="doc-biblioref" onclick="return false;">2026</a>)</span>.</p>
+<div title="Caja Negra">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Caja Negra</strong></p>
+</div>
+<div class="callout-content">
+<p>Los médicos desconfiaban de recomendaciones donde la <span title="Inteligencia Artificial">IA</span> no podía explicar su razonamiento <span class="citation" data-cites="Watson2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>Why IBM Watson for Oncology Failed | by Dr. Varun Gupta</em>, 2026</a>)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<h3 id="lecciones-críticas">Lecciones Críticas</h3>
+<ol type="1">
+<li><strong>Datos No Curados:</strong> Watson falló al procesar notas clínicas no estructuradas y jerga médica real.</li>
+<li><strong>Contexto Local:</strong> Las guías de EE. UU. no aplicaban en países como Dinamarca (diferentes fármacos/protocolos) <span class="citation" data-cites="Billion2026">(<a href="" role="doc-biblioref" onclick="return false;">2026</a>)</span>.</li>
+<li><strong>Enfoque Actual:</strong> Cambio hacia <strong>Data-Centric AI</strong> (mejorar datos antes que algoritmos) <span class="citation" data-cites="httpsdoiorg1048550arxiv250110555">(<a href="" role="doc-biblioref" onclick="return false;">Wang et&nbsp;al., 2025</a>)</span>.</li>
+</ol>
+</div></div>
+<aside class="notes">
+<p>IBM Watson fue el Ícaro de la IA médica. Voló demasiado cerca del sol demasiado pronto. Fracasó por arrogancia tecnológica: pensaron que podían tirar notas médicas “sucias” a la IA y obtener diagnósticos mágicos. Aprendimos a la fuerza que: 1. La IA no hace milagros con datos basura. 2. La medicina es local (lo que vale en Texas no vale en Copenhague). 3. Los médicos no confían en “Cajas Negras”. Hoy hacemos <strong>Data-Centric AI</strong>: primero limpiamos y curamos los datos, luego entrenamos.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="paradigma-tradicional-data-warehouse" class="slide level2">
+<h2>Paradigma Tradicional: Data Warehouse</h2>
+<p>La “Biblioteca” de Datos: Ordenada, Catalogada y Rígida.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="características">Características</h3>
+<ul>
+<li><strong>Fuente Única de Verdad:</strong> Datos estructurados y limpios.</li>
+<li><strong>Proceso ETL:</strong> Extract, Transform, Load (Costoso).</li>
+<li><strong>Uso:</strong> Reportes financieros y administrativos.</li>
+</ul>
+<div title="Limitación">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Limitación</strong></p>
+</div>
+<div class="callout-content">
+<p>No soporta datos no estructurados (imágenes, texto libre) vitales para la IA moderna.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-reveal="true" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    A[Fuentes&lt;br/&gt;Operacionales] --&gt;|ETL| B[(Data&lt;br/&gt;Warehouse)]
+    B --&gt; C[Reportes&lt;br/&gt;BI]
+    style B fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>El Data Warehouse es como una <strong>Biblioteca</strong>. Para que un libro entre, tiene que estar perfectamente catalogado, tener su ISBN y estar en la estantería correcta. * <strong>Ventaja:</strong> Si buscas algo, sabes exactamente dónde está y es fiable. * <strong>Desventaja:</strong> Es muy caro mantener el orden y no puedes meter “cualquier cosa” (como un video o una nota en una servilleta). Es el paradigma clásico de los años 90/2000.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="la-era-del-big-data-data-lake" class="slide level2">
+<h2>La Era del Big Data: Data Lake</h2>
+<p>El “Desguace” de Datos: Flexible, Masivo y Caótico.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="características-1">Características</h3>
+<ul>
+<li><strong>Schema-on-Read:</strong> Guarda ahora, estructura después.</li>
+<li><strong>Volumen y Variedad:</strong> Acepta todo (Imágenes, IoT, Texto).</li>
+<li><strong>Bajo Costo:</strong> Almacenamiento en la nube (S3, Blob).</li>
+</ul>
+<div title="Riesgo: Data Swamp">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Riesgo: Data Swamp</strong></p>
+</div>
+<div class="callout-content">
+<p>Sin gobernanza, se convierte en un pantano de datos inútiles e inencontrables.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-reveal="true" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    A[Logs] --&gt; D((Data&lt;br/&gt;Lake))
+    B[Imágenes] --&gt; D
+    C[IoT] --&gt; D
+    D -.-&gt; E[Ciencia&lt;br/&gt;de Datos]
+    style D fill:#e1f5fe,stroke:#01579b,stroke-dasharray: 5 5
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Con el Big Data llegó el <strong>Data Lake</strong>, que es como un <strong>Desguace</strong>. Aquí entra todo: coches rotos, lavadoras, piezas sueltas… * <strong>Ventaja:</strong> Es baratísimo y no tiras nada. “Por si acaso”. * <strong>Desventaja:</strong> Cuando necesitas una pieza específica, buena suerte encontrándola entre la chatarra. Es ideal para Data Scientists que saben bucear en el caos, pero inútil para el gerente que quiere un reporte mensual.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="arquitectura-moderna-data-lakehouse" class="slide level2">
+<h2>Arquitectura Moderna: Data Lakehouse</h2>
+<p>Superando las limitaciones del Data Warehouse y el Data Lake tradicionales.</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p>El <strong>Lakehouse</strong> combina lo mejor de dos mundos:</p>
+<ol type="1">
+<li>Bajo costo y flexibilidad del Data Lake (imágenes, texto) <span class="citation" data-cites="Lakehouse2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>Lakehouse</em>, 2026</a>)</span>.</li>
+<li>Gestión transaccional <span title="Atomicidad, Consistencia, Aislamiento, Durabilidad">ACID</span> y calidad del Data Warehouse.</li>
+</ol>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/lakehouse_structure.png"></p>
+<figcaption>Arquitectura unificada Data Lakehouse</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>La solución arquitectónica actual es el <strong>Data Lakehouse</strong>. El Lakehouse nos da la fiabilidad ACID de la biblioteca con la flexibilidad del desguace.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="data-lakehouse-análisis-comparativo" class="slide level2">
+<h2>Data Lakehouse: Análisis Comparativo</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Característica</th>
+<th style="text-align: left;">Data Warehouse</th>
+<th style="text-align: left;">Data Lake</th>
+<th style="text-align: left;"><strong>Data Lakehouse</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Tipo de Datos</strong></td>
+<td style="text-align: left;">Estructurados (<span title="Structured Query Language">SQL</span>)</td>
+<td style="text-align: left;">Todos (Estructurados + No estruc.)</td>
+<td style="text-align: left;"><strong>Todos</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Costo Almacenamiento</strong></td>
+<td style="text-align: left;">Alto</td>
+<td style="text-align: left;">Bajo</td>
+<td style="text-align: left;"><strong>Bajo</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Calidad de Datos</strong></td>
+<td style="text-align: left;">Alta (Curada)</td>
+<td style="text-align: left;">Baja (Cruda)</td>
+<td style="text-align: left;"><strong>Alta (Curada y validada)</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Usuarios</strong></td>
+<td style="text-align: left;">Analistas de Negocio</td>
+<td style="text-align: left;">Científicos de Datos</td>
+<td style="text-align: left;"><strong>Ambos</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Soporte IA/ML</strong></td>
+<td style="text-align: left;">Limitado</td>
+<td style="text-align: left;">Nativo</td>
+<td style="text-align: left;"><strong>Nativo y Optimizado</strong></td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Antes teníamos que elegir: * <strong>Warehouse</strong>: Ordenado, limpio, fiable (SQL), pero caro y rígido. (Como una biblioteca). * <strong>Lake</strong>: Barato, flexible, aceptaba todo, pero caótico. (Como un desguace). Permite entrenar IA sobre datos crudos Y hacer reportes financieros sobre datos curados, todo en la misma plataforma sin duplicar información.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section id="conclusión" class="title-slide slide level1 center">
+<h1>Conclusión</h1>
+<div class="r-fit-text">
+<p>VISIÓN 360°</p>
+</div>
+<p>La arquitectura <strong>Data Lakehouse</strong> es el cimiento de los futuros sistemas de salud cognitiva.</p>
+<p>Permite integrar clínica, genómica y determinantes sociales en una visión unificada, eliminando duplicidades y habilitando la predicción avanzada.</p>
+<aside class="notes">
+<p>El objetivo final no es tecnológico, es clínico: la Visión 360°. Solo con una arquitectura unificada (Lakehouse) e interoperable (FHIR) podemos ver al paciente completo: sus genes, sus radiografías, sus enfermedades y su entorno social. Esa es la base de la medicina del futuro.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+
+<section>
+<section id="módulo-2-arquitectura-y-ontología-de-los-datos" class="title-slide slide level1 center" data-background-color="#1e1e2e">
+<h1>Módulo 2: Arquitectura y Ontología de los Datos</h1>
+
+</section>
+<section id="introducción-el-dato-como-activo-estratégico" class="slide level2">
+<h2>Introducción: El Dato como Activo Estratégico</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>La medicina contemporánea ha trascendido el acto clínico físico para convertirse en una disciplina impulsada por la información.</p>
+<ul>
+<li><strong>Explosión Informativa</strong>: Crecimiento estimado del <strong>47% anual</strong> <span class="citation" data-cites="2024">(<a href="" role="doc-biblioref" onclick="return false;">Unknown, 2024</a>)</span>.</li>
+<li><strong>Drivers</strong>:
+<ul>
+<li>Dispositivos médicos conectados (IoMT).</li>
+<li>Registros Electrónicos de Salud (<abbr title="Electronic Health Records">EHR</abbr>).</li>
+<li>Imagenología de alta resolución.</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:40%;">
+<div class="callout-card fragment">
+<h3 id="el-desafío">El Desafío</h3>
+<p>Gestionar una tipología heterogénea que abarca desde registros numéricos discretos hasta complejas señales bioeléctricas y narrativas clínicas ambiguas.</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>La práctica de la medicina moderna ya no es solo un acto físico; es una disciplina de la información. El dato biomédico es un activo estratégico cuya gestión define la eficacia del sistema. Estamos ante una explosión masiva: la información crece casi un 50% cada año. Esto no es solo “más datos”, es una complejidad exponencial impulsada por dispositivos conectados, EHRs y nuevas tecnologías de imagen. El verdadero desafío no es solo el volumen, sino la heterogeneidad: tenemos que armonizar desde un valor simple de glucosa hasta una señal de EEG de 32kHz y una nota clínica escrita en lenguaje natural ambiguo.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="tipologías-de-datos-médicos" class="title-slide slide level1 center">
+<h1>Tipologías de Datos Médicos</h1>
+
+</section>
+<section id="la-dicotomía-fundamental" class="slide level2">
+<h2>La Dicotomía Fundamental</h2>
+<p>La clasificación fundamental de los datos en salud se divide entre <strong>estructurados</strong> y <strong>no estructurados</strong>.</p>
+<div class="columns">
+<div class="column" style="width:45%;">
+<h3 id="datos-estructurados">Datos Estructurados</h3>
+<ul>
+<li>Se ajustan a un modelo predefinido.</li>
+<li>Almacenamiento en bases de datos relacionales (<abbr title="Structured Query Language">SQL</abbr>).</li>
+<li><strong>Ejemplos</strong>:
+<ul>
+<li>Resultados de laboratorio (mg/dL).</li>
+<li>Constantes vitales (PA, Temp).</li>
+<li>Códigos <abbr title="International Classification of Diseases, 10th Revision">ICD-10</abbr> <span class="citation" data-cites="Sante2024">(<a href="" role="doc-biblioref" onclick="return false;">Sante, 2024</a>)</span>.</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:50%;">
+<h3 id="datos-no-estructurados">Datos No Estructurados</h3>
+<ul>
+<li>Residen en texto libre, imágenes o señales.</li>
+<li>Difíciles de procesar automáticamente.</li>
+<li>Contienen la <strong>narrativa clínica</strong> y el contexto (determinantes sociales, gravedad subjetiva) <span class="citation" data-cites="Unstructured2026a">(<a href="" role="doc-biblioref" onclick="return false;"><em>Unstructured data | Fast Data Science, fecha de acceso</em>, 2026</a>)</span>.</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Esta es la división clásica pero crítica. Los <strong>Datos Estructurados</strong> son los que “nos gustan” a los informáticos: caben en una tabla de Excel o SQL. Son fáciles de consultar, agregar y analizar estadísticamente (ej. promedio de glucosa). Los <strong>Datos No Estructurados</strong> son “la realidad”. Son el texto libre, las imágenes, los vídeos. Son difíciles de computar porque no tienen un modelo predefinido, pero contienen la “historia” del paciente: por qué se siente mal, cuál es su contexto social, matices que un código ICD-10 no captura.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="la-regla-del-8020" class="slide level2" data-transition="zoom">
+<h2>La Regla del 80/20</h2>
+<div style="height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+<div style="font-size: 10em; font-weight: 800; line-height: 1; color: #38bdf8;">
+<p>80%</p>
+</div>
+<div style="font-size: 1.5em; text-align: center; margin-top: 20px;">
+<p>De la información clínica se genera en formato <strong>no estructurado</strong> <span class="citation" data-cites="carter2019managing">(<a href="" role="doc-biblioref" onclick="return false;">Kong, 2019</a>)</span>.</p>
+</div>
+<div class="fragment fade-up" style="margin-top: 60px; color: #94a3b8; font-size: 0.8em; border-top: 1px solid #334155; padding-top: 20px;">
+<p>Notas de evolución • Resúmenes de alta • Informes de radiología • Anatomía patológica</p>
+</div>
+</div>
+<aside class="notes">
+<p>Esta es la métrica más importante que deben recordar: el 80% del valor clínico reside donde es más difícil extraerlo. Si solo analizamos bases de datos SQL estructuradas, estamos viendo solo el 20% de la película. El “oro” está en las notas de evolución, los informes de patología y radiología. Ahí es donde se explican las causas y los contextos. Ignorar esto es ignorar la mayor parte de la realidad clínica.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="comparativa-técnica" class="slide level2">
+<h2>Comparativa Técnica</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Característica</th>
+<th style="text-align: left;">Datos Estructurados</th>
+<th style="text-align: left;">Datos No Estructurados</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Formato</strong></td>
+<td style="text-align: left;">Campos predefinidos, tablas relacionales</td>
+<td style="text-align: left;">Texto libre, imágenes, señales, video</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Almacenamiento</strong></td>
+<td style="text-align: left;">Bases de datos <abbr title="Structured Query Language">SQL</abbr></td>
+<td style="text-align: left;">Almacenes de objetos, sistemas de archivos</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Análisis</strong></td>
+<td style="text-align: left;">Estadístico directo, <abbr title="Structured Query Language">SQL</abbr></td>
+<td style="text-align: left;"><abbr title="Natural Language Processing">NLP</abbr>, Visión por computador, Deep Learning</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Volumen</strong></td>
+<td style="text-align: left;">Relativamente bajo, crecimiento lineal</td>
+<td style="text-align: left;"><strong>Masivo (80%)</strong>, crecimiento exponencial <span class="citation" data-cites="2024">(<a href="" role="doc-biblioref" onclick="return false;">Unknown, 2024</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Valor Clínico</strong></td>
+<td style="text-align: left;">Cuantitativo, tendencias claras</td>
+<td style="text-align: left;">Contexto narrativo, razonamiento médico</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Resumiendo la comparativa: Lo estructurado escala linealmente y se analiza con estadística clásica. Lo no estructurado escala exponencialmente y requiere Inteligencia Artificial (NLP, Visión) para ser explotable. El valor clínico también es distinto: lo estructurado te da el “qué” (tiene fiebre), lo no estructurado te da el “por qué” (posible infección tras viaje reciente…).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="desafíos-en-datos-no-estructurados" class="title-slide slide level1 center">
+<h1>Desafíos en Datos No Estructurados</h1>
+
+</section>
+<section id="el-reto-del-lenguaje-natural-nlp" class="slide level2">
+<h2>El Reto del Lenguaje Natural (<abbr title="Natural Language Processing">NLP</abbr>)</h2>
+<p>La transformación de texto libre en datos accionables requiere superar la ambigüedad lingüística.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="problemas-comunes">Problemas Comunes</h3>
+<ul>
+<li><strong>Jerga local y abreviaturas</strong>: Variaciones entre especialistas <span class="citation" data-cites="Unstructured2026a">(<a href="" role="doc-biblioref" onclick="return false;"><em>Unstructured data | Fast Data Science, fecha de acceso</em>, 2026</a>)</span>.</li>
+<li><strong>Falta de estandarización</strong>: Descripciones divergentes para el mismo fenómeno neurológico <span class="citation" data-cites="Sedlakova2022">(<a href="" role="doc-biblioref" onclick="return false;">Sedlakova et&nbsp;al., 2022</a>)</span>.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="soluciones-de-ingeniería">Soluciones de Ingeniería</h3>
+<p>Pipelines modernos de <abbr title="Natural Language Processing">NLP</abbr> deben realizar:</p>
+<ol type="1">
+<li><strong><abbr title="Named Entity Recognition">NER</abbr></strong>: Reconocimiento de Entidades Nombradas.</li>
+<li><strong>Análisis de Contexto</strong>: Determinar si un síntoma está <em>presente</em>, <em>ausente</em> (negación) o es una <em>sospecha</em>.</li>
+</ol>
+</div></div>
+<div class="fragment callout-card">
+<p><strong>Caso de Éxito</strong>: Sistemas como <em>Leo</em> alcanzan una precisión &gt;0.90 en la extracción de clasificación TNM (Tumor, Nódulo, Metástasis) de informes de patología <span class="citation" data-cites="mille2021automated">(<a href="" role="doc-biblioref" onclick="return false;">Miller et&nbsp;al., 2021</a>)</span>.</p>
+</div>
+<aside class="notes">
+<p>El NLP clínico es mucho más difícil que el NLP general. No basta con buscar palabras clave. “No fiebre” contiene “fiebre”, pero significa lo contrario. La ambigüedad es enorme: las abreviaturas cambian de un hospital a otro, incluso entre departamentos. Las soluciones modernas usan pipelines complejos que no solo encuentran entidades (NER), sino que entienden la negación y la especulación (“se sospecha X”). El caso de éxito de <em>Leo</em> demuestra que podemos automatizar tareas complejas como estadificar un cáncer (TNM) con altísima precisión, liberando a los humanos de tareas repetitivas.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="el-estándar-dicom" class="title-slide slide level1 center">
+<h1>El Estándar <abbr title="Digital Imaging and Communications in Medicine">DICOM</abbr></h1>
+
+</section>
+<section id="arquitectura-del-dato-semiestructurado" class="slide level2">
+<h2>Arquitectura del Dato Semiestructurado</h2>
+<p><abbr title="Digital Imaging and Communications in Medicine">DICOM</abbr> es más que un formato; es un protocolo que garantiza que la imagen nunca se separe de la información del paciente <span class="citation" data-cites="Quesque2024">(<a href="" role="doc-biblioref" onclick="return false;">Quesque, 2024</a>)</span>.</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<h3 id="estructura-de-archivo">Estructura de Archivo</h3>
+<ol type="1">
+<li><strong>File Preamble</strong>: 128 bytes (Compatibilidad).</li>
+<li><strong>DICOM Prefix</strong>: Cadena “DICM”.</li>
+<li><strong>File Meta Information</strong>: Sintaxis de transferencia, Endianness.</li>
+<li><strong>Data Set</strong>: Secuencia de elementos (Tags) + Píxeles.</li>
+</ol>
+<div class="fragment">
+<p>Cada elemento usa un Tag (ej. <code>0010,0010</code>) y una <strong><abbr title="Value Representation">VR</abbr></strong> (Representación de Valor) que puede ser explícita o implícita <span class="citation" data-cites="Basic2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>Overview</em>, 2026</a>)</span>.</p>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/architecture_dicom.png" style="width:100.0%"></p>
+<figcaption>Esquema conceptual de un archivo DICOM</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Pasamos a la imagenología. DICOM es el estándar universal. Es un dato “semiestructurado”: tiene una estructura muy rígida de metadatos (quién es el paciente, qué máquina se usó, cuándo) pegada inseparablemente a los datos binarios de la imagen (píxeles). Esto es vital para la seguridad clínica: no puedes tener la radiografía de Juan con la etiqueta de María. La estructura es binaria y compleja, con precargas, prefijos y “Tags” específicos para cada dato (ej. 0010,0010 es siempre el nombre del paciente).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="jerarquía-de-información-dicom" class="slide level2">
+<h2>Jerarquía de Información <abbr title="Digital Imaging and Communications in Medicine">DICOM</abbr></h2>
+<p>Organización lógica en los sistemas <abbr title="Picture Archiving and Communication System">PACS</abbr> <span class="citation" data-cites="Dicom2026a">(<a href="" role="doc-biblioref" onclick="return false;"><em>Understanding DICOM | Towards Data Science, fecha de acceso</em>, 2026</a>)</span>:</p>
+<div class="r-stack">
+<div class="fragment fade-in-then-out">
+<h3 id="nivel-paciente-uid">1. Nivel Paciente (<abbr title="Unique Identifier">UID</abbr>)</h3>
+<p>La entidad biológica que recibe la atención.</p>
+</div>
+<div class="fragment fade-in-then-out">
+<h3 id="nivel-estudio-study-instance-uid">2. Nivel Estudio (Study Instance <abbr title="Unique Identifier">UID</abbr>)</h3>
+<p>Un procedimiento específico (ej. TAC Abdomen) en una fecha dada.</p>
+</div>
+<div class="fragment fade-in-then-out">
+<h3 id="nivel-serie-series-instance-uid">3. Nivel Serie (Series Instance <abbr title="Unique Identifier">UID</abbr>)</h3>
+<p>Subconjunto del estudio (ej. fase arterial vs.&nbsp;venosa).</p>
+</div>
+<div class="fragment fade-in">
+<h3 id="nivel-instancia-sop-instance-uid">4. Nivel Instancia (<abbr title="Service-Object Pair">SOP</abbr> Instance <abbr title="Unique Identifier">UID</abbr>)</h3>
+<p>La imagen individual o “slice” del volumen.</p>
+</div>
+</div>
+<div class="fragment callout-card" style="margin-top: 50px;">
+<p><strong>Riesgo de Privacidad (<abbr title="Protected Health Information">PHI</abbr>)</strong>: La riqueza de metadatos facilita fugas de privacidad. Se requieren procesos de de-identificación según DICOM PS 3 Anexo E <span class="citation" data-cites="Imaging2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>Imaging Data 101 | UCSF Radiology, fecha de acceso</em>, 2026</a>)</span>.</p>
+</div>
+<aside class="notes">
+<p>Esta jerarquía es fundamental para entender cómo se organizan las imágenes en un PACS. 1. <strong>Paciente</strong>: La persona. 2. <strong>Estudio</strong>: “El TAC que me hice ayer”. Un evento temporal. 3. <strong>Serie</strong>: “El corte transversal con contraste”. Una configuración técnica dentro del estudio. 4. <strong>Instancia</strong>: La foto individual. <strong>Advertencia</strong>: Como hay tantos metadatos incrustados en CADA archivo, es facilísimo filtrar datos privados (PHI) al compartir imágenes para investigación. Limpiar DICOMs es mucho más que borrar el nombre del archivo; hay que editar las etiquetas internas binary-level.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="señales-bioeléctricas" class="title-slide slide level1 center">
+<h1>Señales Bioeléctricas</h1>
+
+</section>
+<section id="datos-de-series-temporales" class="slide level2">
+<h2>Datos de Series Temporales</h2>
+<p>Fenómenos dinámicos (ECG, EEG, EMG) que requieren alta frecuencia de muestreo.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="desafíos-de-ingeniería">Desafíos de Ingeniería</h3>
+<ul>
+<li><strong>Teorema de Nyquist-Shannon</strong>: La frecuencia de muestreo debe ser al menos el doble de la frecuencia máxima de la señal.</li>
+<li><strong>Volumen Masivo</strong>: Un registro clínico de una semana (32 kHz, 18 bits) puede pesar <strong>23 Terabytes</strong> <span class="citation" data-cites="Brinkmann2009">(<a href="" role="doc-biblioref" onclick="return false;">Brinkmann, 2009</a>)</span>.</li>
+<li><strong>Infraestructura</strong>: Requiere redes de alta velocidad (40 MB/s).</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="estándares-de-formato">Estándares de Formato</h3>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Formato</th>
+<th style="text-align: left;">Bits</th>
+<th style="text-align: left;">Uso Principal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong><abbr title="European Data Format">EDF</abbr></strong></td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">Sueño, EEG clínico (Estándar de oro)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong><abbr title="BioSemi Data Format">BDF</abbr></strong></td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">Investigación, alto rango dinámico</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>MFER</strong></td>
+<td style="text-align: left;">Var.</td>
+<td style="text-align: left;">Ondas médicas generales</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><em>Nota: <abbr title="BioSemi Data Format">BDF</abbr> reduce la necesidad de amplificación analógica excesiva <span class="citation" data-cites="httpsdoiorg1048550arxiv240500300">(<a href="" role="doc-biblioref" onclick="return false;">Huang &amp; Shen, 2024</a>)</span>.</em></p>
+</div>
+</div></div>
+<aside class="notes">
+<p>Las señales (electrocardiogramas, electroencefalogramas) son series temporales de altísima frecuencia. El desafío aquí es puramente “Big Data” físico. Un registro de alta fidelidad de una semana para UN paciente puede pesar 23 Terabytes. Esto rompe la mayoría de las infraestructuras hospitalarias estándar. Usamos formatos especializados como EDF (el estándar clásico) y BDF (24 bits, para investigación) porque necesitamos esa precisión temporal y rango dinámico que otros formatos no dan.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="interoperabilidad-hl7-y-fhir" class="title-slide slide level1 center">
+<h1>Interoperabilidad: <abbr title="Health Level Seven">HL7</abbr> y <abbr title="Fast Healthcare Interoperability Resources">FHIR</abbr></h1>
+
+</section>
+<section id="evolución-del-mensaje-al-recurso" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Evolución: Del Mensaje al Recurso</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<h3 id="hl7-v2"><abbr title="Health Level Seven">HL7</abbr> v2</h3>
+<ul>
+<li>Basado en <strong>Mensajes</strong>.</li>
+<li>Segmentos delimitados (PID, OBR).</li>
+<li>Rígido y propenso a inconsistencias (“Segmentos Z”) <span class="citation" data-cites="Fhir2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>FHIR vs HL7</em>, 2026</a>)</span>.</li>
+<li>Comunicación punto a punto.</li>
+</ul>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<h3 id="fhir"><abbr title="Fast Healthcare Interoperability Resources">FHIR</abbr></h3>
+<ul>
+<li>Basado en <strong>Recursos</strong>.</li>
+<li>Arquitectura web moderna (<abbr title="Application Programming Interface">API</abbr> RESTful).</li>
+<li>Modular e interconectado <span class="citation" data-cites="Kumagai2025">(<a href="" role="doc-biblioref" onclick="return false;">Kumagai, 2025</a>)</span>.</li>
+<li>Regla del 80/20: Núcleo ligero + Perfilado (Profiling).</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>La interoperabilidad es cómo los sistemas hablan entre sí. <strong>HL7 v2</strong> es el “abuelo”: funciona enviando mensajes de texto delimitados por barras. Es robusto pero muy rígido y punto a punto. <strong>FHIR</strong> (pronunciado “Fire”) es el presente y futuro. Funciona como la web moderna: Recursos y URLs. Si quieres los datos del paciente 123, vas a <code>/Patient/123</code>. FHIR también aplica la regla del 80/20: el estándar define el núcleo que usa todo el mundo (80%), y permite “Perfiles” para las necesidades específicas de cada sitio (el 20% restante), evitando la complejidad monolítica de intentos anteriores como HL7 v3.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="operaciones-fhir-y-rest" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Operaciones <abbr title="Fast Healthcare Interoperability Resources">FHIR</abbr> y REST</h2>
+<p>La interoperabilidad semántica se logra vinculando elementos a terminologías como <abbr title="Systematized Nomenclature of Medicine -- Clinical Terms">SNOMED CT</abbr> o <abbr title="Logical Observation Identifiers Names and Codes">LOINC</abbr>.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Operación</th>
+<th style="text-align: left;">Verbo HTTP</th>
+<th style="text-align: left;">URI Ejemplo</th>
+<th style="text-align: left;">Acción</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Leer</strong></td>
+<td style="text-align: left;"><code>GET</code></td>
+<td style="text-align: left;"><code>/Patient/123</code></td>
+<td style="text-align: left;">Recuperar recurso</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Buscar</strong></td>
+<td style="text-align: left;"><code>GET</code></td>
+<td style="text-align: left;"><code>/Observation?patient=123</code></td>
+<td style="text-align: left;">Listar observaciones</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Crear</strong></td>
+<td style="text-align: left;"><code>POST</code></td>
+<td style="text-align: left;"><code>/Observation</code></td>
+<td style="text-align: left;">Nueva observación</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Actualizar</strong></td>
+<td style="text-align: left;"><code>PUT</code></td>
+<td style="text-align: left;"><code>/Procedure/456</code></td>
+<td style="text-align: left;">Modificar recurso</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>FHIR utiliza los verbos estándar de la web (GET, POST, PUT). Esto facilita enormemente la vida a los desarrolladores de software, que ya saben usar APIs REST. Pero la sintaxis no lo es todo; necesitamos semántica. Por eso FHIR se enlaza con vocabularios controlados como SNOMED o LOINC, para que cuando digamos “Presión Arterial”, todos los sistemas entiendan exactamente de qué concepto clínico estamos hablando.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="granularidad-y-genómica" class="title-slide slide level1 center">
+<h1>Granularidad y Genómica</h1>
+
+</section>
+<section id="niveles-de-granularidad-de-la-información" class="slide level2">
+<h2>Niveles de Granularidad de la Información</h2>
+<p>La elección de la unidad de análisis define la validez de la investigación <span class="citation" data-cites="Patient2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>Patient and Encounter Level Filter Mode – DataDirect User Guide, fecha de acceso</em>, 2026</a>)</span>.</p>
+<ol type="1">
+<li><strong>Nivel Instancia</strong>: Dato atómico (una medición, una imagen).</li>
+<li><strong>Nivel Encuentro (Encounter)</strong>: Interacción específica (visita a urgencias). Datos transitorios.</li>
+<li><strong>Nivel Paciente (Patient)</strong>: Registro longitudinal. Trayectoria de enfermedades crónicas.</li>
+</ol>
+<div class="callout-card">
+<p><strong>Importante</strong>: Confundir “pacientes” con “encuentros” introduce sesgos graves en análisis de utilización de recursos hospitalarios <span class="citation" data-cites="bentley2012difference">(<a href="" role="doc-biblioref" onclick="return false;">Bentley et&nbsp;al., 2012</a>)</span>.</p>
+</div>
+<aside class="notes">
+<p>Un error metodológico clásico en ciencia de datos de salud es confundir la unidad de análisis. ¿Estás analizando visitas (Encuentros) o personas (Pacientes)? Un paciente puede tener 50 encuentros en un año. Si analizas a nivel de encuentro, ese paciente pesa 50 veces más que uno sano. Esto introduce sesgos graves. Para enfermedades crónicas, necesitamos la visión longitudinal a nivel de <strong>Paciente</strong>. Para gestión de urgencias (tiempos de espera), el nivel <strong>Encuentro</strong>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="integración-genómica-en-fhir" class="slide level2">
+<h2>Integración Genómica en <abbr title="Fast Healthcare Interoperability Resources">FHIR</abbr></h2>
+<p>La genómica añade una capa de complejidad longitudinal y masiva. <abbr title="Fast Healthcare Interoperability Resources">FHIR</abbr> reutiliza recursos existentes para facilitar la adopción <span class="citation" data-cites="Stellmach2023">(<a href="" role="doc-biblioref" onclick="return false;">Stellmach, 2023</a>)</span>.</p>
+<ul>
+<li><strong><code>DiagnosticReport</code></strong>: Contenedor del informe genético.</li>
+<li><strong><code>Observation</code></strong>: Variantes específicas o interpretación clínica.</li>
+<li><strong><code>MolecularSequence</code></strong>: Secuencia cruda de nucleótidos.</li>
+<li><strong><code>Specimen</code></strong>: Fuente biológica (tejido, sangre).</li>
+</ul>
+<aside class="notes">
+<p>La genómica es la última frontera de complejidad. FHIR maneja esto muy inteligentemente: no inventa todo de nuevo. Usa <code>DiagnosticReport</code> para el informe general. Usa <code>Observation</code> para las variantes específicas encontradas (igual que usaría Observation para una glucosa, pero con otra estructura). Esto permite que los sistemas actuales empiecen a integrar datos genómicos sin tener que reescribirse desde cero.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="conclusión-1" class="slide level2">
+<h2>Conclusión</h2>
+<p>El futuro de la salud digital depende de la transición de silos aislados a ecosistemas semánticamente coherentes.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="pilares-clave">Pilares Clave</h3>
+<ol type="1">
+<li>Gestión eficaz de datos <strong>no estructurados</strong> (80%).</li>
+<li>Implementación rigurosa de estándares (<abbr title="Digital Imaging and Communications in Medicine">DICOM</abbr>, <abbr title="Fast Healthcare Interoperability Resources">FHIR</abbr>).</li>
+<li>Comprensión profunda de la granularidad.</li>
+</ol>
+</div><div class="column" style="width:50%;">
+<h3 id="meta-final">Meta Final</h3>
+<p>Asegurar que la <strong>IA</strong> y los sistemas de soporte a la decisión operen sobre una base de información íntegra, privada y representativa de la complejidad humana.</p>
+</div></div>
+<aside class="notes">
+<p>Para terminar, la visión es clara: Tenemos que dominar el 80% de datos no estructurados. Tenemos que abrazar los estándares modernos (FHIR) y entender los clásicos (DICOM). Y, sobre todo, tenemos que entender que detrás de cada dato hay una jerarquía y un contexto. Solo así podremos construir una IA que no solo compute datos, sino que entienda pacientes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="módulo-3-ética-ley-y-registros-de-salud" class="title-slide slide level1 center" data-background-color="#111827">
+<h1>Módulo 3: Ética, Ley y Registros de Salud</h1>
+
+</section>
+<section id="transformación-del-dato-sanitario" class="slide level2" data-transition="zoom">
+<h2>Transformación del Dato Sanitario</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>La evolución del <span title="Electronic Health Record (Registro Electrónico de Salud)">EHR</span> no es solo administrativa, es un cambio de paradigma.</p>
+<ul>
+<li><strong>Origen:</strong> Notas manuscritas desorganizadas.</li>
+<li><strong>Actualidad:</strong> Ecosistema de alta complejidad.
+<ul>
+<li>Investigación genómica.</li>
+<li>Salud pública.</li>
+<li><span title="Inteligencia Artificial">IA</span> Biomédica.</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:40%;">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Punto Crítico</strong></p>
+</div>
+<div class="callout-content">
+<p>La intersección entre ética, marco legal y arquitectura técnica es vital. Ya no es documentación, es una actividad regulada (RGPD) e interoperable (<span title="Fast Healthcare Interoperability Resources">FHIR</span>). <span class="citation" data-cites="adeniji2024twenty">(<a href="" role="doc-biblioref" onclick="return false;">Chen, 2024</a>)</span></p>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<ol type="1">
+<li><strong>Cambio de Paradigma:</strong> El EHR ya no es solo un repositorio administrativo de facturación. Es un ecosistema vivo.</li>
+<li><strong>Complejidad:</strong> Ha pasado de notas simples a integrar genómica y datos de wearables.</li>
+<li><strong>Regulación:</strong> No es solo técnica, es legal. Todo dato de salud es “categoría especial” bajo el RGPD.</li>
+<li><strong>Interoperabilidad:</strong> El dato debe fluir, pero bajo estándares estrictos como FHIR.</li>
+</ol>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2">
+
+<div class="r-stack">
+<div class="fragment fade-in-then-out">
+<h3 id="antigüedad---siglo-xix">Antigüedad - Siglo XIX</h3>
+<ul>
+<li><strong>3.000 años atrás:</strong> Papiros y tablas de arcilla.</li>
+<li><strong>Finales s. XIX:</strong> Registros en papel en carpetas físicas.</li>
+<li><strong>Limitación:</strong> Acceso único, ilegibilidad, espacio físico. <span class="citation" data-cites="adeniji2024twenty">(<a href="" role="doc-biblioref" onclick="return false;">Chen, 2024</a>)</span></li>
+</ul>
+</div>
+<div class="fragment fade-in-then-out">
+<h3 id="s---1990s-los-inicios-digitales">1960s - 1990s: Los Inicios Digitales</h3>
+<ul>
+<li><strong>1968:</strong> Dr.&nbsp;Larry Weed introduce el <span title="Problem-Oriented Medical Record">POMR</span>.</li>
+<li><strong>Formato SOAP:</strong> (Subjetivo, Objetivo, Evaluación, Plan). Estándar actual.</li>
+<li><strong>1972:</strong> Primer <span title="Electronic Medical Record">EMR</span> (Instituto Regenstrief).</li>
+<li><strong>1996:</strong> <span title="Health Insurance Portability and Accountability Act">HIPAA</span> en EE.UU. <span class="citation" data-cites="History2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>The History of Electronic Health Records, fecha de acceso</em>, 2026</a>)</span></li>
+</ul>
+</div>
+<div class="fragment fade-in">
+<h3 id="presente-la-era-conectada">2000 - Presente: La Era Conectada</h3>
+<ul>
+<li><strong>Reducción de Costes:</strong> El hardware se vuelve viable.</li>
+<li><strong>HITECH Act (2009):</strong> Uso significativo de EHR.</li>
+<li><strong>Actualidad:</strong> Nube nativa, <span title="Inteligencia Artificial">IA</span>, imagen médica digital y genómica. <span class="citation" data-cites="MOHAMMEDFARHAN2021">(<a href="" role="doc-biblioref" onclick="return false;">FARHAN, 2021</a>)</span></li>
+</ul>
+</div>
+</div>
+<aside class="notes">
+<p><strong>Evolución en 3 Actos:</strong></p>
+<ol type="1">
+<li><strong>Antigüedad:</strong> La limitación física. Si el archivo se quema, la historia desaparece. Solo un médico puede verlo a la vez.</li>
+<li><strong>Inicios Digitales (60s-90s):</strong> Larry Weed y el POMR (SOAP). Se estructura el pensamiento médico. Nacen los primeros EMR (Regenstrief), pero el hardware es carísimo.</li>
+<li><strong>Era Conectada (2000+):</strong> Ley HITECH (USA) impulsa la adopción. Ahora estamos en la nube, integrando IA y Big Data. El reto ya no es almacenar, es <em>entender</em> y <em>proteger</em>.</li>
+</ol>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="marco-legal-el-rgpd-en-salud" class="slide level2">
+<h2>Marco Legal: El RGPD en Salud</h2>
+<p>El <span title="Reglamento General de Protección de Datos">RGPD</span> clasifica los datos de salud como <strong>categoría especial</strong>.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="artículo-9-prohibición-general">Artículo 9: Prohibición General</h3>
+<p>El tratamiento está <strong>prohibido por defecto</strong>, salvo excepciones: * Diagnóstico médico. * Gestión de sistemas de salud. * Interés público en salud transfronteriza. <span class="citation" data-cites="Gdpr2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>GDPR Compliance</em>, 2026</a>)</span></p>
+</div><div class="column" style="width:50%;">
+<h3 id="artículo-89-investigación">Artículo 89: Investigación</h3>
+<p>Permite el uso secundario bajo garantías: * Minimización de datos. * <span title="Sustitución de identificadores por códigos reversibles">Seudonimización</span>. * Respeto a derechos y libertades.</p>
+</div></div>
+<div class="cell" data-reveal="true" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    A("Dato de Salud") --&gt;|"Art. 9 RGPD"| B{"¿Prohibido?"}
+    B --&gt;|"Sí, por defecto"| C("STOP")
+    B --&gt;|"Excepción"| D{"Finalidad"}
+    D --&gt;|"Clínica/Gestión"| E("Tratamiento Lícito")
+    D --&gt;|"Investigación"| F("licitud por Art. 89")
+    F --&gt; G("Garantías Obligatorias:&lt;br/&gt;Seudonimización + Seguridad")
+    style A fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style C fill:#ffcdd2,stroke:#b71c1c,color:#b71c1c
+    style E fill:#c8e6c9,stroke:#2e7d32
+    style G fill:#fff9c4,stroke:#fbc02d
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<blockquote>
+<p>“La privacidad no debe obstaculizar el progreso científico, pero el progreso no puede sacrificar la privacidad.”</p>
+</blockquote>
+<aside class="notes">
+<ul>
+<li><strong>Art. 9:</strong> Prohibición por defecto. Solo se toca el dato si hay excepción (diagnóstico, salud pública, investigación).</li>
+<li><strong>Art. 89:</strong> La puerta abierta a la investigación. Exige garantías: minimizar datos y seudonimizar.</li>
+<li><strong>Mensaje Clave:</strong> El RGPD no prohíbe la ciencia, la regula. Busca el equilibrio entre el derecho individual y el beneficio colectivo.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="diferencia-crítica-seudonimización-vs.-anonimización" class="slide level2">
+<h2>Diferencia Crítica: Seudonimización vs.&nbsp;Anonimización</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Característica</th>
+<th style="text-align: left;">Seudonimización</th>
+<th style="text-align: left;">Anonimización</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Técnica</strong></td>
+<td style="text-align: left;">Sustitución de IDs por códigos.</td>
+<td style="text-align: left;">Eliminación irreversible de vínculo.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Reversibilidad</strong></td>
+<td style="text-align: left;"><strong>Sí</strong>, con clave separada.</td>
+<td style="text-align: left;"><strong>Imposible</strong> (teóricamente).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Estatus Legal</strong></td>
+<td style="text-align: left;"><strong>Dato Personal</strong> (RGPD).</td>
+<td style="text-align: left;"><strong>Dato NO Personal</strong> (Fuera RGPD).</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Uso Principal</strong></td>
+<td style="text-align: left;">Estudios longitudinales.</td>
+<td style="text-align: left;">Publicación de datasets abiertos.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Riesgo</strong></td>
+<td style="text-align: left;">Re-identificación si se roba la clave.</td>
+<td style="text-align: left;">Pérdida de utilidad analítica.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>“La anonimización reduce el riesgo, pero también reduce el valor del dato.” <span class="citation" data-cites="Differences2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>What are the Differences Between Anonymisation and Pseudonymisation | Privacy Company Blog, fecha de acceso</em>, 2026</a>)</span></p>
+</blockquote>
+<aside class="notes">
+<p>Esta es la distinción más importante de la charla: * <strong>Seudonimización:</strong> Cambiar nombre por código (A123). Hay una tabla de equivalencias (“La Llave”). Si tienes la llave, re-identificas. Legalmente <strong>SIGUE SIENDO DATO PERSONAL</strong>. * <strong>Anonimización:</strong> Romper el vínculo para siempre. No hay llave. Legalmente <strong>NO ES DATO PERSONAL</strong> (el RGPD no aplica). * <strong>El Trade-off:</strong> Datos anónimos son seguros pero menos útiles (pierdes la historia longitudinal del paciente).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interoperabilidad-rompiendo-silos-con-fhir" class="slide level2">
+<h2>Interoperabilidad: Rompiendo Silos con FHIR</h2>
+<p>Los sistemas antiguos funcionaban como “silos” cerrados. <span title="Fast Healthcare Interoperability Resources">HL7 FHIR</span> es la solución.</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><strong>Características de FHIR:</strong></p>
+<ol type="1">
+<li><strong>Recursos:</strong> Bloques de datos granulares (Pacientes, Observaciones).</li>
+<li><strong>Tecnología Web:</strong> API RESTful, JSON, OAuth2.</li>
+<li><strong>SMART on FHIR:</strong> Apps de terceros integradas en el flujo clínico. <span class="citation" data-cites="Fhir2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>FHIR vs HL7</em>, 2026</a>)</span></li>
+</ol>
+</div><div class="column" style="width:40%;">
+<div class="cell" data-reveal="true" data-scale="0.8" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+    participant App as App Paciente
+    participant Auth as OAuth2 Server
+    participant FHIR as API FHIR
+    participant EHR as Base de Datos
+
+    App-&gt;&gt;Auth: 1. Solicita Token
+    Auth--&gt;&gt;App: 2. Access Token
+    App-&gt;&gt;FHIR: 3. GET /Obs?code=123 (con Token)
+    FHIR-&gt;&gt;EHR: 4. SQL Query
+    EHR--&gt;&gt;FHIR: 5. Result
+    FHIR--&gt;&gt;App: 6. FHIR JSON Resource
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li><strong>Problema:</strong> Los “Silos”. El dato nace y muere en el hospital. Si te cambias de ciudad, tu historial no viaja contigo.</li>
+<li><strong>Solución FHIR:</strong> Es el “HTML” de la salud. Estándar web moderno (API REST, JSON).</li>
+<li><strong>Granularidad:</strong> No envías un PDF de 100 páginas, envías el recurso “Glucosa” exacto.</li>
+<li><strong>SMART on FHIR:</strong> Permite apps (“App Store”) sobre la historia clínica. Innovación externa segura.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="panorama-de-proveedores-de-ehr" class="slide level2">
+<h2>Panorama de Proveedores de EHR</h2>
+<p>Comparativa de filosofías de implementación <span class="citation" data-cites="Cerner2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>Cerner vs Epic EMR Integration</em>, 2026</a>)</span>:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Proveedor</th>
+<th style="text-align: left;">Filosofía</th>
+<th style="text-align: left;">Fortalezas</th>
+<th style="text-align: left;">Desafíos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Epic Systems</strong></td>
+<td style="text-align: left;"><em>Walled Garden</em></td>
+<td style="text-align: left;">Rendimiento, integración académica.</td>
+<td style="text-align: left;">Coste, rigidez.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Cerner (Oracle)</strong></td>
+<td style="text-align: left;"><em>Open Interop</em></td>
+<td style="text-align: left;">Flexibilidad, CommonWell.</td>
+<td style="text-align: left;">Consistencia modular.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>SAP Health</strong></td>
+<td style="text-align: left;"><em>ERP Integration</em></td>
+<td style="text-align: left;">Servicios nube, gestión administrativa.</td>
+<td style="text-align: left;">Menor flujo clínico directo.</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>No todos los EHR son iguales: * <strong>Epic:</strong> El “Jardín Vallado”. Funciona increíble si todo tu hospital es Epic. Difícil de conectar con fuera. Rendimiento brutal. * <strong>Cerner:</strong> Más abierto, filosofía de interoperabilidad. Bueno para entornos mixtos. * <strong>SAP:</strong> Fuerte en la parte administrativa/financiera y backend de datos, menos en la interfaz clínica del médico.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="seguridad-control-de-acceso-y-consentimiento" class="slide level2">
+<h2>Seguridad: Control de Acceso y Consentimiento</h2>
+<p>En la era de las APIs, el perímetro físico ha muerto. Necesitamos seguridad a nivel de recurso.</p>
+<h3 id="recurso-fhir-consent">1. Recurso FHIR <code>Consent</code></h3>
+<ul>
+<li>Define: <strong>Quién</strong> (investigador), <strong>Qué</strong> (datos genómicos), <strong>Para qué</strong> (oncología), <strong>Cuándo</strong> (periodo).</li>
+<li>Permite cumplir derechos de revocación del RGPD. <span class="citation" data-cites="Fhir2026c">(<a href="" role="doc-biblioref" onclick="return false;"><em>FHIR access data model and control system | Cloud Healthcare API, fecha de acceso</em>, 2026</a>)</span></li>
+</ul>
+<h3 id="etiquetas-de-seguridad-security-labels">2. Etiquetas de Seguridad (Security Labels)</h3>
+<p>Uso del HL7 <span title="Healthcare Classification System">HCS</span>:</p>
+<ul>
+<li><strong>Tags:</strong> <code>HIV</code>, <code>SUD</code> (Abuso de sustancias), <code>PSY</code> (Psiquiatría).</li>
+<li><strong>Confidencialidad:</strong> Normal, Restringido, Muy Restringido.</li>
+<li><strong>Inline Labeling:</strong> Ocultar solo el diagnóstico sensible, no todo el registro. <span class="citation" data-cites="Caven2024">(<a href="" role="doc-biblioref" onclick="return false;">Caven, 2024</a>)</span></li>
+</ul>
+<aside class="notes">
+<p>La seguridad perimetral (firewall) ya no sirve porque usamos APIs abiertas. * <strong>Resource Consent:</strong> El paciente dice “SÍ” a investigación oncológica, pero “NO” a psiquiatría. Granularidad fina. * <strong>Security Labels:</strong> Etiquetas como avisos de “Peligro”. * <code>PSY</code> (Psiquiatría), <code>HIV</code>. * <strong>Inline Labeling:</strong> El administrativo ve tu nombre y dirección, pero el campo “Diagnóstico: VIH” le sale oculto. El médico lo ve todo.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="el-mito-de-la-desidentificación" class="slide level2" data-transition="slide-in fade-out">
+<h2>El Mito de la Desidentificación</h2>
+<div class="r-fit-text">
+<p>Quitar el nombre NO es suficiente.</p>
+</div>
+<h3 id="ataques-de-vinculación-linkage-attacks">Ataques de Vinculación (Linkage Attacks)</h3>
+<p>Cruzar datos “anónimos” con bases de datos públicas permite re-identificar. <span class="citation" data-cites="Dolev2020">(<a href="" role="doc-biblioref" onclick="return false;">Dolev, 2020</a>)</span></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Caso Gobernador William Weld (1997)</strong></p>
+<ul>
+<li>Datos: Hospitalizaciones “anónimas” (GIC).</li>
+<li>Ataque: Compra del censo electoral ($20).</li>
+<li>Cruce: Fecha Nacimiento + Sexo + Código Postal (ZIP).</li>
+<li><strong>Resultado:</strong> Latanya Sweeney identificó sus diagnósticos. <span class="citation" data-cites="Identification2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>The "Re-identification" of Governor William Weld’s Medical Abstract</em>, 2026</a>)</span></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Caso Medicare Australia (2016)</strong></p>
+<ul>
+<li>Datos: 10% de facturación médica abierta.</li>
+<li>Ataque: Cruce con fechas de lesiones de deportistas famosos en prensa.</li>
+<li><strong>Resultado:</strong> Identificación de parlamentarios y atletas. <span class="citation" data-cites="Retracted2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>Retracted health records can be used to re-identify patients</em>, 2026</a>)</span></li>
+</ul>
+</div></div>
+<aside class="notes">
+<p><strong>El Mito:</strong> “Quito el nombre y el DNI y ya es seguro”. <strong>FALSO.</strong> * <strong>Linkage Attack:</strong> Cruzar tu base de datos “anónima” con una pública (censo, noticias). * <strong>Caso Weld:</strong> Latanya Sweeney compró el censo por $20. Cruzó Fecha Nacimiento + Sexo + Código Postal. Solo había un hombre en ese código postal con esa fecha: El Gobernador. * <strong>Lección:</strong> Somos extremadamente únicos. 3 datos simples nos delatan.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="futuro-espacio-europeo-de-datos-de-salud-ehds" class="slide level2">
+<h2>Futuro: Espacio Europeo de Datos de Salud (EHDS)</h2>
+<p>Un mercado único de datos para la UE. <span class="citation" data-cites="European2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>European Health Data Space Regulation (EHDS), fecha de acceso</em>, 2026</a>)</span></p>
+<div class="cell" data-reveal="true" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    ES("España&lt;br/&gt;NCPeH") &lt;--&gt;|"MyHealth@EU"| DE("Alemania&lt;br/&gt;NCPeH")
+    DE &lt;--&gt;|"MyHealth@EU"| FR("Francia&lt;br/&gt;NCPeH")
+    FR &lt;--&gt;|"MyHealth@EU"| ES
+    
+    subgraph "Infraestructura Transfronteriza"
+    ES
+    DE
+    FR
+    end
+    
+    style ES fill:#ce93d8,stroke:#4a148c
+    style DE fill:#81d4fa,stroke:#01579b
+    style FR fill:#a5d6a7,stroke:#1b5e20
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">EHDS 1 (Uso Primario)</a></li><li><a href="#tabset-2-2">EHDS 2 (Uso Secundario)</a></li><li><a href="#tabset-2-3">Implementación España</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<ul>
+<li><strong>Objetivo:</strong> Continuidad asistencial transfronteriza.</li>
+<li><strong>Ejemplo:</strong> Un español en urgencias de Alemania.</li>
+<li><strong>Infraestructura:</strong> MyHealth@EU (Patient Summary, Receta e-).</li>
+</ul>
+</div>
+<div id="tabset-2-2">
+<ul>
+<li><strong>Objetivo:</strong> Investigación, innovación y políticas.</li>
+<li><strong>Seguridad:</strong> Entornos de Procesamiento Seguro (<span title="Secure Processing Environment">SPE</span>).</li>
+<li><strong>Restricción:</strong> Los datos no se descargan, se analizan en remoto.</li>
+</ul>
+</div>
+<div id="tabset-2-3">
+<ul>
+<li><strong>HCDSNS:</strong> Historia Clínica Digital del SNS.</li>
+<li><strong>IMPaCT-Data:</strong> Infraestructura para medicina de precisión y genómica federada. <span class="citation" data-cites="Impact2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>IMPaCT-Data, integración de datos médicos para impulsar la ..., fecha de acceso</em>, 2026</a>)</span></li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Europa está creando un mercado único de datos (como el mercado único de mercancías). * <strong>EHDS 1 (Primario):</strong> Si me pongo enfermo en Berlín, el médico alemán ve mi historial español (Resumen). * <strong>EHDS 2 (Secundario):</strong> Investigadores pueden pedir datos a escala europea. * <strong>Seguridad:</strong> No se descargan los datos. El investigador envía el algoritmo a un “Búnker” (Secure Processing Environment) y solo recibe el resultado estadístico.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="conclusiones" class="slide level2">
+<h2>Conclusiones</h2>
+<div class="columns">
+<div class="column" style="width:70%;">
+<ol type="1">
+<li><strong>Evolución:</strong> Del papel a la nube federada es irreversible.</li>
+<li><strong>Responsabilidad:</strong> La tecnología (FHIR) rompe silos, pero aumenta el riesgo de exposición.</li>
+<li><strong>Privacidad:</strong> La anonimización absoluta es difícil; la gestión debe basarse en el <strong>riesgo</strong>.</li>
+<li><strong>Futuro:</strong> El <span title="Espacio Europeo de Datos de Salud">EHDS</span> equilibrará la utilidad clínica y la soberanía del paciente.</li>
+</ol>
+</div><div class="column" style="width:30%;">
+<div class="callout-custom">
+<p>“La informática biomédica debe proteger el secreto médico con la misma eficacia con la que explota el Big Data para salvar vidas.”</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>En resumen: 1. Es un viaje sin retorno hacia la nube federada. 2. FHIR es la herramienta técnica, pero la ética es la barrera de seguridad. 3. La privacidad perfecta no existe (siempre hay riesgo de re-identificación), hay que gestionar ese riesgo. 4. El futuro es el empoderamiento del paciente sobre sus propios datos (EHDS).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section id="módulo-4-arquitectura-de-la-información-en-salud" class="title-slide slide level1 center" data-background-color="#1f2937">
+<h1>Módulo 4: Arquitectura de la Información en Salud</h1>
+
+</section>
+
+<section>
+<section id="introducción-1" class="title-slide slide level1 center" data-background-image="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&amp;w=2070&amp;auto=format&amp;fit=crop" data-background-opacity="0.3">
+<h1>Introducción</h1>
+
+</section>
+<section id="el-nuevo-núcleo-estratégico" class="slide level2">
+<h2>El Nuevo Núcleo Estratégico</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>La arquitectura de la información ha evolucionado de ser soporte a ser el <strong>núcleo estratégico</strong> de la medicina de precisión y la <span title="Inteligencia Artificial">IA</span>.</p>
+<ul>
+<li><strong>Persistencia Políglota</strong>: Necesidad de manejar datos heterogéneos (clínicos, genómicos, sensores).</li>
+<li><strong>Estándares</strong>: Evaluación frente a <span title="Health Level Seven Fast Healthcare Interoperability Resources">HL7 FHIR</span> y <span title="Digital Imaging and Communications in Medicine">DICOM</span>.</li>
+<li><strong>Objetivo</strong>: Comparar arquitecturas <span title="Structured Query Language">SQL</span>, <span title="Not Only SQL">NoSQL</span> y Vectoriales.</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<img data-src="images/db_typology.png" class="r-stretch">
+<figcaption>Tipología de bases de datos según estructura</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Ya no basta con “guardar datos”. Hoy diseñamos cerebros digitales. La medicina moderna es <strong>políglota</strong>: habla el lenguaje estricto de la facturación (SQL), el lenguaje caótico de los sensores (NoSQL), el lenguaje de las redes biológicas (Grafos) y el lenguaje semántico de la IA (Vectores). Intentar forzar todo esto en una sola base de datos es el error número uno.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="el-fundamento-relacional-sql" class="title-slide slide level1 center">
+<h1>El Fundamento Relacional: <span title="Structured Query Language">SQL</span></h1>
+<aside class="notes">
+<p>Empecemos por el cimiento inamovible: SQL.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="la-integridad-clínica-y-acid" class="slide level2">
+<h2>La Integridad Clínica y <span title="Atomicity, Consistency, Isolation, Durability">ACID</span></h2>
+<p>Las bases de datos relacionales siguen siendo el estándar para <span title="Hospital Information Systems">HIS</span> y <span title="Electronic Health Records">EHR</span>.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="propiedades-acid">Propiedades <span title="Atomicity, Consistency, Isolation, Durability">ACID</span></h3>
+<ul>
+<li><strong>Atomicidad</strong>: Transacciones “todo o nada” (ej. prescripción + stock + cargo) <span class="citation" data-cites="Villaverde2022">(<a href="" role="doc-biblioref" onclick="return false;">Villaverde, 2022</a>)</span>.</li>
+<li><strong>Consistencia</strong>: Reglas de integridad referencial estrictas <span class="citation" data-cites="Nosql2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>SQL or NoSQL? A Real Story From Building Healthcare Software ...</em>, 2026</a>)</span>.</li>
+<li><strong>Aislamiento</strong>: Gestión de concurrencia mediante <span title="Multi-Version Concurrency Control">MVCC</span> <span class="citation" data-cites="Makris2020">(<a href="" role="doc-biblioref" onclick="return false;">Makris, 2021</a>)</span>.</li>
+<li><strong>Durabilidad</strong>: Persistencia garantizada (WAL) ante fallos de energía.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div title="⚠️ Impacto en Seguridad del Paciente">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>⚠️ Impacto en Seguridad del Paciente</strong></p>
+</div>
+<div class="callout-content">
+<p>La rigidez del esquema es una salvaguarda. Si una relación paciente-observación se rompe, el médico podría visualizar datos incorrectos. <span title="Atomicity, Consistency, Isolation, Durability">ACID</span> impide estados ambiguos.</p>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>¿Por qué seguimos usando tecnología de los 70 (SQL) en 2025? Por una palabra: <strong>ACID</strong>. Imaginen prescribir morfina. El sistema debe restar stock, añadir la orden a enfermería y cobrar al seguro. Si se va la luz a mitad, no puede pasar que “se cobre pero no se medique”. O pasa todo, o no pasa nada (Atomicidad). La rigidez del SQL no es un defecto; es un cinturón de seguridad.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="implementación-de-fhir-sobre-sql" class="slide level2">
+<h2>Implementación de <span title="Fast Healthcare Interoperability Resources">FHIR</span> sobre <span title="Structured Query Language">SQL</span></h2>
+<p>Aunque <span title="Fast Healthcare Interoperability Resources">FHIR</span> usa JSON/XML, su lógica es relacional.</p>
+<ul>
+<li>Los servidores empresariales (HAPI, Microsoft, IBM) usan motores <span title="Structured Query Language">SQL</span> internos.</li>
+<li><strong>PostgreSQL</strong>: Motor de elección por su soporte avanzado de <code>JSONB</code>.
+<ul>
+<li>Permite indexar recursos <span title="Fast Healthcare Interoperability Resources">FHIR</span>.</li>
+<li>Mantiene la integridad para pistas de auditoría (<span title="Health Insurance Portability and Accountability Act">HIPAA</span>).</li>
+</ul></li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Característica</th>
+<th style="text-align: left;">Implementación <span title="Structured Query Language">SQL</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Modelo</strong></td>
+<td style="text-align: left;">Tablas y Tuplas rígidas <span class="citation" data-cites="Villaverde2022">(<a href="" role="doc-biblioref" onclick="return false;">Villaverde, 2022</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Garantía</strong></td>
+<td style="text-align: left;">Cumplimiento estricto de <span title="Atomicity, Consistency, Isolation, Durability">ACID</span> <span class="citation" data-cites="Soumma2025">(<a href="" role="doc-biblioref" onclick="return false;">Soumma, 2025</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Uso Clínico</strong></td>
+<td style="text-align: left;">Facturación, <span title="Master Patient Index">MPI</span>, Admisión</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>FHIR parece moderno y flexible (JSON), pero en el fondo es relacional. Un paciente “tiene” observaciones. Por eso, la industria usa PostgreSQL con JSONB. Combinamos la flexibilidad del documento JSON con la robustez transaccional del SQL. Es el híbrido perfecto para el core clínico.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="el-mundo-nosql" class="title-slide slide level1 center">
+<h1>El Mundo <span title="Not Only SQL">NoSQL</span></h1>
+<aside class="notes">
+<p>Pero el SQL no escala bien cuando le tiras millones de datos por segundo.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="desafío-de-variedad-y-velocidad" class="slide level2">
+<h2>Desafío de Variedad y Velocidad</h2>
+<p>El “Big Data Clínico” (Genómica, Telemetría) desafía los esquemas rígidos.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="limitaciones-sql">Limitaciones <span title="Structured Query Language">SQL</span></h3>
+<ul>
+<li>Escalado vertical costoso.</li>
+<li>Dificultad con datos semiestructurados.</li>
+</ul>
+<h3 id="ventaja-nosql">Ventaja <span title="Not Only SQL">NoSQL</span></h3>
+<ul>
+<li>Escalabilidad horizontal.</li>
+<li>Flexibilidad de esquema.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div title="⚠️ Precaución: Consistencia Eventual">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>⚠️ Precaución: Consistencia Eventual</strong></p>
+</div>
+<div class="callout-content">
+<p>Muchos sistemas <span title="Not Only SQL">NoSQL</span> priorizan disponibilidad sobre consistencia inmediata. Aceptable para logs de temperatura, <strong>no</strong> para administración de dosis críticas <span class="citation" data-cites="Asiminidis2018">(<a href="" role="doc-biblioref" onclick="return false;">Asiminidis, 2018</a>)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Aquí entran los datos de sensores, IoT, genómica. NoSQL escala horizontalmente (añades servidores baratos y listo). Pero cuidado: <strong>Consistencia Eventual</strong>. Si anotas una temperatura en un nodo, puede tardar milisegundos en replicarse a los otros. Para ver una tendencia de fiebre, da igual. Para decidir una dosis de adrenalina en la UCI, esos milisegundos pueden ser fatales. No usar NoSQL para decisiones críticas de vida o muerte inmediata.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tipologías-nosql-en-salud" class="slide level2">
+<h2>Tipologías <span title="Not Only SQL">NoSQL</span> en Salud</h2>
+<div class="panel-tabset">
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Documental</a></li><li><a href="#tabset-3-2">Clave-Valor</a></li><li><a href="#tabset-3-3">Columnar</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1">
+<p><strong>Tecnología</strong>: MongoDB. <strong>Uso</strong>: Notas clínicas, historiales semiestructurados. <strong>Ventaja</strong>: Ingesta de datos heterogéneos sin alterar el esquema global. Ideal para integrar diversos fabricantes de dispositivos <span class="citation" data-cites="Villaverde2022">(<a href="" role="doc-biblioref" onclick="return false;">Villaverde, 2022</a>)</span>.</p>
+</div>
+<div id="tabset-3-2">
+<p><strong>Tecnología</strong>: Redis. <strong>Uso</strong>: Caché de alta velocidad, sesiones de usuario, alertas críticas. <strong>Ventaja</strong>: Latencia de milisegundos donde la velocidad prima sobre la relación <span class="citation" data-cites="Nosql2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>SQL or NoSQL? A Real Story From Building Healthcare Software ...</em>, 2026</a>)</span>.</p>
+</div>
+<div id="tabset-3-3">
+<p><strong>Tecnología</strong>: Cassandra / HBase. <strong>Uso</strong>: Telemetría (IoT médico), logs de auditoría a largo plazo. <strong>Ventaja</strong>: Rendimiento superior (40-69%) en consultas analíticas sobre terabytes de datos históricos <span class="citation" data-cites="Soumma2025">(<a href="" role="doc-biblioref" onclick="return false;">Soumma, 2025</a>)</span>.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Tres sabores de NoSQL: 1. <strong>Documental (MongoDB)</strong>: Para guardar formularios médicos que cambian cada dos meses. Flexibilidad total. 2. <strong>Clave-Valor (Redis)</strong>: Velocidad pura. Para alertas en tiempo real (“¡Paciente en paro!”). 3. <strong>Columnar (Cassandra)</strong>: Para guardar 5 años de datos de monitorización de 1000 camas. Escribes millones de datos por segundo sin despeinarte.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="grafos-de-conocimiento" class="title-slide slide level1 center">
+<h1>Grafos de Conocimiento</h1>
+<div title="Grafos y Descubrimiento Biomédico">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Grafos y Descubrimiento Biomédico</strong></p>
+</div>
+<div class="callout-content">
+<p>Los grafos son herramientas fundamentales en la farmacogenómica, permitiendo descubrir interacciones imprevistas entre fármacos al mapear extensas redes de proteínas y patologías <span class="citation" data-cites="Ahmed2020">(<a href="" role="doc-biblioref" onclick="return false;">Ahmed, 2020</a>)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>La biología no son tablas; son redes. Genes interactúan con proteínas, que afectan a enfermedades, que se tratan con fármacos. Modelar esto en SQL es una pesadilla de JOINs. En un Grafo (Neo4j), “A conecta con B” es la unidad básica de información.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="navegando-la-complejidad" class="slide level2">
+<h2>Navegando la Complejidad</h2>
+<p>En un Grafo, las relaciones son “ciudadanos de primera clase”.</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li><strong>Modelado</strong>: Un síntoma no es texto, es un nodo conectado a diagnósticos, genes y fármacos.</li>
+<li><strong>Caso COVID-19</strong>: Neo4j permitió rastreo de contactos mediante consultas de “múltiples saltos”, identificando cadenas de transmisión invisibles para <span title="Structured Query Language">SQL</span> <span class="citation" data-cites="Ahmed2020">(<a href="" role="doc-biblioref" onclick="return false;">Ahmed, 2020</a>)</span>.</li>
+<li><strong>Medicina de Precisión</strong>:
+<ul>
+<li><strong>PrimeKG</strong>: Integra 20 datasets (129k nodos, 4M relaciones).</li>
+<li><strong>Reposicionamiento de fármacos</strong>: Basado en proximidad topológica <span class="citation" data-cites="Han2025">(<a href="" role="doc-biblioref" onclick="return false;">Han, 2025</a>)</span>.</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:40%;">
+<blockquote>
+<p>“Los grafos permiten descubrir interacciones imprevistas entre fármacos al mapear redes de proteínas.” <span class="citation" data-cites="Ahmed2020">(<a href="" role="doc-biblioref" onclick="return false;">Ahmed, 2020</a>)</span></p>
+</blockquote>
+</div></div>
+<aside class="notes">
+<p>El poder de los grafos: En COVID, permitieron rastrear contactos de “amigo del amigo del amigo” en milisegundos. En Farmacología, permiten ver que un fármaco para la artritis (nodo A) está “cerca” de una proteína (nodo B) implicada en el Alzheimer (nodo C). ¡Eureka! Reposicionamiento de fármacos por topología.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="bases-de-datos-vectoriales-e-ia" class="title-slide slide level1 center">
+<h1>Bases de Datos Vectoriales e <span title="Inteligencia Artificial">IA</span></h1>
+<div class="column-body-outset">
+<div id="fig-vector-search" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-vector-search-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="images/vector_search.png">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vector-search-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Proceso de búsqueda semántica en un espacio vectorial para la recuperación de casos clínicos similares.
+</figcaption>
+</figure>
+</div>
+</div>
+<aside class="notes">
+<p>La nueva frontera. Los ordenadores tradicionales entienden palabras clave. Las Bases Vectoriales entienden <strong>significados</strong>. Convierten “Dolor de pecho” en un vector numérico [0.1, 0.9, …]. “Infarto” se convierte en [0.1, 0.8, …]. ¡Están matemáticamente cerca! Esto permite buscar por conceptos, no por palabras exactas.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="búsqueda-semántica-y-embeddings" class="slide level2">
+<h2>Búsqueda Semántica y Embeddings</h2>
+<p>Soporte para <span title="Large Language Models">LLM</span> y <span title="Retrieval-Augmented Generation">RAG</span>.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="el-problema">El Problema</h3>
+<p>Búsqueda por palabras clave falla ante la variabilidad léxica: * <em>“Disnea de esfuerzo”</em> vs <em>“Falta de aire”</em>.</p>
+<h3 id="la-solución-vectorial">La Solución Vectorial</h3>
+<p>Los <strong>Embeddings</strong> (vectores numéricos) capturan la esencia semántica. El sistema identifica que ambos conceptos están matemáticamente “cerca” <span class="citation" data-cites="Best2025">(<a href="" role="doc-biblioref" onclick="return false;"><em>Best Vector Databases in 2025</em>, 2025</a>)</span>.</p>
+<div title="El Reto de la Precisión Vectorial">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>El Reto de la Precisión Vectorial</strong></p>
+</div>
+<div class="callout-content">
+<p>A diferencia de SQL, la búsqueda vectorial es aproximada. En un contexto clínico, es vital ajustar los umbrales de similitud para evitar “alucinaciones” del modelo de IA <span class="citation" data-cites="Best2025">(<a href="" role="doc-biblioref" onclick="return false;"><em>Best Vector Databases in 2025</em>, 2025</a>)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/fig-rag-concept.png"></p>
+<figcaption>Concepto RAG</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p>Si un médico escribe “Cefalea” y otor “Dolor de cabeza”, SQL cree que son cosas distintas. La base vectorial sabe que son sinónimos. Pero cuidado: la búsqueda es probabilística (“se parece al 95%”). En medicina, a veces ese 5% de diferencia es entre “Tuberculosis” y “Tumor”. Hay que ajustar muy bien los umbrales.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rag-mitigando-alucinaciones" class="slide level2">
+<h2><span title="Retrieval-Augmented Generation">RAG</span>: Mitigando Alucinaciones</h2>
+<div class="r-stack">
+<div class="fragment fade-in-then-out">
+<p><strong>1. Consulta del Médico</strong> El profesional realiza una pregunta clínica compleja en lenguaje natural.</p>
+</div>
+<div class="fragment fade-in-then-out">
+<p><strong>2. Recuperación Semántica</strong> La DB Vectorial recupera guías clínicas y protocolos internos relevantes (contexto).</p>
+</div>
+<div class="fragment fade-in">
+<p><strong>3. Generación Aumentada</strong> El <span title="Large Language Model">LLM</span> genera la respuesta basándose <strong>solo</strong> en la evidencia recuperada, reduciendo alucinaciones y citando fuentes internas <span class="citation" data-cites="Xu2025">(<a href="" role="doc-biblioref" onclick="return false;">Xu, 2025</a>)</span>.</p>
+</div>
+</div>
+<aside class="notes">
+<p>Este es el uso estrella hoy: RAG. Conectamos una “Biblioteca de Confianza” (Guías clínicas en Vector DB) con un “Poeta” (ChatGPT). Cuando preguntas, el sistema primero busca los libros correctos en la biblioteca, y luego le dice al poeta: “Usa SOLO esta información para responder”. Así eliminamos las alucinaciones.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="comparativa-de-motores-vectoriales" class="slide level2">
+<h2>Comparativa de Motores Vectoriales</h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 35%">
+<col style="width: 35%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Motor</th>
+<th style="text-align: left;">Tipo</th>
+<th style="text-align: left;">Fortalezas</th>
+<th style="text-align: left;">Limitaciones</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Pinecone</strong></td>
+<td style="text-align: left;">SaaS</td>
+<td style="text-align: left;">Puesta en marcha rápida, latencia &lt;50ms.</td>
+<td style="text-align: left;">Datos en la nube (Soberanía), Lock-in.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Milvus</strong></td>
+<td style="text-align: left;">Open Source</td>
+<td style="text-align: left;">Escala masiva (trillones de vectores), Distribuido.</td>
+<td style="text-align: left;">Alta complejidad operativa.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Weaviate</strong></td>
+<td style="text-align: left;">Open Source</td>
+<td style="text-align: left;"><strong>Búsqueda Híbrida</strong> (Vectores + Filtros metadatos).</td>
+<td style="text-align: left;">Rendimiento extremo inferior a Milvus.</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>¿Cuál elegir? * <strong>Pinecone</strong>: Fácil, rápido, nube. Pero tus datos salen del hospital. * <strong>Milvus</strong>: La bestia. Para millones de millones de vectores. Difícil de mantener. * <strong>Weaviate</strong>: El equilibrado. Permite búsqueda híbrida (“Busca documentos sobre cáncer que sean del año 2024”). Muy útil.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="integración-y-frameworks-avanzados" class="title-slide slide level1 center">
+<h1>Integración y Frameworks Avanzados</h1>
+
+</section>
+<section id="pipelines-dicom-a-fhir" class="slide level2">
+<h2>Pipelines <span title="Digital Imaging and Communications in Medicine">DICOM</span> a <span title="Fast Healthcare Interoperability Resources">FHIR</span></h2>
+<p>Rompiendo los silos entre <span title="Picture Archiving and Communication System">PACS</span> y <span title="Electronic Health Records">EHR</span>.</p>
+<ol type="1">
+<li><strong>Ingesta</strong>: RSNA MIRC CTP recibe estudios <span title="Digital Imaging and Communications in Medicine">DICOM</span>.</li>
+<li><strong>Transformación</strong>: Mapeo de tags <span title="Digital Imaging and Communications in Medicine">DICOM</span> a terminologías estándar (<span title="Systematized Nomenclature of Medicine -- Clinical Terms">SNOMED-CT</span>, <span title="Logical Observation Identifiers Names and Codes">LOINC</span>).</li>
+<li><strong>Transporte</strong>: <strong>Apache Kafka</strong> gestiona el flujo masivo asíncrono.</li>
+<li><strong>Persistencia</strong>: Creación de recursos <code>ImagingStudy</code> en <span title="Fast Healthcare Interoperability Resources">FHIR</span> <span class="citation" data-cites="zeng2020large">(<a href="" role="doc-biblioref" onclick="return false;">Zeng et&nbsp;al., 2020</a>)</span>.</li>
+</ol>
+<blockquote>
+<p>Permite investigación clínica mediante APIs REST sin acceder al binario del PACS.</p>
+</blockquote>
+<aside class="notes">
+<p>Uniendo mundos: Extraemos metadatos de las imágenes (DICOM) y los convertimos en recursos clínicos (FHIR). Así un investigador puede buscar “¿Cuántas resonancias de rodilla hicimos?” sin tener que bajarse los Terabytes de imágenes reales.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="mega-rag" class="slide level2">
+<h2>MEGA-<span title="Retrieval-Augmented Generation">RAG</span></h2>
+<p>Framework de 4 etapas para la veracidad en IA Biomédica <span class="citation" data-cites="Xu2025">(<a href="" role="doc-biblioref" onclick="return false;">Xu, 2025</a>)</span>:</p>
+<div class="cell" data-reveal="true" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    Q[Consulta Médica] --&gt; A[Recuperación Multifuente]
+    A --&gt;|PubMed + OMS + KG| B[Re-ranking]
+    B --&gt;|Cross-Encoders| C[Evaluación SEAE]
+    C --&gt;|BERTScore| D{"¿Consistente?"}
+    D --&gt;|Si| E[Respuesta Verificada]
+    D --&gt;|No| F[Auto-Clarificación]
+    F --&gt;|Búsqueda Secundaria| A
+    
+    style D fill:#f96,stroke:#333,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>MEGA-RAG es el siguiente nivel. No se fía de la primera búsqueda. 1. Busca en todos lados (PubMed, Grafos). 2. Re-ordena lo que encuentra. 3. Verifica si la respuesta que va a dar se basa realmente en la evidencia. 4. Si duda, se “auto-corrige” buscando más. Es IA con pensamiento crítico.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="seguridad-y-gobernanza" class="title-slide slide level1 center">
+<h1>Seguridad y Gobernanza</h1>
+
+</section>
+<section id="comparativa-de-controles" class="slide level2">
+<h2>Comparativa de Controles</h2>
+<p>La gestión de identidad (<span title="Identity and Access Management">IAM</span>) y <span title="General Data Protection Regulation">GDPR</span> es transversal.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Control</th>
+<th style="text-align: left;"><span title="Structured Query Language">SQL</span></th>
+<th style="text-align: left;"><span title="Not Only SQL">NoSQL</span></th>
+<th style="text-align: left;">Vectorial</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Cifrado</strong></td>
+<td style="text-align: left;">Nativo / Maduro (TDE)</td>
+<td style="text-align: left;">Soportado (Motores líderes)</td>
+<td style="text-align: left;">Dependiente de Infraestructura</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Auditoría</strong></td>
+<td style="text-align: left;">Granular (Sentencia SQL)</td>
+<td style="text-align: left;">Nivel Documento/Colección</td>
+<td style="text-align: left;">Trazabilidad API / Índices</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Aislamiento</strong></td>
+<td style="text-align: left;">Row-Level Security</td>
+<td style="text-align: left;">Sharding físico</td>
+<td style="text-align: left;">Namespaces lógicos</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<blockquote>
+<p><strong>Nota sobre Grafos</strong>: Facilitan auditorías <span title="General Data Protection Regulation">GDPR</span> al visualizar gráficamente el flujo del dato personal entre sistemas <span class="citation" data-cites="Gdpr2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>GDPR Compliance</em>, 2026</a>)</span>.</p>
+</blockquote>
+</div>
+<aside class="notes">
+<p>La seguridad no es negociable. SQL sigue siendo el rey de la seguridad granular (puedo decir “este usuario no ve esta columna”). Vectorial y NoSQL dependen más de la infraestructura. Curiosamente, los Grafos son geniales para el GDPR: sirven para rastrear “dónde han ido mis datos”.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="conclusión-2" class="title-slide slide level1 center">
+<h1>Conclusión</h1>
+
+</section>
+<section id="arquitectura-de-persistencia-políglota" class="slide level2">
+<h2>Arquitectura de Persistencia Políglota</h2>
+<p>No existe una “talla única”. La solución robusta es híbrida.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong><span title="Structured Query Language">SQL</span></strong>: Core transaccional y “Verdad Clínica”.</li>
+<li><strong><span title="Not Only SQL">NoSQL</span></strong>: Ingesta masiva de sensores y notas.</li>
+<li><strong>Grafos</strong>: Razonamiento biológico y redes.</li>
+<li><strong>Vectorial</strong>: Inteligencia Artificial y <span title="Retrieval-Augmented Generation">RAG</span>.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/polyglot_arch.png"></p>
+<figcaption>Arquitectura Políglota</figcaption>
+</figure>
+</div>
+</div></div>
+<blockquote>
+<p>“El reto es la orquestación, transformando el océano de datos en conocimiento accionable.” <span class="citation" data-cites="Villaverde2022">(<a href="" role="doc-biblioref" onclick="return false;">Villaverde, 2022</a>)</span></p>
+</blockquote>
+<aside class="notes">
+<p>Conclusión: Persistencia Políglota. Usen SQL para lo crítico. NoSQL para lo masivo. Grafos para lo complejo. Vectores para la IA. La magia está en la orquestación de estas cuatro fuerzas.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="módulo-5-ingeniería-de-características-y-preprocesamiento-en-salud" class="title-slide slide level1 center" data-background-color="#374151">
+<h1>Módulo 5: Ingeniería de Características y Preprocesamiento en Salud</h1>
+
+</section>
+<section id="introducción-el-dato-como-combustible" class="slide level2">
+<h2>Introducción: El Dato como Combustible</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<blockquote>
+<p>“Si el dato crudo es el petróleo de la <abbr title="Inteligencia Artificial">IA</abbr> moderna, la ingeniería de características es la refinería.”</p>
+</blockquote>
+<ul>
+<li>En salud, este proceso es <strong>técnico, clínico y ético</strong>.</li>
+<li>Un modelo predictivo es tan bueno como la representación de los datos que lo alimentan <span class="citation" data-cites="Data2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>Data Preprocessing in Healthcare</em>, 2026</a>)</span>.</li>
+<li>El conocimiento del dominio médico es insustituible.</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<div class="clinical-box">
+<p><strong>Objetivos del Capítulo</strong> 1. Limpieza de datos y <abbr title="Electronic Health Records / Historia Clínica Electrónica">EHR</abbr>. 2. Manejo de Outliers. 3. Imputación de datos faltantes. 4. Sesgo y Equidad (Fairness).</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>Existe la idea errónea de que el Deep Learning hace magia con cualquier dato. Falso. Si el dato es el “petróleo”, la ingeniería de características es la “refinería”. No puedes poner petróleo crudo en un Ferrari (tu modelo Transformer). Necesitas gasolina refinada. En salud, refinar es peligroso. Si limpias demasiado, borras a los pacientes más graves. Si no limpias, el modelo aprende ruido. El objetivo de hoy es aprender a refinar datos clínicos sin destruir la información vital.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="limpieza-de-datos-y-outliers" class="title-slide slide level1 center">
+<h1>Limpieza de Datos y Outliers</h1>
+<div class="column-margin" title="Outliers: ¿Artefacto o Clínica?">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Outliers: ¿Artefacto o Clínica?</strong></p>
+</div>
+<div class="callout-content">
+<p>Un outlier en salud puede ser un error de sensor o una emergencia médica. La decisión de eliminarlo debe basarse en el conocimiento fisiológico y no solo en criterios estadísticos rígidos.</p>
+</div>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>La primera regla del preprocesamiento clínico: Un outlier no siempre es un error. Un ritmo cardíaco de 180 puede ser ruido del sensor… o puede ser una taquicardia ventricular. Si nuestro algoritmo de limpieza elimina automáticamente todo lo que se sale de la norma, estaremos creando un modelo que <strong>ignora a los pacientes que se están muriendo</strong>. La limpieza debe basarse en la fisiología, no solo en la estadística.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tipología-de-errores-clínicos" class="slide level2">
+<h2>Tipología de Errores Clínicos</h2>
+<p>Distinguir entre error de artefacto y patología extrema es vital <span class="citation" data-cites="Data2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>Data Preprocessing in Healthcare</em>, 2026</a>)</span>.</p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<h3 id="errores-de-unidad">1. Errores de Unidad</h3>
+<ul>
+<li><strong>Problema:</strong> Inconsistencia en escalas (cm vs m).</li>
+<li><strong>Impacto:</strong> Un modelo podría interpretar a un paciente como un gigante.</li>
+<li><strong>Solución:</strong> Normalización rigurosa <span class="citation" data-cites="Pak2024">(<a href="" role="doc-biblioref" onclick="return false;">Pak, 2024</a>)</span>.</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3 id="artefactos-fisiológicos">2. Artefactos Fisiológicos</h3>
+<ul>
+<li><strong>Ejemplo:</strong> Ruido muscular en un <abbr title="Electrocardiograma">ECG</abbr>.</li>
+<li><strong>Riesgo:</strong> Simula arritmia ventricular.</li>
+<li><strong>Técnica:</strong> Filtrado de paso banda y <abbr title="Empirical Mode Decomposition">EMD</abbr> <span class="citation" data-cites="Malik2022">(<a href="" role="doc-biblioref" onclick="return false;">Malik, 2022</a>)</span>.</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3 id="datos-imposibles">3. Datos Imposibles</h3>
+<ul>
+<li><strong>Ejemplo:</strong> Temp 300°C o Presión Sistólica -20 mmHg.</li>
+<li><strong>Validación:</strong> Reglas de rango fisiológico (ej. Temp: 35°C - 43°C) <span class="citation" data-cites="Data2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>Data Preprocessing in Healthcare</em>, 2026</a>)</span>.</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Tenemos tres enemigos principales: 1. <strong>Unidades</strong>: El clásico error. Un sistema mide en metros (1.75) y otro en cm (175). Para el modelo, el segundo paciente es un gigante de 175 metros. 2. <strong>Artefactos</strong>: Ruido real. Si te mueves mientras te hacen un ECG, tus músculos generan electricidad que parece un infarto. Necesitamos filtros de señal avanzados para limpiar esto. 3. <strong>Datos Imposibles</strong>: Temperatura de 300°C. Esto es fácil: sabemos que es fisiológicamente imposible estar vivo a esa temperatura, así que se puede borrar con seguridad.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="estrategias-de-detección-de-anomalías" class="slide level2">
+<h2>Estrategias de Detección de Anomalías</h2>
+<div class="r-stack">
+<div class="fragment fade-in-then-out">
+<div class="column-body-outset">
+<div id="fig-outlier-detection" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-outlier-detection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="images/outlier_detection.png">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-outlier-detection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3: Métodos estadísticos (Z-Score e IQR) para la identificación de anomalías y artefactos en datos clínicos.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment fade-in-then-out">
+<h3 id="método-z-score">Método Z-Score</h3>
+<ul>
+<li>Identifica valores &gt; 3 desviaciones estándar.</li>
+<li><strong>Uso:</strong> Distribuciones gaussianas (ej. altura).</li>
+<li><strong>Peligro:</strong> Fallo en distribuciones de “cola larga” (costos, dímero-D en <abbr title="Coronavirus Disease 2019">COVID-19</abbr>) <span class="citation" data-cites="Baykal2024">(<a href="" role="doc-biblioref" onclick="return false;">Baykal, 2024</a>)</span>.</li>
+</ul>
+</div>
+<div class="fragment fade-in-then-out">
+<h3 id="rango-intercuartílico-iqr">Rango Intercuartílico (<abbr title="Interquartile Range">IQR</abbr>)</h3>
+<ul>
+<li><strong>Robusto:</strong> Define outliers fuera de <span class="math inline">\(Q1 - 1.5*IQR\)</span> y <span class="math inline">\(Q3 + 1.5*IQR\)</span>.</li>
+<li>Menos sensible a valores extremos que la media <span class="citation" data-cites="Baykal2024">(<a href="" role="doc-biblioref" onclick="return false;">Baykal, 2024</a>)</span>.</li>
+</ul>
+</div>
+<div class="fragment fade-in">
+<h3 id="isolation-forests">Isolation Forests</h3>
+<ul>
+<li>Aprendizaje no supervisado para alta dimensión.</li>
+<li>Detecta perfiles de laboratorio “raros” que no encajan en patologías estándar <span class="citation" data-cites="MaryShyni2023">(<a href="" role="doc-biblioref" onclick="return false;">Shyni, 2023</a>)</span>.</li>
+</ul>
+</div>
+</div>
+<div class="fragment warning-box" style="margin-top: 50px;">
+<p><strong>Precaución:</strong> Un outlier puede ser una emergencia médica. La eliminación debe basarse en fisiología, no solo estadística.</p>
+</div>
+<aside class="notes">
+<p>¿Cómo detectamos lo raro? * <strong>Z-Score</strong>: Asume que todo es una campana de Gauss. Sirve para la altura. NO sirve para el costo hospitalario (donde unos pocos pacientes gastan millones). * <strong>IQR</strong>: Más robusto. Usa cuartiles, así que un valor extremo no rompe la métrica. Este método se representa comúnmente en los diagramas de caja (boxplots), donde los puntos fuera de los bigotes son los valores atípicos. * <strong>Isolation Forests</strong>: IA para detectar anomalías. Es capaz de ver que “Glucosa alta + Insulina baja” es raro si no encaja con el patrón habitual, incluso si los valores individuales no son extremos. * <strong>Dímero-D</strong>: Se utiliza como prueba de laboratorio para descartar trastornos de coagulación graves</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="el-problema-de-los-datos-faltantes" class="title-slide slide level1 center">
+<h1>El Problema de los Datos Faltantes</h1>
+<div title="La Ausencia de Registro no es Normalidad">
+<div class="callout callout-caution callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>La Ausencia de Registro no es Normalidad</strong></p>
+</div>
+<div class="callout-content">
+<p>Ignorar el motivo de la falta de un dato (mecanismo MNAR) puede llevar a modelos que asumen que la falta de pruebas equivale a buena salud, introduciendo sesgos graves en la predicción de riesgos.</p>
+<p>Entender el mecanismo de la pérdida es crucial para elegir la estrategia de imputación correcta.</p>
+</div>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>En Big Data general, si falta un dato, lo borras o pones la media. En Medicina, <strong>el dato que falta es información</strong>. Si no hay registro de glucosa, significa que el médico no consideró necesario pedirlo. Eso ya nos dice que el paciente probablemente está sano. Pero cuidado… si falta un test de depresión, ¿es porque está feliz o porque está tan deprimido que no pudo rellenar el formulario?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="la-ausencia-de-registro-neq-normalidad" class="slide level2">
+<h2>La Ausencia de Registro <span class="math inline">\(\neq\)</span> Normalidad</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>En un <abbr title="Electronic Health Records / Historia Clínica Electrónica">EHR</abbr>, que no haya un registro de glucosa no significa que sea normal; significa que no se midió <span class="citation" data-cites="Feng2019">(<a href="" role="doc-biblioref" onclick="return false;">Feng, 2019</a>)</span>.</p>
+<h3 id="mecanismos-de-ausencia">Mecanismos de Ausencia</h3>
+<ol type="1">
+<li><strong><abbr title="Missing Completely At Random">MCAR</abbr>:</strong> Aleatorio puro (ej. muestra derramada) <span class="citation" data-cites="Wells2013">(<a href="" role="doc-biblioref" onclick="return false;">Wells, 2013</a>)</span>.</li>
+<li><strong><abbr title="Missing At Random">MAR</abbr>:</strong> Depende de otros datos (ej. menos registros de presión en jóvenes sanos).</li>
+<li><strong><abbr title="Missing Not At Random">MNAR</abbr>:</strong> Depende del valor faltante (ej. paciente depresivo no responde cuestionario).</li>
+</ol>
+</div><div class="column" style="width:50%;">
+<div class="warning-box">
+<p><strong>Riesgo Crítico</strong> Ignorar el mecanismo <abbr title="Missing Not At Random">MNAR</abbr> introduce sesgos graves en la predicción de riesgos <span class="citation" data-cites="Wells2013">(<a href="" role="doc-biblioref" onclick="return false;">Wells, 2013</a>)</span>.</p>
+</div>
+<div class="cell" data-reveal="true" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    A["Dato Faltante"] --&gt; B{"¿Mecanismo?"}
+    B --&gt;|MCAR\nAleatorio Puro| C["Seguro:\nImputar"]
+    B --&gt;|MAR\nDependiente| D["Recuperable:\nCorrelacionar"]
+    B --&gt;|MNAR\nNo Aleatorio| E["PELIGRO:\nSesgo Oculto"]
+    style E fill:#f96,stroke:#333,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Clasificamos la ausencia en 3 tipos: 1. <strong>MCAR (Random)</strong>: Se rompió el tubo de ensayo. Mala suerte. Se puede imputar sin miedo. 2. <strong>MAR (Dependiente)</strong>: No tomamos la tensión porque el paciente es joven. Podemos deducirlo. 3. <strong>MNAR (No Random - Peligroso)</strong>: El dato falta <em>por culpa</em> del propio dato. Ejemplo: un paciente con obesidad mórbida que se niega a pesarse. Si imputamos el “peso medio”, estamos ocultando la obesidad y sesgando el modelo. Este es el asesino silencioso de los modelos médicos.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="estrategias-de-imputación" class="slide level2 smaller">
+<h2>Estrategias de Imputación</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Método</th>
+<th style="text-align: left;">Descripción</th>
+<th style="text-align: left;">Ventajas/Desventajas</th>
+<th style="text-align: left;">Caso de Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Media/Mediana</strong></td>
+<td style="text-align: left;">Reemplazo por promedio.</td>
+<td style="text-align: left;">❌ Reduce varianza, distorsiona correlaciones <span class="citation" data-cites="Feng2019">(<a href="" role="doc-biblioref" onclick="return false;">Feng, 2019</a>)</span>.</td>
+<td style="text-align: left;">Solo variables auxiliares <abbr title="Missing Completely At Random">MCAR</abbr>.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong><abbr title="Last Observation Carried Forward">LOCF</abbr></strong></td>
+<td style="text-align: left;">Último valor conocido.</td>
+<td style="text-align: left;">✅ Refleja inercia fisiológica.<br>❌ Asume estabilidad en agudos <span class="citation" data-cites="Amin2017">(<a href="" role="doc-biblioref" onclick="return false;">Amin, 2018</a>)</span>.</td>
+<td style="text-align: left;">Signos vitales en <abbr title="Unidad de Cuidados Intensivos">UCI</abbr> estable.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong><abbr title="Multiple Imputation by Chained Equations">MICE</abbr></strong></td>
+<td style="text-align: left;">Múltiples datasets vía regresión.</td>
+<td style="text-align: left;">✅ Captura incertidumbre.<br>❌ Costoso computacionalmente <span class="citation" data-cites="DhilsathFathima2021">(<a href="" role="doc-biblioref" onclick="return false;">Fathima, 2023</a>)</span>.</td>
+<td style="text-align: left;">Epidemiología compleja.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong><abbr title="K-Nearest Neighbors">KNN</abbr></strong></td>
+<td style="text-align: left;">Promedio de pacientes similares.</td>
+<td style="text-align: left;">✅ No asume distribución lineal.<br>❌ Lento en Big Data <span class="citation" data-cites="Chan2025">(<a href="" role="doc-biblioref" onclick="return false;">Chan, 2025</a>)</span>.</td>
+<td style="text-align: left;">Datos de laboratorio.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong><abbr title="Generative Adversarial Imputation Nets">GAIN</abbr></strong></td>
+<td style="text-align: left;">Imputación vía <abbr title="Generative Adversarial Networks">GANs</abbr>.</td>
+<td style="text-align: left;">✅ Estado del arte, preserva distribución <span class="citation" data-cites="Erman2025">(<a href="" role="doc-biblioref" onclick="return false;">Erman, 2025</a>)</span>.</td>
+<td style="text-align: left;">Datasets masivos Deep Learning.</td>
+</tr>
+</tbody>
+</table>
+<div class="cell" data-reveal="true" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    Start["Inicio"] --&gt; Check{"¿Tipo de Ausencia?"}
+    Check --&gt;|MCAR/MAR| Series{"¿Serie Temporal?"}
+    Check --&gt;|MNAR| Expert["Consultar Experto\nModelado Específico"]
+    
+    Series --&gt;|Si| LOCF["LOCF / Interpolación"]
+    Series --&gt;|No| Multi{"¿Complejidad?"}
+    
+    Multi --&gt;|Baja| Simple["Media/Mediana\n(Riesgo Varianza)"]
+    Multi --&gt;|Media| MICE["MICE\n(Regresión Encadenada)"]
+    Multi --&gt;|Alta| GAIN["Deep Learning\n(GAIN/Autoencoders)"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>¿Cómo rellenamos los huecos? * <strong>Media</strong>: Casi siempre mala idea. Reduce la variabilidad natural. * <strong>LOCF</strong>: “Usar el último valor conocido”. Muy bueno en UCI. Si tenías 38 de fiebre hace una hora, probablemente sigas teniendo 38. * <strong>MICE</strong>: El estándar científico. Rellena el dato varias veces basándose en correlaciones con otras variables y promedia los resultados. * <strong>GAIN</strong>: Usar IAs generativas para “imaginar” el dato faltante basándose en todo el contexto. Es el estado del arte.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="ingeniería-de-características-específica" class="title-slide slide level1 center">
+<h1>Ingeniería de Características Específica</h1>
+<aside class="notes">
+<p>Una vez limpio, hay que transformar el dato para que el modelo lo entienda.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="datos-tabulares-y-series-temporales" class="slide level2">
+<h2>Datos Tabulares y Series Temporales</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<h3 id="datos-tabulares-ehr">Datos Tabulares (<abbr title="Electronic Health Records">EHR</abbr>)</h3>
+<ul>
+<li><strong>Índice de Charlson:</strong> Reducción de dimensionalidad ponderando gravedad de comorbilidades <span class="citation" data-cites="Soos2025">(<a href="" role="doc-biblioref" onclick="return false;">Soos, 2025</a>)</span>.</li>
+<li><strong>Variables de Tiempo:</strong> “Tiempo desde última admisión” predice reingresos mejor que el diagnóstico <span class="citation" data-cites="Sohrabi2019">(<a href="" role="doc-biblioref" onclick="return false;">Sohrabi, 2019</a>)</span>.</li>
+</ul>
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:48%;">
+<h3 id="series-temporales">Series Temporales</h3>
+<ul>
+<li><strong>Dominio Frecuencia:</strong> <abbr title="Fast Fourier Transform">FFT</abbr> para analizar Variabilidad de Frecuencia Cardíaca (<abbr title="Heart Rate Variability">HRV</abbr>) como biomarcador de estrés <span class="citation" data-cites="Gallardo2022">(<a href="" role="doc-biblioref" onclick="return false;">Gallardo, 2022</a>)</span>.</li>
+<li><strong>Entropía de Muestra:</strong> Mide la complejidad de la señal. Regularidad excesiva = patología <span class="citation" data-cites="Amarantidis2019">(<a href="" role="doc-biblioref" onclick="return false;">Amarantidis, 2019</a>)</span>.</li>
+</ul>
+</div></div>
+<aside class="notes">
+<ul>
+<li><strong>Tablas</strong>: No metemos las enfermedades tal cual. Creamos índices de riesgo como Charlson. Y muy importante: variables temporales. “Hace cuánto vino” suele ser más predictivo que “por qué vino”.</li>
+<li><strong>Señales</strong>: El corazón no es un metrónomo. Un corazón sano es caótico (adaptable); un corazón enfermo es rígido. Usamos matemáticas (Entropía, Fourier) para medir ese caos y predecir fallos cardíacos antes de que ocurran.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="radiómica-imágenes-médicas" class="slide level2">
+<h2>Radiómica: Imágenes Médicas</h2>
+<p>Transformando imágenes en datos cuantitativos invisibles al ojo humano <span class="citation" data-cites="Gillies2016">(<a href="" role="doc-biblioref" onclick="return false;">Gillies, 2016</a>)</span>.</p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<div class="clinical-box">
+<p><strong>1er Orden</strong> Histograma de intensidades. <em>(Media, asimetría, curtosis del tumor)</em></p>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="clinical-box">
+<p><strong>Textura (2º Orden)</strong> <abbr title="Gray-Level Co-occurrence Matrix">GLCM</abbr>. <em>Mide homogeneidad. Diferencia tumores benignos de malignos</em> <span class="citation" data-cites="Vujasinovic2015">(<a href="" role="doc-biblioref" onclick="return false;">Vujasinovic, 2015</a>)</span>.</p>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="clinical-box">
+<p><strong>Forma</strong> Compacidad, esfericidad y volumen fractal.</p>
+</div>
+</div></div>
+
+<img data-src="images/radiomics_extraction.png" class="r-stretch quarto-figure-center" id="fig-radiomics-extraction"><p class="caption">
+Figura&nbsp;4: Proceso de extracción radiómica: transformando imágenes en características cuantitativas de textura y forma.
+</p><aside class="notes">
+<p>La Radiómica es fascinante: convierte imágenes en Excel. El ojo humano ve una mancha. La radiómica ve “Curtosis”, “Entropía”, “Textura GLCM”. Podemos diferenciar un tumor benigno de uno maligno simplemente porque la textura del maligno es matemáticamente más heterogénea, algo que a veces escapa al ojo humano pero no al algoritmo.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="sesgo-algorítmico-y-equidad" class="title-slide slide level1 center">
+<h1>Sesgo Algorítmico y Equidad</h1>
+<div title="Automatización de la Discriminación Histórica">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Automatización de la Discriminación Histórica</strong></p>
+</div>
+<div class="callout-content">
+<p>Si un dataset refleja discriminación histórica (ej. menor gasto en minorías), el modelo aprenderá a infravalorar la necesidad médica de esos grupos si el costo se usa como proxy de salud <span class="citation" data-cites="obermeyer2019dissecting">(<a href="" role="doc-biblioref" onclick="return false;">Obermeyer et&nbsp;al., 2019</a>)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Este es el punto más ético. Si entrenamos con datos racistas, tendremos una IA racista. No porque la IA quiera, sino porque aprende patrones. Si históricamente gastamos menos dinero en curar a minorías, y le decimos a la IA que prediga “Gasto futuro”, la IA aprenderá que esas minorías “no necesitan tratamiento”.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="automatización-de-la-discriminación" class="slide level2">
+<h2>Automatización de la Discriminación</h2>
+<blockquote>
+<p>El preprocesamiento es donde se introducen o amplifican los sesgos sociales <span class="citation" data-cites="Algorithmic2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>Algorithmic Bias in Health Care</em>, 2026</a>)</span>.</p>
+</blockquote>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="fuentes-de-sesgo">Fuentes de Sesgo</h3>
+<ol type="1">
+<li><strong>Sesgo de Representación:</strong> Datasets dominados por piel clara fallan en diagnósticos de melanoma en piel oscura <span class="citation" data-cites="Skin2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>Skin Deep</em>, 2026</a>)</span>.</li>
+<li><strong>Sesgo de Etiqueta:</strong> Usar “costo” como proxy de “salud”.</li>
+</ol>
+</div><div class="column" style="width:50%;">
+<div class="warning-box">
+<p><strong>El Caso Obermeyer (Science, 2019)</strong> Un algoritmo infravaloraba a pacientes negros porque, a igual gravedad, gastaban menos dinero debido a barreras de acceso. <strong>Solución:</strong> Cambiar etiqueta objetivo de “costo” a “biomarcadores” <span class="citation" data-cites="obermeyer2019dissecting">(<a href="" role="doc-biblioref" onclick="return false;">Obermeyer et&nbsp;al., 2019</a>)</span>.</p>
+</div>
+</div></div>
+<aside class="notes">
+<p>El caso Obermeyer (2019) es el ejemplo canónico. Un algoritmo usado en millones de pacientes discriminaba sistemáticamente a pacientes negros. ¿El error? Se usó “Costo Sanitario” como variable proxy de “Gravedad”. Como el sistema de salud de EEUU tenía barreras de acceso para la población negra, estos gastaban menos incluso estando más enfermos. El algoritmo aprendió: “Gasta poco = Está sano”. Solución: Cambiar la etiqueta objetivo. Predecir “Biomarcadores biológicos”, no dinero.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="mitigación-y-datos-sintéticos" class="slide level2">
+<h2>Mitigación y Datos Sintéticos</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="técnicas-de-mitigación">Técnicas de Mitigación</h3>
+<ul>
+<li><strong>Re-weighting:</strong> Asignar mayor peso a minorías <span class="citation" data-cites="Mitigation2026">(<a href="" role="doc-biblioref" onclick="return false;"><em>Mitigation of Bias in Machine Learning Models for Healthcare</em>, 2026</a>)</span>.</li>
+<li><strong>Adversarial De-biasing:</strong> Entrenar una red para que sea “ciega” al atributo protegido (raza/género) <span class="citation" data-cites="Kiani2025">(<a href="" role="doc-biblioref" onclick="return false;">Kiani, 2025</a>)</span>.</li>
+<li><strong>Fairness through Awareness:</strong> Ajuste explícito de predicciones <span class="citation" data-cites="Gmez2025">(<a href="" role="doc-biblioref" onclick="return false;">Gómez, 2025</a>)</span>.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="datos-sintéticos-y-privacidad">Datos Sintéticos y Privacidad</h3>
+<ul>
+<li>Uso de <abbr title="Generative Adversarial Networks">GANs</abbr> y Modelos de Difusión <span class="citation" data-cites="Sharma2025">(<a href="" role="doc-biblioref" onclick="return false;">Sharma, 2025</a>)</span>.</li>
+<li><strong><abbr title="Synthetic Twin Electronic HR Generation">SynTEG</abbr>:</strong> Crea cohortes virtuales que mantienen propiedades estadísticas sin corresponder a individuos reales.</li>
+<li>Permite cumplimiento estricto del <abbr title="Reglamento General de Protección de Datos">RGPD</abbr> <span class="citation" data-cites="AbdelKhalek2025">(<a href="" role="doc-biblioref" onclick="return false;">Abdel-Khalek, 2025</a>)</span>.</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>Podemos arreglar esto. 1. <strong>Re-weighting</strong>: Decirle al modelo “Presta el doble de atención a los errores en pacientes minoritarios”. 2. <strong>Datos Sintéticos</strong>: Si no tenemos suficientes datos de minorías o son privados, usemos IAs generativas para crear “Clones Estadísticos”. Pacientes que no existen (privacidad 100%) pero que matemáticamente se comportan igual que los reales. Esto democratiza la investigación.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="conclusión-3" class="slide level2">
+<h2>Conclusión</h2>
+<div class="r-fit-text">
+<p>INGENIERÍA DE CARACTERÍSTICAS = TRADUCCIÓN</p>
+</div>
+<div class="columns">
+<div class="column" style="width:70%;">
+<ul>
+<li>Traduce la complejidad biológica a lenguaje matemático.</li>
+<li>Asumir <span class="math inline">\(Null = 0\)</span> o <span class="math inline">\(Costo = Salud\)</span> son decisiones éticas, no solo técnicas.</li>
+<li>La <strong>supervisión clínica</strong> es insustituible.</li>
+</ul>
+</div><div class="column" style="width:30%;">
+<p><img data-src="images/fig-automation-bias.png" style="border-radius: 50%;;width:80.0%"></p>
+</div></div>
+<aside class="notes">
+<p>Llévense esto: La ingeniería de datos no es “preparar el Excel”. Es <strong>traducir biología a matemáticas</strong>. Cada decisión (imputar un cero, borrar un outlier, elegir una variable proxy) es una decisión médica y ética. La IA no nos reemplaza; nos exige ser mejores traductores.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="Curso_Completo_Datos_Salud_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="Curso_Completo_Datos_Salud_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 5.0e-2,
+
+        // Bounds for smallest/largest possible scale to apply to content
+        minScale: 0.2,
+
+        maxScale: 2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiado");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiado");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+                // target, if specified
+                link.setAttribute("target", "_blank");
+                if (link.getAttribute("rel") === null) {
+                  link.setAttribute("rel", "noopener");
+                }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
