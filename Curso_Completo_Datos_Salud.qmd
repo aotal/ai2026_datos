@@ -31,6 +31,7 @@ format:
 bibliography: references.bib
 csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
 lang: es
+editor: visual
 ---
 
 
@@ -523,7 +524,7 @@ El caso de éxito de *Leo* demuestra que podemos automatizar tareas complejas co
 # El Estándar <abbr title="Digital Imaging and Communications in Medicine">DICOM</abbr>
 ## Arquitectura del Dato Semiestructurado
 
-<abbr title="Digital Imaging and Communications in Medicine">DICOM</abbr> es más que un formato; es un protocolo que garantiza que la imagen nunca se separe de la información del paciente [@Quesque2024].
+<abbr title="Digital Imaging and Communications in Medicine">DICOM</abbr> es más que un formato; es un protocolo que garantiza que la imagen nunca se separe de la información del paciente.
 
 ::: {.columns}
 ::: {.column width="60%"}
@@ -753,7 +754,7 @@ La evolución del [EHR]{title="Electronic Health Record (Registro Electrónico d
 ::: {.column width="40%"}
 ::: {.callout-note}
 ## Punto Crítico
-La intersección entre ética, marco legal y arquitectura técnica es vital. Ya no es documentación, es una actividad regulada (RGPD) e interoperable ([FHIR]{title="Fast Healthcare Interoperability Resources"}). [@adeniji2024twenty]
+La intersección entre ética, marco legal y arquitectura técnica es vital. Ya no es documentación, es una actividad regulada (RGPD) e interoperable ([FHIR]{title="Fast Healthcare Interoperability Resources"}).
 :::
 :::
 :::
@@ -772,7 +773,7 @@ La intersección entre ética, marco legal y arquitectura técnica es vital. Ya 
 ### Antigüedad - Siglo XIX
 * **3.000 años atrás:** Papiros y tablas de arcilla.
 * **Finales s. XIX:** Registros en papel en carpetas físicas.
-* **Limitación:** Acceso único, ilegibilidad, espacio físico. [@adeniji2024twenty]
+* **Limitación:** Acceso único, ilegibilidad, espacio físico.
 :::
 
 ::: {.fragment .fade-in-then-out}
@@ -811,7 +812,7 @@ El [RGPD]{title="Reglamento General de Protección de Datos"} clasifica los dato
 El tratamiento está **prohibido por defecto**, salvo excepciones:
 * Diagnóstico médico.
 * Gestión de sistemas de salud.
-* Interés público en salud transfronteriza. [@Gdpr2026]
+* Interés público en salud transfronteriza.
 :::
 
 ::: {.column width="50%"}
@@ -910,25 +911,6 @@ sequenceDiagram
 *   **Solución FHIR:** Es el "HTML" de la salud. Estándar web moderno (API REST, JSON).
 *   **Granularidad:** No envías un PDF de 100 páginas, envías el recurso "Glucosa" exacto.
 *   **SMART on FHIR:** Permite apps ("App Store") sobre la historia clínica. Innovación externa segura.
-:::
-
----
-
-## Panorama de Proveedores de EHR
-
-Comparativa de filosofías de implementación [@Cerner2026]:
-
-| Proveedor | Filosofía | Fortalezas | Desafíos |
-| :--- | :--- | :--- | :--- |
-| **Epic Systems** | *Walled Garden* | Rendimiento, integración académica. | Coste, rigidez. |
-| **Cerner (Oracle)** | *Open Interop* | Flexibilidad, CommonWell. | Consistencia modular. |
-| **SAP Health** | *ERP Integration* | Servicios nube, gestión administrativa. | Menor flujo clínico directo. |
-
-::: {.notes}
-No todos los EHR son iguales:
-*   **Epic:** El "Jardín Vallado". Funciona increíble si todo tu hospital es Epic. Difícil de conectar con fuera. Rendimiento brutal.
-*   **Cerner:** Más abierto, filosofía de interoperabilidad. Bueno para entornos mixtos.
-*   **SAP:** Fuerte en la parte administrativa/financiera y backend de datos, menos en la interfaz clínica del médico.
 :::
 
 ---
@@ -1108,7 +1090,7 @@ Las bases de datos relacionales siguen siendo el estándar para [HIS]{title="Hos
 ::: {.column width="50%"}
 ### Propiedades [ACID]{title="Atomicity, Consistency, Isolation, Durability"}
 
-* **Atomicidad**: Transacciones "todo o nada" (ej. prescripción + stock + cargo) [@Villaverde2022].
+* **Atomicidad**: Transacciones "todo o nada" (ej. prescripción + stock + cargo).
 * **Consistencia**: Reglas de integridad referencial estrictas [@Nosql2026].
 * **Aislamiento**: Gestión de concurrencia mediante [MVCC]{title="Multi-Version Concurrency Control"} [@Makris2020].
 * **Durabilidad**: Persistencia garantizada (WAL) ante fallos de energía.
@@ -1140,7 +1122,7 @@ Aunque [FHIR]{title="Fast Healthcare Interoperability Resources"} usa JSON/XML, 
 
 | Característica | Implementación [SQL]{title="Structured Query Language"} |
 | :--- | :--- |
-| **Modelo** | Tablas y Tuplas rígidas [@Villaverde2022] |
+| **Modelo** | Tablas y Tuplas rígidas |
 | **Garantía** | Cumplimiento estricto de [ACID]{title="Atomicity, Consistency, Isolation, Durability"} [@Soumma2025] |
 | **Uso Clínico** | Facturación, [MPI]{title="Master Patient Index"}, Admisión |
 
@@ -1193,7 +1175,7 @@ Para ver una tendencia de fiebre, da igual. Para decidir una dosis de adrenalina
 ### Documental
 **Tecnología**: MongoDB.
 **Uso**: Notas clínicas, historiales semiestructurados.
-**Ventaja**: Ingesta de datos heterogéneos sin alterar el esquema global. Ideal para integrar diversos fabricantes de dispositivos [@Villaverde2022].
+**Ventaja**: Ingesta de datos heterogéneos sin alterar el esquema global. Ideal para integrar diversos fabricantes de dispositivos.
 
 ### Clave-Valor
 **Tecnología**: Redis.
@@ -1427,7 +1409,7 @@ No existe una "talla única". La solución robusta es híbrida.
 :::
 :::
 
-> "El reto es la orquestación, transformando el océano de datos en conocimiento accionable." [@Villaverde2022]
+> "El reto es la orquestación, transformando el océano de datos en conocimiento accionable."
 
 ::: {.notes}
 Conclusión: Persistencia Políglota.
@@ -1802,7 +1784,7 @@ Cada decisión (imputar un cero, borrar un outlier, elegir una variable proxy) e
 La IA no nos reemplaza; nos exige ser mejores traductores.
 :::
 
-# Bibliografía Global {visibility="hidden"}
+# Bibliografía Global
 
 ::: {#refs}
 :::
